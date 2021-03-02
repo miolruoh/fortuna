@@ -47,9 +47,9 @@ public class PlayerControl : MonoBehaviour
     public void OnButtonPress()
     {
         rb.AddForce(0, 0, 0);
-        posx = 0;
-        posy = 1;
-        posz = 0;
-        rb.position = new Vector3(posx, posy, posz);
+        posx = 2;
+        posy = 0;
+        posz = -4;
+        rb.position = new Vector3(posx,posy,posz);
     }
 }
