@@ -652,7 +652,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
   m_LocalRotation: {x: 0.3420201, y: 0, z: 0, w: 0.9396927}
-  m_LocalPosition: {x: 0, y: 4.737, z: -8.225}
+  m_LocalPosition: {x: 0, y: 6.173, z: -9.39}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -894,9 +894,25 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -7511558181221131132, guid: 6b89f46f780eff84db00dc11f1d98e9b, type: 3}
+      propertyPath: m_LightProbeUsage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 6b89f46f780eff84db00dc11f1d98e9b, type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 6b89f46f780eff84db00dc11f1d98e9b, type: 3}
+      propertyPath: m_ReflectionProbeUsage
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: 6b89f46f780eff84db00dc11f1d98e9b, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 519523883476576726, guid: 6b89f46f780eff84db00dc11f1d98e9b, type: 3}
+      objectReference: {fileID: 2100000, guid: 097e698d94c68364398f8f0344fbf5d0, type: 2}
+    - target: {fileID: -7511558181221131132, guid: 6b89f46f780eff84db00dc11f1d98e9b, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: d39553e88883b9f4aa28d2019c7e46db, type: 2}
     - target: {fileID: 919132149155446097, guid: 6b89f46f780eff84db00dc11f1d98e9b, type: 3}
       propertyPath: m_Icon
       value: 
