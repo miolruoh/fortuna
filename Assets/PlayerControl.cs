@@ -4,52 +4,103 @@ using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
 {
-    Rigidbody rb;
     Vector3 startPos, endPos, direction;
     float touchTimeStart, touchTimeFinish, timeInterval;
-    float posx;
-    float posy;
-    float posz;
-
     [Range(0.05f, 1f)]
     public float throwForce = 0.3f;
 
+    Vector3 SpherestartPos;
+
+    public Rigidbody ball1;
+    public Rigidbody ball2;
+    public Rigidbody ball3;
+    public Rigidbody ball4;
+    public Rigidbody ball5;
+    List<Rigidbody> rbList = new List<Rigidbody>();
+    private bool isInStartArea;
+    private bool isActive = false;
+    private int i;
+
+    private Rigidbody rb;
+
     private void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        rbList.Add(ball1);
+        rbList.Add(ball2);
+        rbList.Add(ball3);
+        rbList.Add(ball4);
+        rbList.Add(ball5);
+        rb = rbList[i];
+        i = 0;
+        isActive = true;
+        SpherestartPos = rb.transform.position;
     }
 
-    void Update()
+
+    void FixedUpdate()
     {
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && isActive)
         {
             rb.velocity = new Vector3(0, 0, 5);
+            isActive = false;
+            i++;
         }
-           /* if (Input.GetMouseButtonDown(0))
+        if ( !isInStartArea && rb.velocity == Vector3.zero && rb.angularVelocity == Vector3.zero)
+        {
+            if(i < rbList.Count)
             {
-                touchTimeStart = Time.time;
-                startPos = new Vector3(rb.position.x, rb.position.y, Input.mousePosition.z);
+                rb = rbList[i];
+                rb.position = SpherestartPos;
+                isActive = true;
             }
-            if (Input.GetMouseButtonUp(0))
-            {
-                touchTimeFinish = Time.time;
-                timeInterval = touchTimeFinish - touchTimeStart;
-                endPos = new Vector3(rb.position.x, rb.position.y, Input.mousePosition.z);
-                direction = startPos - endPos;
-                Vector3 force = direction / timeInterval * throwForce;
-                if (force.z > 0)
-                {
-                    force = new Vector3(0, 0, 0);
-                }
-                else rb.AddForce(force);
-            }*/
+        }
+
+        /* if (Input.GetMouseButtonDown(0))
+         {
+             touchTimeStart = Time.time;
+             startPos = new Vector3(rb.position.x, rb.position.y, Input.mousePosition.z);
+         }
+         if (Input.GetMouseButtonUp(0))
+         {
+             touchTimeFinish = Time.time;
+             timeInterval = touchTimeFinish - touchTimeStart;
+             endPos = new Vector3(rb.position.x, rb.position.y, Input.mousePosition.z);
+             direction = startPos - endPos;
+             Vector3 force = direction / timeInterval * throwForce;
+             if (force.z > 0)
+             {
+                 force = new Vector3(0, 0, 0);
+             }
+             else rb.AddForce(force);
+         }*/
     }
-    public void OnButtonPress()
+
+    private void OnTriggerEnter(Collider other)
     {
-        rb.AddForce(0, 0, 0);
-        posx = 2;
-        posy = 0;
-        posz = -4;
-        rb.position = new Vector3(posx,posy,posz);
+        if(other.gameObject.tag == "StartingArea")
+        {
+            isInStartArea = true;
+            Debug.Log("Enter" + i);
+            Debug.Log(isInStartArea + " " + i);
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "StartingArea")
+        {
+            isInStartArea = false;
+            Debug.Log("Stay" + i);
+            Debug.Log(isInStartArea + " " + i);
+        }
+    }
+
+
+    private void OnButtonPress()
+    {
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.Sleep();
+        rb.position = SpherestartPos;
     }
 }
