@@ -8,6 +8,8 @@ public class PlayerControl : MonoBehaviour
     float touchTimeStart, touchTimeFinish, timeInterval;
     [Range(0.05f, 1f)]
     public float throwForce = 0.3f;
+    [Range(1f, 10f)]
+    public float v = 5f;
 
     Vector3 SpherestartPos;
 
@@ -41,7 +43,7 @@ public class PlayerControl : MonoBehaviour
     {
         if (Input.GetMouseButton(0) && isActive)
         {
-            rb.velocity = new Vector3(0, 0, 5);
+            rb.velocity = new Vector3(0, 0, v);
             isActive = false;
             i++;
         }
