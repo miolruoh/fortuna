@@ -1,15 +1,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerControl : MonoBehaviour
 {
-    Vector3 startPos, endPos, direction;
+    /*Vector3 startPos, endPos, direction;
     float touchTimeStart, touchTimeFinish, timeInterval;
     [Range(0.05f, 1f)]
-    public float throwForce = 0.3f;
+    public float throwForce = 0.3f;*/
+
     [Range(1f, 10f)]
-    public float v = 5f;
+    public float v = 5f;    // how fast ball is launced( just for testing)
 
     Vector3 SpherestartPos;
 
@@ -19,12 +21,14 @@ public class PlayerControl : MonoBehaviour
     public Rigidbody ball4;
     public Rigidbody ball5;
     List<Rigidbody> rbList = new List<Rigidbody>();
-    private bool isInStartArea;
-    private bool isActive = false;
-    private int i;
+    bool isInStartArea;         // if true, ball is still in start area and so if it's launch too slow and it comes back and stops, new ball won't come active
+    bool atZeroPointArea;       // if true, next ball can move to the launch area even though if ball is still moving
+    bool isActive;              // if true, ball is ready to launch, otherwise launch is disabled
+    private int i = 0;         // to keep track of the active ball in the list
 
     private Rigidbody rb;
 
+    //Assigned in start
     private void Start()
     {
         rbList.Add(ball1);
@@ -33,76 +37,70 @@ public class PlayerControl : MonoBehaviour
         rbList.Add(ball4);
         rbList.Add(ball5);
         rb = rbList[i];
-        i = 0;
         isActive = true;
+        //isInStartArea = true;
+        //atZeroPointArea = false;
         SpherestartPos = rb.transform.position;
     }
 
-
-    void FixedUpdate()
+    void Update()
     {
         if (Input.GetMouseButton(0) && isActive)
         {
-            rb.velocity = new Vector3(0, 0, v);
-            isActive = false;
-            i++;
+            Launch();
         }
-        if ( !isInStartArea && rb.velocity == Vector3.zero && rb.angularVelocity == Vector3.zero)
+        //Not Working correctly
+        if (atZeroPointArea || (!isInStartArea && rb.velocity == Vector3.zero && rb.angularVelocity == Vector3.zero))
         {
-            if(i < rbList.Count)
-            {
-                rb = rbList[i];
-                rb.position = SpherestartPos;
-                isActive = true;
-            }
+            SwitchBall();
         }
-
-        /* if (Input.GetMouseButtonDown(0))
-         {
-             touchTimeStart = Time.time;
-             startPos = new Vector3(rb.position.x, rb.position.y, Input.mousePosition.z);
-         }
-         if (Input.GetMouseButtonUp(0))
-         {
-             touchTimeFinish = Time.time;
-             timeInterval = touchTimeFinish - touchTimeStart;
-             endPos = new Vector3(rb.position.x, rb.position.y, Input.mousePosition.z);
-             direction = startPos - endPos;
-             Vector3 force = direction / timeInterval * throwForce;
-             if (force.z > 0)
-             {
-                 force = new Vector3(0, 0, 0);
-             }
-             else rb.AddForce(force);
-         }*/
     }
 
+    private void Launch()
+    {
+        rb.velocity = new Vector3(0, 0, v);
+        isActive = false;
+        i++;
+    }
+
+    private void SwitchBall()
+    {
+        atZeroPointArea = false;
+        if (i < rbList.Count)
+        {
+            rb = rbList[i];
+            rb.position = SpherestartPos;
+            isActive = true;
+        }
+    }
+
+    //Not Working correctly
     private void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "StartingArea")
         {
             isInStartArea = true;
-            Debug.Log("Enter" + i);
-            Debug.Log(isInStartArea + " " + i);
+        }
+
+        if (other.gameObject.tag == "ZeroPointArea")
+        {
+            atZeroPointArea = true;
         }
     }
 
+    //Not Working correctly
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "StartingArea")
+        if (other.gameObject.tag == "StartingArea")   
         {
             isInStartArea = false;
-            Debug.Log("Stay" + i);
-            Debug.Log(isInStartArea + " " + i);
         }
     }
 
-
+    // Reset scene (probably going in to own script)
     private void OnButtonPress()
     {
-        rb.velocity = Vector3.zero;
-        rb.angularVelocity = Vector3.zero;
-        rb.Sleep();
-        rb.position = SpherestartPos;
+        Debug.Log("Set points to zero");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

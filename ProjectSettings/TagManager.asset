@@ -6,6 +6,7 @@ TagManager:
   tags:
   - StartingArea
   - PointArea5
+  - ZeroPointArea
   layers:
   - Default
   - TransparentFX

@@ -133,8 +133,8 @@ GameObject:
   m_Component:
   - component: {fileID: 487824}
   - component: {fileID: 487827}
-  - component: {fileID: 487826}
   - component: {fileID: 487825}
+  - component: {fileID: 487826}
   m_Layer: 0
   m_Name: PointAreaOneSpot7
   m_TagString: PointArea5
@@ -618,12 +618,11 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 95418574}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ce5cdf3c194885248adca124e9256f67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  throwForce: 0.215
   v: 5.18
   ball1: {fileID: 95418575}
   ball2: {fileID: 591705666}
@@ -740,8 +739,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 143452560}
-  - component: {fileID: 143452562}
   - component: {fileID: 143452561}
+  - component: {fileID: 143452562}
   m_Layer: 0
   m_Name: PointArea2
   m_TagString: PointArea5
@@ -783,11 +782,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 143452559}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e432eeae9441b24aad733fbc09c718d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalTriggered: 0
+  oldTotal: 0
 --- !u!1001 &207102512
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1593,8 +1594,8 @@ GameObject:
   m_Component:
   - component: {fileID: 333116350}
   - component: {fileID: 333116353}
-  - component: {fileID: 333116352}
   - component: {fileID: 333116351}
+  - component: {fileID: 333116352}
   m_Layer: 0
   m_Name: PointAreaOneSpot11
   m_TagString: PointArea5
@@ -2113,6 +2114,50 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1 &453296317
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 453296319}
+  - component: {fileID: 453296318}
+  m_Layer: 0
+  m_Name: ZeroPointArea
+  m_TagString: ZeroPointArea
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!65 &453296318
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 453296317}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 3.5508726, y: 0.22492969, z: 0.1844554}
+  m_Center: {x: -0.29759443, y: -0.3875429, z: -0.028839659}
+--- !u!4 &453296319
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 453296317}
+  m_LocalRotation: {x: -0.08715578, y: 0, z: 0, w: 0.9961947}
+  m_LocalPosition: {x: 0.1115722, y: -0.424, z: -5.219}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 13
+  m_LocalEulerAnglesHint: {x: -10, y: 0, z: 0}
 --- !u!1 &486477796
 GameObject:
   m_ObjectHideFlags: 0
@@ -2146,7 +2191,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce5cdf3c194885248adca124e9256f67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  throwForce: 0.208
   v: 5
   ball1: {fileID: 95418575}
   ball2: {fileID: 591705666}
@@ -2518,11 +2562,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 525035282}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e432eeae9441b24aad733fbc09c718d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalTriggered: 0
+  oldTotal: 0
 --- !u!65 &525035285
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2973,7 +3019,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce5cdf3c194885248adca124e9256f67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  throwForce: 0.208
   v: 5
   ball1: {fileID: 95418575}
   ball2: {fileID: 591705666}
@@ -3185,7 +3230,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 598439798}
-  - component: {fileID: 598439799}
   m_Layer: 0
   m_Name: PointArea6&7
   m_TagString: PointArea5
@@ -3210,18 +3254,6 @@ Transform:
   m_Father: {fileID: 1662690836}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: -10, y: 0, z: 0}
---- !u!114 &598439799
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 598439797}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e432eeae9441b24aad733fbc09c718d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &604367334
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3534,7 +3566,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 663698425}
-  - component: {fileID: 663698426}
   m_Layer: 0
   m_Name: PointArea1&2
   m_TagString: PointArea5
@@ -3559,18 +3590,6 @@ Transform:
   m_Father: {fileID: 1662690836}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: -10, y: 0, z: 0}
---- !u!114 &663698426
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 663698424}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e432eeae9441b24aad733fbc09c718d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &668022359
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -4403,7 +4422,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce5cdf3c194885248adca124e9256f67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  throwForce: 0.208
   v: 5
   ball1: {fileID: 95418575}
   ball2: {fileID: 591705666}
@@ -4844,11 +4862,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 821213079}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e432eeae9441b24aad733fbc09c718d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalTriggered: 0
+  oldTotal: 0
 --- !u!65 &821213082
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5064,6 +5084,55 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!1 &882968862
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 882968864}
+  - component: {fileID: 882968863}
+  m_Layer: 0
+  m_Name: PlayerControl
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &882968863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882968862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ce5cdf3c194885248adca124e9256f67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  v: 5.49
+  ball1: {fileID: 95418575}
+  ball2: {fileID: 591705666}
+  ball3: {fileID: 1067127710}
+  ball4: {fileID: 486477798}
+  ball5: {fileID: 757763141}
+--- !u!4 &882968864
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 882968862}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.1115722, y: -4.0313406, z: 0.5198622}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 12
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &905853749
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5276,8 +5345,8 @@ GameObject:
   m_Component:
   - component: {fileID: 946611792}
   - component: {fileID: 946611795}
-  - component: {fileID: 946611794}
   - component: {fileID: 946611793}
+  - component: {fileID: 946611794}
   m_Layer: 0
   m_Name: PointAreaOneSpot6
   m_TagString: PointArea5
@@ -5449,8 +5518,8 @@ GameObject:
   m_Component:
   - component: {fileID: 959314403}
   - component: {fileID: 959314406}
-  - component: {fileID: 959314405}
   - component: {fileID: 959314404}
+  - component: {fileID: 959314405}
   m_Layer: 0
   m_Name: PointAreaOneSpot12
   m_TagString: PointArea5
@@ -5936,11 +6005,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1032787655}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e432eeae9441b24aad733fbc09c718d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalTriggered: 0
+  oldTotal: 0
 --- !u!65 &1032787658
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5964,8 +6035,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1034435798}
   - component: {fileID: 1034435801}
-  - component: {fileID: 1034435800}
   - component: {fileID: 1034435799}
+  - component: {fileID: 1034435800}
   m_Layer: 0
   m_Name: PointAreaOneSpot9
   m_TagString: PointArea5
@@ -6261,7 +6332,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce5cdf3c194885248adca124e9256f67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  throwForce: 0.208
   v: 5
   ball1: {fileID: 95418575}
   ball2: {fileID: 591705666}
@@ -6571,8 +6641,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1108457145}
-  - component: {fileID: 1108457147}
   - component: {fileID: 1108457146}
+  - component: {fileID: 1108457147}
   m_Layer: 0
   m_Name: PointArea3-5collider
   m_TagString: PointArea5
@@ -6614,11 +6684,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1108457144}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e432eeae9441b24aad733fbc09c718d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalTriggered: 0
+  oldTotal: 0
 --- !u!1001 &1110014128
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6730,8 +6802,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1158787813}
   - component: {fileID: 1158787816}
-  - component: {fileID: 1158787815}
   - component: {fileID: 1158787814}
+  - component: {fileID: 1158787815}
   m_Layer: 0
   m_Name: PointAreaOneSpot10
   m_TagString: PointArea5
@@ -6831,11 +6903,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1167784825}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e432eeae9441b24aad733fbc09c718d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalTriggered: 0
+  oldTotal: 0
 --- !u!136 &1167784828
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -6860,8 +6934,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1168850022}
   - component: {fileID: 1168850025}
-  - component: {fileID: 1168850024}
   - component: {fileID: 1168850023}
+  - component: {fileID: 1168850024}
   m_Layer: 0
   m_Name: PointAreaOneSpot2
   m_TagString: PointArea5
@@ -6931,8 +7005,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1172376203}
-  - component: {fileID: 1172376205}
   - component: {fileID: 1172376204}
+  - component: {fileID: 1172376205}
   m_Layer: 0
   m_Name: PointArea4
   m_TagString: PointArea5
@@ -6975,11 +7049,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1172376202}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e432eeae9441b24aad733fbc09c718d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalTriggered: 0
+  oldTotal: 0
 --- !u!1001 &1188968533
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7153,6 +7229,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8e432eeae9441b24aad733fbc09c718d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalTriggered: 0
+  oldTotal: 0
 --- !u!1001 &1214168586
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7442,8 +7520,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1291926022}
   - component: {fileID: 1291926024}
-  - component: {fileID: 1291926023}
   - component: {fileID: 1291926025}
+  - component: {fileID: 1291926023}
   m_Layer: 0
   m_Name: PointAreaOneSpot1
   m_TagString: PointArea5
@@ -7846,11 +7924,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1337046105}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e432eeae9441b24aad733fbc09c718d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalTriggered: 0
+  oldTotal: 0
 --- !u!136 &1337046108
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -8077,8 +8157,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1385876942}
   - component: {fileID: 1385876945}
-  - component: {fileID: 1385876944}
   - component: {fileID: 1385876943}
+  - component: {fileID: 1385876944}
   m_Layer: 0
   m_Name: PointAreaOneSpot5
   m_TagString: PointArea5
@@ -8788,8 +8868,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1514022883}
   - component: {fileID: 1514022886}
-  - component: {fileID: 1514022885}
   - component: {fileID: 1514022884}
+  - component: {fileID: 1514022885}
   m_Layer: 0
   m_Name: PointAreaOneSpot3
   m_TagString: PointArea5
@@ -9382,7 +9462,7 @@ GameObject:
   - component: {fileID: 1662690836}
   m_Layer: 0
   m_Name: PointAreas
-  m_TagString: Untagged
+  m_TagString: PointArea5
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -9415,8 +9495,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1699510967}
   - component: {fileID: 1699510970}
-  - component: {fileID: 1699510969}
   - component: {fileID: 1699510968}
+  - component: {fileID: 1699510969}
   m_Layer: 0
   m_Name: PointAreaOneSpot4
   m_TagString: PointArea5
@@ -9826,7 +9906,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1785296175}
-  - component: {fileID: 1785296176}
   m_Layer: 0
   m_Name: PointArea3-5
   m_TagString: PointArea5
@@ -9852,18 +9931,6 @@ Transform:
   m_Father: {fileID: 1662690836}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: -10, y: 0, z: 0}
---- !u!114 &1785296176
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1785296174}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8e432eeae9441b24aad733fbc09c718d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1785516040
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -10075,8 +10142,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1806520335}
-  - component: {fileID: 1806520337}
   - component: {fileID: 1806520336}
+  - component: {fileID: 1806520337}
   m_Layer: 0
   m_Name: PointArea6&7collider
   m_TagString: PointArea5
@@ -10118,11 +10185,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1806520334}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e432eeae9441b24aad733fbc09c718d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalTriggered: 0
+  oldTotal: 0
 --- !u!1001 &1809703874
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11108,8 +11177,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1987486058}
   - component: {fileID: 1987486061}
-  - component: {fileID: 1987486060}
   - component: {fileID: 1987486059}
+  - component: {fileID: 1987486060}
   m_Layer: 0
   m_Name: PointAreaOneSpot8
   m_TagString: PointArea5
@@ -11736,11 +11805,13 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2072978057}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8e432eeae9441b24aad733fbc09c718d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  totalTriggered: 0
+  oldTotal: 0
 --- !u!65 &2072978060
 BoxCollider:
   m_ObjectHideFlags: 0

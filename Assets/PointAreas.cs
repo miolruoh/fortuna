@@ -4,7 +4,11 @@ using UnityEngine;
 
 public class PointAreas : MonoBehaviour
 {
-    private int areaTriggered = 0;
+    private static int areaAddTriggered = 0;
+    private static int areaSubtractTriggered = 0;
+
+    public int totalTriggered = 0;
+    public int oldTotal = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -15,18 +19,16 @@ public class PointAreas : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
+        
     }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
-            areaTriggered++;
-            Debug.Log("AreaTriggered " + areaTriggered);
-            if (areaTriggered != 1 && areaTriggered % 2 == 0)
-            {
-                AddPoints();
-            }
+            areaAddTriggered++;
+            Debug.Log("AreaAddTriggered " + areaAddTriggered);
+            CalculateTriggered();
         }
     }
 
@@ -34,13 +36,34 @@ public class PointAreas : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            if (areaTriggered != 1 && areaTriggered % 2 == 0 && areaTriggered > 0)
-            {
-                SubtractPoints();
-            }
-            areaTriggered--;
-            Debug.Log("AreaTriggered " + areaTriggered);
+            areaSubtractTriggered++;
+            Debug.Log("AreaSubtractTriggered " + areaSubtractTriggered);
+            CalculateTriggered();
         }
+    }
+
+    private void CalculateTriggered()
+    {
+        if (areaSubtractTriggered <= totalTriggered + areaAddTriggered)
+        {
+            oldTotal = totalTriggered;
+            totalTriggered = areaAddTriggered - areaSubtractTriggered;
+        }
+        else totalTriggered = 0;     // if working correct, this will never happen
+
+        if (totalTriggered > 1 && totalTriggered % 2 == 0)
+        {
+            PointSystem();
+        }
+    }
+    // TODO: if goes through area, it will subtract points and it shouldn't. modify ifs' to not accept that
+    private void PointSystem()
+    {
+        if (oldTotal < totalTriggered)
+        {
+            AddPoints();
+        }
+        else SubtractPoints();
     }
 
     private void SubtractPoints()
