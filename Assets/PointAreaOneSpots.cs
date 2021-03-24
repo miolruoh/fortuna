@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class PointAreaOneSpots : MonoBehaviour
 {
-    private int triggered = 0;
+    private CheckPoints checkPoints;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        checkPoints = GameObject.Find("CalculatePoints").GetComponent<CheckPoints>();
     }
 
     // Update is called once per frame
@@ -17,40 +17,36 @@ public class PointAreaOneSpots : MonoBehaviour
     {
 
     }
-
+    // Ball goes to the spot
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
-            triggered++;
-            Debug.Log("Triggered " + triggered);
-            if (triggered != 1 && triggered % 2 == 0)
-            {
-                AddPoints();
-            }
+            Debug.Log(gameObject.name + " Add");
+            int value = checkPoints.CalculatePoints(gameObject.tag);
+            AddPoints(value);
         }
     }
-
+    // Ball exits from the spot
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
-            if (triggered != 1 && triggered % 2 == 0 && triggered > 0)
-            {
-                SubtractPoints();
-            }
-            triggered--;
-            Debug.Log("Triggered " + triggered);
+            Debug.Log(gameObject.name + " Subtract");
+            int value = checkPoints.CalculatePoints(gameObject.tag);
+            SubtractPoints(value);
         }
     }
 
-    private void SubtractPoints()
+    private void SubtractPoints(int value)
     {
-        Debug.Log("Subtract Points");
+        checkPoints.points -= value;
+        checkPoints.SetText();
     }
 
-    private void AddPoints()
+    private void AddPoints(int value)
     {
-        Debug.Log("Add Points");
+        checkPoints.points += value;
+        checkPoints.SetText();
     }
 }

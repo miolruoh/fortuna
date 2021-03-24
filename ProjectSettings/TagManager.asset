@@ -5,8 +5,15 @@ TagManager:
   serializedVersion: 2
   tags:
   - StartingArea
-  - PointArea5
   - ZeroPointArea
+  - 10Points
+  - 20Points
+  - 25Points
+  - 50Points
+  - 75Points
+  - 100Points
+  - 125Points
+  - 150Points
   layers:
   - Default
   - TransparentFX
