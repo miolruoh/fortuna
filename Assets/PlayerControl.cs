@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class PlayerControl : MonoBehaviour
 {
     [Range(0.05f, 1f)]
-    public float factor = 0.3f;        // force can be adjusted with this
+    public float factor = 0.1f;        // force can be adjusted with this
 
     private Vector2 startPos;         // place where dragging starts
     private Vector2 endPos;           // place where dragging ends
@@ -16,31 +16,37 @@ public class PlayerControl : MonoBehaviour
 
     Vector3 SphereStartPos;
 
-    public Rigidbody ball1;
-    public Rigidbody ball2;
-    public Rigidbody ball3;
-    public Rigidbody ball4;
-    public Rigidbody ball5;
-    List<Rigidbody> rbList = new List<Rigidbody>();
+    //public Rigidbody ball1;
+    //public Rigidbody ball2;
+    //public Rigidbody ball3;
+    //public Rigidbody ball4;
+    //public Rigidbody ball5;
+    public List<Rigidbody> rbList = new List<Rigidbody>();
 
     private static bool isInStartArea;         // if true, ball is still in start area and so if it's launch too slow and it comes back and stops, new ball won't come active
-    private static bool atZeroPointArea = false;       // if true, next ball can move to the launch area even though if ball is still moving
+    private static bool atZeroPointArea;       // if true, next ball can move to the launch area even though if ball is still moving
     private static bool isActive;             // if true, ball is ready to launch, otherwise launch is disabled
-    private static bool outOfBounds = false;    // checks if ball is in the game area
+    private static bool outOfBounds;    // checks if ball is in the game area
     private int i = 0;               // to keep track of the active ball in the list
+    private readonly int forceLimit = 7000;
 
     private Rigidbody rb;
 
     //Assigned in start
     private void Start()
     {
-        rbList.Add(ball1);
-        rbList.Add(ball2);
-        rbList.Add(ball3);
-        rbList.Add(ball4);
-        rbList.Add(ball5);
+        //rbList.Add(ball1);
+        //rbList.Add(ball2);
+        //rbList.Add(ball3);
+        //rbList.Add(ball4);
+        //rbList.Add(ball5);
         rb = rbList[i];
         SphereStartPos = rb.transform.position;
+
+        isInStartArea = true;
+        atZeroPointArea = false;
+        isActive = true;
+        outOfBounds = false;
     }
 
     void Update()
@@ -58,8 +64,19 @@ public class PlayerControl : MonoBehaviour
                 endPos = Input.mousePosition;
                 force = (endPos.y - startPos.y) / (touchTimeFinish - touchTimeStart);
 
-                rb.AddForce(0, 0, force * factor);
-                isActive = false;
+                if ((touchTimeFinish - touchTimeStart) == 0 || force < 0)
+                {
+                    isActive = true;
+                }
+                else if (force > forceLimit)
+                {
+                    force = forceLimit;
+                    rb.AddForce(0, 0, force * factor);
+                }
+                else
+                {
+                    rb.AddForce(0, 0, force * factor);
+                }
             }
         }
 
@@ -95,7 +112,7 @@ public class PlayerControl : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.gameObject.tag == "StartingArea")
+        if (other.gameObject.tag == "StartingArea")
         {
             isInStartArea = true;
             isActive = true;
@@ -109,9 +126,10 @@ public class PlayerControl : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "StartingArea")   
+        if (other.gameObject.tag == "StartingArea")
         {
             isInStartArea = false;
+            isActive = false;
         }
 
         if (other.gameObject.tag == "GameArea")
