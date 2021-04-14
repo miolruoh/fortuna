@@ -15,11 +15,21 @@ public class MenuCommands : MonoBehaviour
         {
             i = 1;
         }*/
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+        SceneManager.LoadScene(3);
     }
 
-    public void OnOptionsButtonPress()
+    public void OnSettingsButtonPress()
     {
-        // open options menu
+        SceneManager.LoadScene(1);
+    }
+
+    public void OnBackButtonPress()
+    {
+        SceneManager.LoadScene(0);
+    }
+
+    public void OnHighscoreButtonPress()
+    {
+        SceneManager.LoadScene(2);
     }
 }

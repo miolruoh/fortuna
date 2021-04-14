@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class PointAreaOneSpots : MonoBehaviour
 {
-    private CheckPoints checkPoints;
+    private ScoreManager checkPoints;
 
     // Start is called before the first frame update
     void Start()
     {
-        checkPoints = GameObject.Find("CalculatePoints").GetComponent<CheckPoints>();
+        checkPoints = GameObject.Find("CalculatePoints").GetComponent<ScoreManager>();
     }
 
     // Update is called once per frame

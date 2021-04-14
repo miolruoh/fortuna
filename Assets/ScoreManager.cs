@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class CheckPoints : MonoBehaviour
+public class ScoreManager : MonoBehaviour
 {
     public int points;
     private TextMeshProUGUI output_Points;
