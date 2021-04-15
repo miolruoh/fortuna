@@ -12,7 +12,7 @@ public class ScoreManager : MonoBehaviour
     void Start()
     {
         points = 0;
-        output_Points = GameObject.Find("Canvas/Score").GetComponent<TextMeshProUGUI>();
+        output_Points = GameObject.Find("ScoreCanvas/Score").GetComponent<TextMeshProUGUI>();
     }
     // Update is called once per frame
     void Update()

@@ -137,10 +137,4 @@ public class PlayerControl : MonoBehaviour
             outOfBounds = true;
         }
     }
-
-    // Reset scene (probably going in to own script)
-    private void OnButtonPress()
-    {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
 }
