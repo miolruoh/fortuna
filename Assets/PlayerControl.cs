@@ -12,37 +12,25 @@ public class PlayerControl : MonoBehaviour
     private Vector2 startPos;         // place where dragging starts
     private Vector2 endPos;           // place where dragging ends
     private float touchTimeStart, touchTimeFinish; // count dragging time
-    private float force;       // calculates how mmuch force is added to ball when launching
-
+    private float force;       // calculates how much force is added to ball when launching
     Vector3 SphereStartPos;
-
-    //public Rigidbody ball1;
-    //public Rigidbody ball2;
-    //public Rigidbody ball3;
-    //public Rigidbody ball4;
-    //public Rigidbody ball5;
     public List<Rigidbody> rbList = new List<Rigidbody>();
-
-    private static bool isInStartArea;         // if true, ball is still in start area and so if it's launch too slow and it comes back and stops, new ball won't come active
-    private static bool atZeroPointArea;       // if true, next ball can move to the launch area even though if ball is still moving
+    private static bool isInStartArea;         // if true, ball is still in start area and so if it's launched too slow and it comes back and stops, new ball won't come active
+    private static bool atZeroPointArea;       // if true, next ball can move to the launch area even if previous ball is still moving
     private static bool isActive;             // if true, ball is ready to launch, otherwise launch is disabled
     private static bool outOfBounds;    // checks if ball is in the game area
     private int i = 0;               // to keep track of the active ball in the list
-    private readonly int forceLimit = 7000;
+    private readonly int forceLimit = 7000; // if force is higher than limit, it is set to limit set here
+    public Rigidbody rb;
+    public static bool EndGame; 
 
-    private Rigidbody rb;
-
-    //Assigned in start
+    //Assigned at start
     private void Start()
     {
-        //rbList.Add(ball1);
-        //rbList.Add(ball2);
-        //rbList.Add(ball3);
-        //rbList.Add(ball4);
-        //rbList.Add(ball5);
         rb = rbList[i];
         SphereStartPos = rb.transform.position;
 
+        EndGame = false;
         isInStartArea = true;
         atZeroPointArea = false;
         isActive = true;
@@ -62,21 +50,25 @@ public class PlayerControl : MonoBehaviour
             {
                 touchTimeFinish = Time.time;
                 endPos = Input.mousePosition;
-                force = (endPos.y - startPos.y) / (touchTimeFinish - touchTimeStart);
-
-                if ((touchTimeFinish - touchTimeStart) == 0 || force < 0)
-                {
+                if (touchTimeFinish - touchTimeStart == 0){
+                    force = 0;
                     isActive = true;
+                } else {
+                    force = (endPos.y - startPos.y) / (touchTimeFinish - touchTimeStart);
                 }
-                else if (force > forceLimit)
-                {
-                    force = forceLimit;
-                    rb.AddForce(0, 0, force * factor);
-                }
-                else
-                {
-                    rb.AddForce(0, 0, force * factor);
-                }
+                    if (force <= 0)
+                    {
+                        isActive = true;
+                    }
+                    else if (force > forceLimit)
+                    {
+                        force = forceLimit;
+                        rb.AddForce(0, 0, force * factor);
+                    }
+                    else
+                    {
+                        rb.AddForce(0, 0, force * factor);
+                    }
             }
         }
 
@@ -96,7 +88,7 @@ public class PlayerControl : MonoBehaviour
             StartCoroutine(SwitchBall());
         }
     }
-
+    // TODO: DEBUG
     private IEnumerator SwitchBall()
     {
         i++;
@@ -106,7 +98,10 @@ public class PlayerControl : MonoBehaviour
             rb = rbList[i];
             rb.position = SphereStartPos;
             isActive = true;
-        }
+        } else{
+            EndGame = true;
+        } 
+        
         yield return null;
     }
 
