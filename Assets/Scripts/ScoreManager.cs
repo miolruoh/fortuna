@@ -33,28 +33,20 @@ public class ScoreManager : MonoBehaviour
         switch (tag)
         {
             case "10Points":
-                Debug.Log("10 Points");
                 return 10;
             case "20Points":
-                Debug.Log("20 Points");
                 return 20;
             case "25Points":
-                Debug.Log("25 Points");
                 return 25;
             case "50Points":
-                Debug.Log("50 Points");
                 return 50;
             case "75Points":
-                Debug.Log("75 Points");
                 return 75;
             case "100Points":
-                Debug.Log("100 Points");
                 return 100;
             case "125Points":
-                Debug.Log("125 Points");
                 return 125;
             case "150Points":
-                Debug.Log("150 Points");
                 return 150;
             default:
                 Debug.Log("Something went wrong");

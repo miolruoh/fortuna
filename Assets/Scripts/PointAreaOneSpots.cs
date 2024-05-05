@@ -22,7 +22,7 @@ public class PointAreaOneSpots : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            Debug.Log(gameObject.name + " Add");
+            //Debug.Log(gameObject.name + " Add");
             int value = checkPoints.CalculatePoints(gameObject.tag);
             AddPoints(value);
         }
@@ -32,7 +32,7 @@ public class PointAreaOneSpots : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")
         {
-            Debug.Log(gameObject.name + " Subtract");
+            //Debug.Log(gameObject.name + " Subtract");
             int value = checkPoints.CalculatePoints(gameObject.tag);
             SubtractPoints(value);
         }
