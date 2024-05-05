@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -10,10 +11,14 @@ public class PauseMenu : MonoBehaviour
     public GameObject pauseMenuUI;
     public GameObject scorePanel;
     public GameObject resumeButton;
+    private Transform _endScore;
+    public Text endScore;
     private bool end = PlayerControl.endGame;
 
     void Start()
     {
+        _endScore = scorePanel.transform.Find("EndScore");
+        endScore.text = _endScore.GetComponent<Text>().text;
         isPaused = false;
         if(end)
         {
@@ -68,6 +73,7 @@ public class PauseMenu : MonoBehaviour
         pauseMenuUI.SetActive(true);
         scorePanel.SetActive(true);
         resumeButton.SetActive(false);
+        endScore.text = ScoreManager.Final_Points;
         Time.timeScale = 0f;
         isPaused = true;
     }

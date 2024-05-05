@@ -9,7 +9,12 @@ public class ScoreManager : MonoBehaviour
     private TextMeshProUGUI output_Points;
     private static int points;
     private static int old_points;
+    private static string final_points;
 
+    public static string Final_Points
+    {
+        get {return final_points;}
+    }
     public static int Points
     {
         get {return points;}
@@ -38,6 +43,10 @@ public class ScoreManager : MonoBehaviour
     public void SetText()
     {
         output_Points.text = points.ToString();
+        if(PlayerControl.endGame)
+        {
+            final_points = output_Points.text;
+        }
     }
 
     // returns the amount of points given from the spot
