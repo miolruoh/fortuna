@@ -22,7 +22,7 @@ public class PlayerControl : MonoBehaviour
     private int i = 0;               // to keep track of the active ball in the list
     private readonly int forceLimit = 7000; // if force is higher than limit, it is set to limit set here
     public Rigidbody rb;
-    public static bool EndGame; 
+    public static bool endGame; 
 
     //Assigned at start
     private void Start()
@@ -30,7 +30,7 @@ public class PlayerControl : MonoBehaviour
         rb = rbList[i];
         SphereStartPos = rb.transform.position;
 
-        EndGame = false;
+        endGame = false;
         isInStartArea = true;
         atZeroPointArea = false;
         isActive = true;
@@ -88,7 +88,7 @@ public class PlayerControl : MonoBehaviour
             StartCoroutine(SwitchBall());
         }
     }
-    // TODO: DEBUG
+
     private IEnumerator SwitchBall()
     {
         i++;
@@ -98,10 +98,12 @@ public class PlayerControl : MonoBehaviour
             rb = rbList[i];
             rb.position = SphereStartPos;
             isActive = true;
-        } else{
-            EndGame = true;
         } 
-        
+        else 
+        {
+            yield return new WaitForSeconds(1);
+            endGame = true;
+        }
         yield return null;
     }
 

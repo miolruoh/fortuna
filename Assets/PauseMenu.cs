@@ -6,19 +6,26 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour
 {
-    public static bool isPaused = false;
+    private bool isPaused;
     public GameObject pauseMenuUI;
     public GameObject scorePanel;
     public GameObject resumeButton;
-    private bool end;
+    private bool end = PlayerControl.endGame;
 
     private void Start()
     {
-        end = PlayerControl.EndGame;
+        isPaused = false;
+        if(end)
+        {
+            end = false;
+        }
+        
+        StartCoroutine(End());
     }
 
     private void Update()
     {
+        end = PlayerControl.endGame;
         if (Input.GetKeyDown(KeyCode.Escape))
         {
             if(isPaused)
@@ -30,9 +37,20 @@ public class PauseMenu : MonoBehaviour
                 Pause();
             }
         }
+    }
+
+    private IEnumerator End()
+    {
         if(end)
         {
+            StopCoroutine(End());
+            yield return null;
             EndMenu();
+        }
+        else
+        {
+            yield return null;
+            StartCoroutine(End());
         }
     }
 
@@ -45,7 +63,7 @@ public class PauseMenu : MonoBehaviour
         isPaused = true;
     }
 
-    public void EndMenu()
+    private void EndMenu()
     {
         pauseMenuUI.SetActive(true);
         scorePanel.SetActive(true);
@@ -55,7 +73,7 @@ public class PauseMenu : MonoBehaviour
     }
 
     //Resume Game
-    public void Resume()
+    private void Resume()
     {
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
@@ -63,14 +81,14 @@ public class PauseMenu : MonoBehaviour
     }
 
     // Restart scene
-    public void Restart()
+    private void Restart()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
     //Back To menu
-    public void BackToMenu()
+    private void BackToMenu()
     {
         Time.timeScale = 1f;
         SceneManager.LoadScene(0);
