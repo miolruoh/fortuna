@@ -2,33 +2,46 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UIElements.Experimental;
 
 public class ScoreManager : MonoBehaviour
 {
-    public int points;
     private TextMeshProUGUI output_Points;
+    private static int points;
+    private static int old_points;
 
+    public static int Points
+    {
+        get {return points;}
+        set 
+        {
+            old_points = points;
+            points += value;
+        }
+    }
     // Start is called before the first frame update
     void Start()
     {
         points = 0;
+        old_points = 0;
         output_Points = GameObject.Find("ScoreCanvas/Score").GetComponent<TextMeshProUGUI>();
     }
-    // Update is called once per frame
     void Update()
     {
-
+        if(old_points != points)
+        {
+            SetText();
+        }
     }
 
     // Sets Score to the screen
     public void SetText()
     {
-        string score = points.ToString();
-        output_Points.text = score;
+        output_Points.text = points.ToString();
     }
 
     // returns the amount of points given from the spot
-    public int CalculatePoints(string tag)
+    public int PointValue(string tag)
     {
         switch (tag)
         {

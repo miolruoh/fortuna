@@ -4,32 +4,19 @@ using UnityEngine;
 
 public class PointAreas : MonoBehaviour
 {
-    private ScoreManager checkPoints;
+    private ScoreManager pointValue;
 
     // Start is called before the first frame update
     void Start()
     {
-        checkPoints = GameObject.Find("CalculatePoints").GetComponent<ScoreManager>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        pointValue = GameObject.Find("CalculatePoints").GetComponent<ScoreManager>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
         {
-            int value =  checkPoints.CalculatePoints(gameObject.tag);
-            AddPoints(value);
+            ScoreManager.Points = pointValue.PointValue(gameObject.tag);
         }
-    }
-
-    private void AddPoints(int value)
-    {
-        checkPoints.points += value;
-        checkPoints.SetText();
     }
 }

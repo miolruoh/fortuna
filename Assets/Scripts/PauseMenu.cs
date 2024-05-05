@@ -12,7 +12,7 @@ public class PauseMenu : MonoBehaviour
     public GameObject resumeButton;
     private bool end = PlayerControl.endGame;
 
-    private void Start()
+    void Start()
     {
         isPaused = false;
         if(end)
@@ -23,7 +23,7 @@ public class PauseMenu : MonoBehaviour
         StartCoroutine(End());
     }
 
-    private void Update()
+    void Update()
     {
         end = PlayerControl.endGame;
         if (Input.GetKeyDown(KeyCode.Escape))
