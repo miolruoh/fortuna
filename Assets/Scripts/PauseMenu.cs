@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -11,20 +12,19 @@ public class PauseMenu : MonoBehaviour
     public GameObject pauseMenuUI;
     public GameObject scorePanel;
     public GameObject resumeButton;
-    private Transform _endScore;
+    //public GameObject HighScorePanel;
+    private static GameObject highScoreElement = NewHighScore.HighScoreElement;
+    public Text newHighScore;
     public Text endScore;
     private bool end = PlayerControl.endGame;
 
     void Start()
     {
-        _endScore = scorePanel.transform.Find("EndScore");
-        endScore.text = _endScore.GetComponent<Text>().text;
         isPaused = false;
         if(end)
         {
             end = false;
         }
-        
         StartCoroutine(End());
     }
 
@@ -70,12 +70,34 @@ public class PauseMenu : MonoBehaviour
 
     private void EndMenu()
     {
+        Time.timeScale = 0f;
+        isPaused = true;
         pauseMenuUI.SetActive(true);
         scorePanel.SetActive(true);
         resumeButton.SetActive(false);
         endScore.text = ScoreManager.Final_Points;
-        Time.timeScale = 0f;
-        isPaused = true;
+
+        Text oldHighScoreTxt = GameObject.Find("HighScore/HighScoreElement/ScoreTxt").GetComponent<Text>();
+        // TODO
+        try
+        {
+            int _endScore = Int32.Parse(endScore.text);
+            int _oldHighScore = Int32.Parse(oldHighScoreTxt.text);
+            if(_endScore > _oldHighScore)
+            {
+                GameObject newHighScoreElement = Instantiate<GameObject>(highScoreElement);
+                Destroy(highScoreElement);
+                highScoreElement = newHighScoreElement;
+                string newNameTxt = GameObject.Find("PauseCanvas/NewHighScorePanel/EnterPlayerNameField/Text").GetComponent<string>();
+                oldHighScoreTxt = endScore;
+            }
+        }
+        catch (FormatException)
+        {
+            Console.WriteLine($"Unable to parse '{endScore.text}'"); // Output: Unable to parse ''
+        }
+
+        newHighScore.text = ScoreManager.Final_Points;
     }
 
     //Resume Game

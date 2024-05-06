@@ -1043,6 +1043,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -50
       objectReference: {fileID: 0}
+    - target: {fileID: 703108485430336429, guid: 72fe0be7dee80e64a929240ea2e4fc7d, type: 3}
+      propertyPath: m_text
+      value: Player 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 703108485430336429, guid: 72fe0be7dee80e64a929240ea2e4fc7d, type: 3}
+      propertyPath: m_fontSize
+      value: 72
+      objectReference: {fileID: 0}
     - target: {fileID: 703108485430336430, guid: 72fe0be7dee80e64a929240ea2e4fc7d, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
