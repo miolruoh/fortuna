@@ -141,6 +141,8 @@ public class GameMenu : MonoBehaviour
     {
         finalScore = Int32.Parse(ScoreManager.Final_Points); // try-catch?
         _playerName = playerName.text;
+        Debug.Log(_playerName);
+        Debug.Log(finalScore);
         highscoreHandler.AddHighScoreIfPossible(new HighScoreElement(_playerName, finalScore));
         newHighScorePanel.SetActive(false);
     }
