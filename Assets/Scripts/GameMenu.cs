@@ -15,16 +15,21 @@ public class GameMenu : MonoBehaviour
     public GameObject highscoreButton;
     public GameObject startGameButton;
     public GameObject restartButton;
+    public GameObject newHighScorePanel;
     public GameObject highScorePanel;
+    //[SerializeField] GameObject highscoreUIElementPrefab;
     public GameObject elements;
-    private HighScoreHandler highscoreHandler;
+    [SerializeField] HighScoreHandler highscoreHandler;
     public Text newHighScore;
     public Text endScore;
+    [SerializeField] int finalScore;
     public Text playerName;
+    [SerializeField] string _playerName;
     private bool end = PlayerControl.endGame;
 
     void Start()
     {
+        highScorePanel.SetActive(false);
         isPaused = true;
         if(end)
         {
@@ -106,7 +111,7 @@ public class GameMenu : MonoBehaviour
         scorePanel.SetActive(true);
         resumeButton.SetActive(false);
         pauseMenuUI.SetActive(true);
-        highScorePanel.SetActive(true);
+        newHighScorePanel.SetActive(true);
         endScore.text = ScoreManager.Final_Points;
         newHighScore.text = ScoreManager.Final_Points;
     }
@@ -134,14 +139,15 @@ public class GameMenu : MonoBehaviour
 
     public void OkButton()
     {
-        int finalScore = Int32.Parse(ScoreManager.Final_Points); // try-catch?
-        highscoreHandler.AddHighScoreIfPossible(new HighScoreElement(playerName.text, finalScore));
-        highScorePanel.SetActive(false);
+        finalScore = Int32.Parse(ScoreManager.Final_Points); // try-catch?
+        _playerName = playerName.text;
+        highscoreHandler.AddHighScoreIfPossible(new HighScoreElement(_playerName, finalScore));
+        newHighScorePanel.SetActive(false);
     }
 
     public void HighscoresButton()
     {
         Time.timeScale = 0f;
-        SceneChanger.LoadScene(2);
+        highScorePanel.SetActive(true);
     }
 }
