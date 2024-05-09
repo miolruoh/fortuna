@@ -6,25 +6,31 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-public class PauseMenu : MonoBehaviour
+public class GameMenu : MonoBehaviour
 {
     private bool isPaused;
     public GameObject pauseMenuUI;
     public GameObject scorePanel;
     public GameObject resumeButton;
-    //public GameObject HighScorePanel;
-    private static GameObject highScoreElement = NewHighScore.HighScoreElement;
+    public GameObject highscoreButton;
+    public GameObject startGameButton;
+    public GameObject restartButton;
+    public GameObject highScorePanel;
+    public GameObject elements;
+    private HighScoreHandler highscoreHandler;
     public Text newHighScore;
     public Text endScore;
+    public Text playerName;
     private bool end = PlayerControl.endGame;
 
     void Start()
     {
-        isPaused = false;
+        isPaused = true;
         if(end)
         {
             end = false;
         }
+        StartMenu();
         StartCoroutine(End());
     }
 
@@ -60,48 +66,53 @@ public class PauseMenu : MonoBehaviour
     }
 
     // Game is paused
-    private void Pause()
+    public void Pause()
     {
         scorePanel.SetActive(false);
+        restartButton.SetActive(true);
+        startGameButton.SetActive(false);
+        resumeButton.SetActive(true);
+        highscoreButton.SetActive(false);
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
         isPaused = true;
     }
 
-    private void EndMenu()
+    public void StartMenu()
     {
         Time.timeScale = 0f;
         isPaused = true;
+        scorePanel.SetActive(false);
+        resumeButton.SetActive(false);
+        restartButton.SetActive(false);
+        highscoreButton.SetActive(true);
+        startGameButton.SetActive(true);
         pauseMenuUI.SetActive(true);
+    }
+
+    public void StartGame()
+    {
+        pauseMenuUI.SetActive(false);
+        Time.timeScale = 1f;
+        isPaused = false;
+    }
+
+    public void EndMenu()
+    {
+        Time.timeScale = 0f;
+        isPaused = true;
+        startGameButton.SetActive(false);
+        restartButton.SetActive(true);
         scorePanel.SetActive(true);
         resumeButton.SetActive(false);
+        pauseMenuUI.SetActive(true);
+        highScorePanel.SetActive(true);
         endScore.text = ScoreManager.Final_Points;
-
-        Text oldHighScoreTxt = GameObject.Find("HighScore/HighScoreElement/ScoreTxt").GetComponent<Text>();
-        // TODO
-        try
-        {
-            int _endScore = Int32.Parse(endScore.text);
-            int _oldHighScore = Int32.Parse(oldHighScoreTxt.text);
-            if(_endScore > _oldHighScore)
-            {
-                GameObject newHighScoreElement = Instantiate<GameObject>(highScoreElement);
-                Destroy(highScoreElement);
-                highScoreElement = newHighScoreElement;
-                string newNameTxt = GameObject.Find("PauseCanvas/NewHighScorePanel/EnterPlayerNameField/Text").GetComponent<string>();
-                oldHighScoreTxt = endScore;
-            }
-        }
-        catch (FormatException)
-        {
-            Console.WriteLine($"Unable to parse '{endScore.text}'"); // Output: Unable to parse ''
-        }
-
         newHighScore.text = ScoreManager.Final_Points;
     }
 
     //Resume Game
-    private void Resume()
+    public void Resume()
     {
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
@@ -109,16 +120,28 @@ public class PauseMenu : MonoBehaviour
     }
 
     // Restart scene
-    private void Restart()
+    public void Restart()
     {
-        Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneChanger.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     //Back To menu
-    private void BackToMenu()
+    public void BackToMenu()
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene(0);
+        SceneChanger.LoadScene(0);
+    }
+
+    public void OkButton()
+    {
+        int finalScore = Int32.Parse(ScoreManager.Final_Points); // try-catch?
+        highscoreHandler.AddHighScoreIfPossible(new HighScoreElement(playerName.text, finalScore));
+        highScorePanel.SetActive(false);
+    }
+
+    public void HighscoresButton()
+    {
+        Time.timeScale = 0f;
+        SceneChanger.LoadScene(2);
     }
 }

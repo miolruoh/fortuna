@@ -15,7 +15,7 @@ public class MenuCommands : MonoBehaviour
         {
             i = 1;
         }*/
-        SceneManager.LoadScene(3);
+        SceneChanger.LoadScene(3);
     }
 
     public void OnPlayBoard2ButtonPress()
@@ -27,21 +27,21 @@ public class MenuCommands : MonoBehaviour
          {
              i = 1;
          }*/
-        SceneManager.LoadScene(4);
+        SceneChanger.LoadScene(4);
     }
 
     public void OnSettingsButtonPress()
     {
-        SceneManager.LoadScene(1);
+        SceneChanger.LoadScene(1);
     }
 
     public void OnBackButtonPress()
     {
-        SceneManager.LoadScene(0);
+        SceneChanger.PreviousScene();
     }
 
     public void OnHighscoreButtonPress()
     {
-        SceneManager.LoadScene(2);
+        SceneChanger.LoadScene(2);
     }
 }
