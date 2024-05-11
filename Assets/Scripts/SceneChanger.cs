@@ -28,7 +28,7 @@ public  class SceneChanger : MonoBehaviour
         }
         else
         {
-            LoadScene(0);
+            LoadScene(2);
         }
     }
 }

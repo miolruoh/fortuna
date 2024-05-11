@@ -14,16 +14,16 @@ public class HighScoreHandler : MonoBehaviour
 
     private void Start () 
     {
-        LoadHighScores();
+        
     }
 
-    private void LoadHighScores() 
+    public void LoadHighScores() 
     {
         highScoreList = FileHandler.ReadFromJSON<HighScoreElement>(fileName);
 
         while(highScoreList.Count > maxCount) 
         {
-            highScoreList.RemoveAt (maxCount);
+            highScoreList.RemoveAt(maxCount);
         }
 
         if(onHighScoreListChanged != null) 

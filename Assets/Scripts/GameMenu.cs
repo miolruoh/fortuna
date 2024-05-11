@@ -5,6 +5,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class GameMenu : MonoBehaviour
 {
@@ -17,14 +18,14 @@ public class GameMenu : MonoBehaviour
     public GameObject restartButton;
     public GameObject newHighScorePanel;
     public GameObject highScorePanel;
-    //[SerializeField] GameObject highscoreUIElementPrefab;
-    public GameObject elements;
+    [SerializeField] GameObject highscoreUIElementPrefab;
+    [SerializeField] Transform elementWrapper;
+    List<GameObject> uiHighscoreElements = new List<GameObject>();
     [SerializeField] HighScoreHandler highscoreHandler;
     public Text newHighScore;
     public Text endScore;
     [SerializeField] int finalScore;
     public Text playerName;
-    [SerializeField] string _playerName;
     private bool end = PlayerControl.endGame;
 
     void Start()
@@ -140,16 +141,49 @@ public class GameMenu : MonoBehaviour
     public void OkButton()
     {
         finalScore = Int32.Parse(ScoreManager.Final_Points); // try-catch?
-        _playerName = playerName.text;
-        Debug.Log(_playerName);
-        Debug.Log(finalScore);
-        highscoreHandler.AddHighScoreIfPossible(new HighScoreElement(_playerName, finalScore));
+        highscoreHandler.AddHighScoreIfPossible(new HighScoreElement(playerName.text, finalScore));
         newHighScorePanel.SetActive(false);
     }
 
     public void HighscoresButton()
     {
+        highscoreHandler.LoadHighScores();
         Time.timeScale = 0f;
         highScorePanel.SetActive(true);
     }
+
+    private void UpdateUI (List<HighScoreElement> list) 
+    {
+        for(int i = 0; i < list.Count; i++) 
+        {
+            HighScoreElement el = list[i];
+
+            if(el != null && el.score > 0) 
+            {
+                if(i >= uiHighscoreElements.Count) 
+                {
+                    // instantiate new entry
+                    var inst = Instantiate(highscoreUIElementPrefab, elementWrapper);
+
+                    uiHighscoreElements.Add(inst);
+                }
+
+                // write or overwrite name & points
+                var texts = uiHighscoreElements[i].GetComponentsInChildren<TextMeshProUGUI>();
+                texts[0].text = el.playerName;
+                texts[1].text = el.score.ToString();
+            }
+        }
+    }
+
+    private void OnEnable() 
+    {
+        HighScoreHandler.onHighScoreListChanged += UpdateUI;
+    }
+
+    private void OnDisable()
+    {
+        HighScoreHandler.onHighScoreListChanged -= UpdateUI;
+    }
+
 }
