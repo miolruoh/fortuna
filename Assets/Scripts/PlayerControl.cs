@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class PlayerControl : MonoBehaviour
 {
     [Range(0.05f, 1f)]
-    public float factor = 0.1f;        // force can be adjusted with this
+    private float factor = 0.6f;        // force can be adjusted with this
 
     private Vector2 startPos;         // place where dragging starts
     private Vector2 endPos;           // place where dragging ends
@@ -20,7 +20,7 @@ public class PlayerControl : MonoBehaviour
     private static bool isActive;             // if true, ball is ready to launch, otherwise launch is disabled
     private static bool outOfBounds;    // checks if ball is in the game area
     private int i = 0;               // to keep track of the active ball in the list
-    private readonly int forceLimit = 7000; // if force is higher than limit, it is set to limit set here
+    private readonly int forceLimit = 1000; // if force is higher than limit, it is set to limit set here
     public Rigidbody rb;
     public static bool endGame; 
 

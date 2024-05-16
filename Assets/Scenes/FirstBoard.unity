@@ -687,7 +687,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce5cdf3c194885248adca124e9256f67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  factor: 0.1
   rbList:
   - {fileID: 95418575}
   - {fileID: 591705666}
@@ -1218,8 +1217,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -124.99994}
-  m_SizeDelta: {x: 0, y: -250.00012}
+  m_AnchoredPosition: {x: 0, y: -146.84995}
+  m_SizeDelta: {x: 0, y: -293.70013}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &201859085
 MonoBehaviour:
@@ -3155,7 +3154,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce5cdf3c194885248adca124e9256f67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  factor: 0.1
   rbList:
   - {fileID: 95418575}
   - {fileID: 591705666}
@@ -3680,7 +3678,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce5cdf3c194885248adca124e9256f67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  factor: 0.1
   rbList:
   - {fileID: 95418575}
   - {fileID: 591705666}
@@ -4026,11 +4023,11 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 50
+  m_fontSize: 60
   m_fontSizeBase: 115
   m_fontWeight: 400
   m_enableAutoSizing: 1
-  m_fontSizeMin: 50
+  m_fontSizeMin: 60
   m_fontSizeMax: 72
   m_fontStyle: 1
   m_HorizontalAlignment: 2
@@ -4877,7 +4874,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce5cdf3c194885248adca124e9256f67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  factor: 0.1
   rbList:
   - {fileID: 95418575}
   - {fileID: 591705666}
@@ -5858,7 +5854,7 @@ GameObject:
   - component: {fileID: 909231007}
   - component: {fileID: 909231006}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: GameObjects
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5901,7 +5897,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 909231004}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0cd44c1031e13a943bb63640046fad76, type: 3}
   m_Name: 
@@ -6515,7 +6511,7 @@ Camera:
     height: 1
   near clip plane: 0.01
   far clip plane: 1000
-  field of view: 71.5
+  field of view: 75.2
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -7033,7 +7029,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce5cdf3c194885248adca124e9256f67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  factor: 0.1
   rbList:
   - {fileID: 95418575}
   - {fileID: 591705666}
@@ -9040,7 +9035,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -125}
+  m_AnchoredPosition: {x: 0, y: -124.999756}
   m_SizeDelta: {x: 0, y: -250}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1363373608
@@ -9060,9 +9055,9 @@ MonoBehaviour:
     m_Right: 50
     m_Top: 0
     m_Bottom: 0
-  m_ChildAlignment: 0
+  m_ChildAlignment: 1
   m_Spacing: 1
-  m_ChildForceExpandWidth: 1
+  m_ChildForceExpandWidth: 0
   m_ChildForceExpandHeight: 0
   m_ChildControlWidth: 0
   m_ChildControlHeight: 0
@@ -9159,7 +9154,7 @@ MonoBehaviour:
   m_LineType: 0
   m_HideMobileInput: 0
   m_CharacterValidation: 4
-  m_CharacterLimit: 15
+  m_CharacterLimit: 10
   m_OnEndEdit:
     m_PersistentCalls:
       m_Calls: []
@@ -11855,10 +11850,10 @@ RectTransform:
   m_Father: {fileID: 1250115095}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: -700.0001}
-  m_SizeDelta: {x: 0, y: 1399.9998}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: -700}
+  m_SizeDelta: {x: 250, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1710689400
 MonoBehaviour:
@@ -12292,7 +12287,7 @@ MonoBehaviour:
   restartButton: {fileID: 503344240}
   newHighScorePanel: {fileID: 985579309}
   highScorePanel: {fileID: 1250115094}
-  highscoreUIElementPrefab: {fileID: 8844132783756571173, guid: 72fe0be7dee80e64a929240ea2e4fc7d, type: 3}
+  highscoreUIElementPrefab: {fileID: 3195355236743865492, guid: 72fe0be7dee80e64a929240ea2e4fc7d, type: 3}
   elementWrapper: {fileID: 1363373606}
   highscoreHandler: {fileID: 1730190905}
   newHighScore: {fileID: 201859085}
@@ -14515,7 +14510,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce5cdf3c194885248adca124e9256f67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  factor: 0.1
   rbList:
   - {fileID: 95418575}
   - {fileID: 591705666}
