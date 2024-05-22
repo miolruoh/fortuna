@@ -17,7 +17,7 @@ public static class FileHandler
     {
         string content = ReadFile(GetPath(filename));
 
-        if (string.IsNullOrEmpty(content) || content == "{}") 
+        if(string.IsNullOrEmpty(content) || content == "{}") 
         {
             return new List<T>();
         }

@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 public class PlayerControl : MonoBehaviour
 {
     [Range(0.05f, 1f)]
-    private float factor = 0.6f;        // force can be adjusted with this
+    private float factor = 0.075f;        // force can be adjusted with this
 
     private Vector2 startPos;         // place where dragging starts
     private Vector2 endPos;           // place where dragging ends
@@ -20,7 +20,7 @@ public class PlayerControl : MonoBehaviour
     private static bool isActive;             // if true, ball is ready to launch, otherwise launch is disabled
     private static bool outOfBounds;    // checks if ball is in the game area
     private int i = 0;               // to keep track of the active ball in the list
-    private readonly int forceLimit = 1000; // if force is higher than limit, it is set to limit set here
+    private readonly int forceLimit = 10000; // if force is higher than limit, it is set to limit set here
     public Rigidbody rb;
     public static bool endGame; 
 
@@ -41,34 +41,37 @@ public class PlayerControl : MonoBehaviour
     {
         if (isActive)
         {
-            if (Input.GetMouseButtonDown(0))
+            if(Input.GetMouseButtonDown(0))
             {
                 touchTimeStart = Time.time;
                 startPos = Input.mousePosition;
-            }
-            else if (Input.GetMouseButtonUp(0))
+            } 
+            else if(Input.GetMouseButtonUp(0))
             {
                 touchTimeFinish = Time.time;
                 endPos = Input.mousePosition;
-                if (touchTimeFinish - touchTimeStart == 0){
-                    force = 0;
-                    isActive = true;
-                } else {
+                if(touchTimeFinish - touchTimeStart != 0)
+                {
                     force = (endPos.y - startPos.y) / (touchTimeFinish - touchTimeStart);
                 }
-                    if (force <= 0)
-                    {
-                        isActive = true;
-                    }
-                    else if (force > forceLimit)
-                    {
-                        force = forceLimit;
-                        rb.AddForce(0, 0, force * factor);
-                    }
-                    else
-                    {
-                        rb.AddForce(0, 0, force * factor);
-                    }
+                else
+                {
+                    force = 0;
+                }
+                if(force <= 0)
+                {
+                    force = 0;
+                    isActive = true;
+                }
+                else if (force > forceLimit)
+                {
+                    force = forceLimit;
+                    rb.AddForce(0, 0, force * factor);
+                }
+                else
+                {
+                    rb.AddForce(0, 0, force * factor);
+                }
             }
         }
 
@@ -101,7 +104,7 @@ public class PlayerControl : MonoBehaviour
         } 
         else 
         {
-            yield return new WaitForSeconds(1.5f);
+            yield return new WaitForSeconds(1.0f);
             endGame = true;
         }
         yield return null;

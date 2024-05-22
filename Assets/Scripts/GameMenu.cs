@@ -30,6 +30,7 @@ public class GameMenu : MonoBehaviour
 
     void Start()
     {
+        highscoreHandler.LoadHighScores();
         highScorePanel.SetActive(false);
         isPaused = true;
         if(end)
@@ -112,6 +113,7 @@ public class GameMenu : MonoBehaviour
         scorePanel.SetActive(true);
         resumeButton.SetActive(false);
         pauseMenuUI.SetActive(true);
+        highscoreButton.SetActive(true);
         newHighScorePanel.SetActive(true);
         endScore.text = ScoreManager.Final_Points;
         newHighScore.text = ScoreManager.Final_Points;
@@ -138,6 +140,11 @@ public class GameMenu : MonoBehaviour
         SceneChanger.LoadScene(0);
     }
 
+    public void BackButton()
+    {
+        SceneChanger.LoadScene(2);
+    }
+
     public void OkButton()
     {
         finalScore = Int32.Parse(ScoreManager.Final_Points); // try-catch?
@@ -147,7 +154,6 @@ public class GameMenu : MonoBehaviour
 
     public void HighscoresButton()
     {
-        highscoreHandler.LoadHighScores();
         Time.timeScale = 0f;
         highScorePanel.SetActive(true);
     }
