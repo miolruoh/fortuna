@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UIElements.Experimental;
+using System.Linq;
 
 public class ScoreManager : MonoBehaviour
 {
-    private TextMeshProUGUI output_Points;
+    private static TextMeshProUGUI output_Points;
     private static int points;
     private static int old_points;
-    private static string final_points;
 
     public static string Final_Points
     {
-        get {return final_points;}
+        get {return points.ToString();}
     }
     public static int Points
     {
@@ -33,20 +33,13 @@ public class ScoreManager : MonoBehaviour
     }
     void Update()
     {
-        if(old_points != points)
-        {
-            SetText();
-        }
+        
     }
 
     // Sets Score to the screen
-    public void SetText()
+    public static void SetText()
     {
         output_Points.text = points.ToString();
-        if(PlayerControl.endGame)
-        {
-            final_points = output_Points.text;
-        }
     }
 
     // returns the amount of points given from the spot

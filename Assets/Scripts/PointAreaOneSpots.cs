@@ -5,6 +5,7 @@ using UnityEngine;
 public class PointAreaOneSpots : MonoBehaviour
 {
     private ScoreManager pointValue;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +24,7 @@ public class PointAreaOneSpots : MonoBehaviour
     // Ball exits from the spot // Subtract points
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Player" )
         {
             ScoreManager.Points = -(pointValue.PointValue(gameObject.tag));
         }

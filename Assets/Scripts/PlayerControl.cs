@@ -19,9 +19,9 @@ public class PlayerControl : MonoBehaviour
     private static bool atZeroPointArea;       // if true, next ball can move to the launch area even if previous ball is still moving
     private static bool isActive;             // if true, ball is ready to launch, otherwise launch is disabled
     private static bool outOfBounds;    // checks if ball is in the game area
-    private int i = 0;               // to keep track of the active ball in the list
-    private readonly int forceLimit = 10000; // if force is higher than limit, it is set to limit set here
-    public Rigidbody rb;
+    private int i = 0;              // to keep track of the active ball in the list
+    private readonly int forceLimit = 10000; // if force is higher than limit, it is set to the limit set here
+    private Rigidbody rb;
     public static bool endGame; 
 
     //Assigned at start
@@ -77,6 +77,7 @@ public class PlayerControl : MonoBehaviour
 
         if (atZeroPointArea || (!isInStartArea && rb.velocity == Vector3.zero && rb.angularVelocity == Vector3.zero))
         {
+            ScoreManager.SetText();
             isInStartArea = true;
             atZeroPointArea = false;
             StartCoroutine(SwitchBall());
@@ -93,7 +94,7 @@ public class PlayerControl : MonoBehaviour
     }
 
     private IEnumerator SwitchBall()
-    {
+    {   
         i++;
         atZeroPointArea = false;
         if (i < rbList.Count)
