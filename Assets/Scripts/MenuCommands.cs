@@ -41,7 +41,7 @@ public class MenuCommands : MonoBehaviour
         SceneChanger.PreviousScene();
     }
     // Exit game
-    public static void ExitGame()
+    public void ExitGame()
     {
         #if UNITY_STANDALONE_WIN || UNITY_EDITOR
             Application.Quit();
@@ -50,24 +50,4 @@ public class MenuCommands : MonoBehaviour
             activity.Call<bool>("moveTaskToBack", true);
         #endif
     }
-    // Change game quality
-    public void ChangeQuality()
-    {
-        Text currentTxt = GameObject.Find("Canvas/QualityButton/CurrentQuality").GetComponent<Text>();
-        string[] qualities = QualitySettings.names;
-        int qualityLevel = QualitySettings.GetQualityLevel();
-        if(qualityLevel + 1 < qualities.Length)
-        {
-            QualitySettings.SetQualityLevel(qualityLevel + 1, true);
-            currentTxt.text = QualitySettings.names[qualityLevel+1];
-        }
-        else
-        {
-            qualityLevel = 0;
-            QualitySettings.SetQualityLevel(qualityLevel, true);
-            currentTxt.text = QualitySettings.names[qualityLevel];
-        }
-    }
-
-
 }

@@ -356,7 +356,6 @@ GameObject:
   - component: {fileID: 374709800}
   - component: {fileID: 374709799}
   - component: {fileID: 374709798}
-  - component: {fileID: 374709797}
   m_Layer: 5
   m_Name: QualityButton
   m_TagString: Untagged
@@ -385,18 +384,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 200}
   m_SizeDelta: {x: 400, y: 120}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &374709797
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 374709795}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 810d484ad0bf0c2438199871a1671ddd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &374709798
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -441,8 +428,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 374709797}
-        m_TargetAssemblyTypeName: MenuCommands, Assembly-CSharp
+      - m_Target: {fileID: 1443415014}
+        m_TargetAssemblyTypeName: SettingsContol, Assembly-CSharp
         m_MethodName: ChangeQuality
         m_Mode: 1
         m_Arguments:
@@ -1336,8 +1323,9 @@ GameObject:
   - component: {fileID: 1443415012}
   - component: {fileID: 1443415011}
   - component: {fileID: 1443415010}
+  - component: {fileID: 1443415014}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: SettingsCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1428,6 +1416,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1443415014
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1443415009}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 061a72f0c71649d4ea925e82bdfa7375, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1572105554
 GameObject:
   m_ObjectHideFlags: 0

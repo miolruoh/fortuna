@@ -27,6 +27,7 @@ public class GameMenu : MonoBehaviour
     [SerializeField] int finalScore;
     public Text playerName;
     private bool end = PlayerControl.endGame;
+    private float gamespeed = 4f;
 
     void Start()
     {
@@ -100,7 +101,7 @@ public class GameMenu : MonoBehaviour
     public void StartGame()
     {
         pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f;
+        Time.timeScale = gamespeed;
         isPaused = false;
     }
 
@@ -123,7 +124,7 @@ public class GameMenu : MonoBehaviour
     public void Resume()
     {
         pauseMenuUI.SetActive(false);
-        Time.timeScale = 1f;
+        Time.timeScale = gamespeed;
         isPaused = false;
     }
 

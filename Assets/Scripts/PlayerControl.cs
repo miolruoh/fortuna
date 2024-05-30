@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class PlayerControl : MonoBehaviour
 {
-    [Range(0.05f, 1f)]
-    private float factor = 0.075f;        // force can be adjusted with this
+    [Range(1.0f, 100f)]
+    private float factor = 11.0f;        // force can be adjusted with this
 
     private Vector2 startPos;         // place where dragging starts
     private Vector2 endPos;           // place where dragging ends
@@ -52,7 +52,7 @@ public class PlayerControl : MonoBehaviour
                 endPos = Input.mousePosition;
                 if(touchTimeFinish - touchTimeStart != 0)
                 {
-                    force = (endPos.y - startPos.y) / (touchTimeFinish - touchTimeStart);
+                    force = 2*(endPos.y - startPos.y) / (touchTimeFinish - touchTimeStart);
                 }
                 else
                 {
