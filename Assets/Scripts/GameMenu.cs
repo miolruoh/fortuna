@@ -27,7 +27,7 @@ public class GameMenu : MonoBehaviour
     [SerializeField] int finalScore;
     public Text playerName;
     private bool end = PlayerControl.endGame;
-    private float gamespeed = 4f;
+    private float gamespeed = 3.0f;
 
     void Start()
     {

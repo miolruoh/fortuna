@@ -6,8 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class PlayerControl : MonoBehaviour
 {
-    [Range(1.0f, 100f)]
-    private float factor = 11.0f;        // force can be adjusted with this
+    [Range(10f, 1000f)]
+    private float factor = 500f;        // force can be adjusted with this
 
     private Vector2 startPos;         // place where dragging starts
     private Vector2 endPos;           // place where dragging ends
@@ -20,7 +20,7 @@ public class PlayerControl : MonoBehaviour
     private static bool isActive;             // if true, ball is ready to launch, otherwise launch is disabled
     private static bool outOfBounds;    // checks if ball is in the game area
     private int i = 0;              // to keep track of the active ball in the list
-    private readonly int forceLimit = 10000; // if force is higher than limit, it is set to the limit set here
+    private readonly int forceLimit = 12; // if force is higher than limit, it is set to the limit set here
     private Rigidbody rb;
     public static bool endGame; 
 
@@ -44,34 +44,11 @@ public class PlayerControl : MonoBehaviour
             if(Input.GetMouseButtonDown(0))
             {
                 touchTimeStart = Time.time;
-                startPos = Input.mousePosition;
             } 
             else if(Input.GetMouseButtonUp(0))
             {
                 touchTimeFinish = Time.time;
-                endPos = Input.mousePosition;
-                if(touchTimeFinish - touchTimeStart != 0)
-                {
-                    force = 2*(endPos.y - startPos.y) / (touchTimeFinish - touchTimeStart);
-                }
-                else
-                {
-                    force = 0;
-                }
-                if(force <= 0)
-                {
-                    force = 0;
-                    isActive = true;
-                }
-                else if (force > forceLimit)
-                {
-                    force = forceLimit;
-                    rb.AddForce(0, 0, force * factor);
-                }
-                else
-                {
-                    rb.AddForce(0, 0, force * factor);
-                }
+                LaunchBall();
             }
         }
 
@@ -93,6 +70,22 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
+    private void LaunchBall()
+    {
+        force = touchTimeFinish - touchTimeStart;
+        Debug.Log(force);
+        if(force <= 0)
+        {
+            force = 0;
+        }
+        else if(force > forceLimit)
+        {
+            force = forceLimit;
+        }
+
+        rb.AddForce(0,0,force*factor);
+    }
+
     private IEnumerator SwitchBall()
     {   
         i++;
@@ -105,7 +98,7 @@ public class PlayerControl : MonoBehaviour
         } 
         else 
         {
-            yield return new WaitForSeconds(1.0f);
+            yield return new WaitForSeconds(0.5f);
             endGame = true;
         }
         yield return null;
