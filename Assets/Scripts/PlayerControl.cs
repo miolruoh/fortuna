@@ -2,32 +2,34 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class PlayerControl : MonoBehaviour
 {
     [Range(10f, 1000f)]
-    private float factor = 500f;        // force can be adjusted with this
+    private float factor = 1000f;        // force can be adjusted with this
 
-    private Vector2 startPos;         // place where dragging starts
-    private Vector2 endPos;           // place where dragging ends
+
     private float touchTimeStart, touchTimeFinish; // count dragging time
-    private float force;       // calculates how much force is added to ball when launching
+    private float force;
+    public Slider powerbar;
+    private bool isPressed = false;       // calculates how much force is added to ball when launching
     Vector3 SphereStartPos;
-    public List<Rigidbody> rbList = new List<Rigidbody>();
+    public List<GameObject> balls = new List<GameObject>();
     private static bool isInStartArea;         // if true, ball is still in start area and so if it's launched too slow and it comes back and stops, new ball won't come active
     private static bool atZeroPointArea;       // if true, next ball can move to the launch area even if previous ball is still moving
     private static bool isActive;             // if true, ball is ready to launch, otherwise launch is disabled
     private static bool outOfBounds;    // checks if ball is in the game area
     private int i = 0;              // to keep track of the active ball in the list
-    private readonly int forceLimit = 12; // if force is higher than limit, it is set to the limit set here
+    private readonly float forceLimit = 7f; // if force is higher than limit, it is set to the limit set here
     private Rigidbody rb;
     public static bool endGame; 
 
     //Assigned at start
     private void Start()
     {
-        rb = rbList[i];
+        rb = balls[i].GetComponent<Rigidbody>();
         SphereStartPos = rb.transform.position;
 
         endGame = false;
@@ -44,10 +46,13 @@ public class PlayerControl : MonoBehaviour
             if(Input.GetMouseButtonDown(0))
             {
                 touchTimeStart = Time.time;
+                isPressed = true;
+                PowerBar();
             } 
-            else if(Input.GetMouseButtonUp(0))
+            if(Input.GetMouseButtonUp(0))
             {
                 touchTimeFinish = Time.time;
+                isPressed = false;
                 LaunchBall();
             }
         }
@@ -62,6 +67,8 @@ public class PlayerControl : MonoBehaviour
 
         if (outOfBounds)
         {
+            Destroy(rb);
+            balls[i].SetActive(false);
             outOfBounds = false;
             isInStartArea = true;
             atZeroPointArea = false;
@@ -70,10 +77,21 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
+    private void PowerBar()
+    {
+        while(isPressed)
+        {
+            powerbar.value += forceLimit * 0.01f;
+            if(powerbar.value  == 1)
+            {
+                break;
+            }
+        }
+    }
+
     private void LaunchBall()
     {
         force = touchTimeFinish - touchTimeStart;
-        Debug.Log(force);
         if(force <= 0)
         {
             force = 0;
@@ -90,14 +108,15 @@ public class PlayerControl : MonoBehaviour
     {   
         i++;
         atZeroPointArea = false;
-        if (i < rbList.Count)
+        if (i < balls.Count)
         {
-            rb = rbList[i];
-            rb.position = SphereStartPos;
+            rb = balls[i].GetComponent<Rigidbody>();
+            rb.transform.position = SphereStartPos;
             isActive = true;
         } 
         else 
         {
+
             yield return new WaitForSeconds(0.5f);
             endGame = true;
         }
@@ -111,7 +130,6 @@ public class PlayerControl : MonoBehaviour
             isInStartArea = true;
             isActive = true;
         }
-
         if (other.gameObject.tag == "ZeroPointArea")
         {
             atZeroPointArea = true;
@@ -125,7 +143,6 @@ public class PlayerControl : MonoBehaviour
             isInStartArea = false;
             isActive = false;
         }
-
         if (other.gameObject.tag == "GameArea")
         {
             outOfBounds = true;
