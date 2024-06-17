@@ -10,10 +10,10 @@ public class PlayerControl : MonoBehaviour
     [Range(10f, 1000f)]
     private float factor = 1000f;        // force can be adjusted with this
 
-
     private float touchTimeStart, touchTimeFinish; // count dragging time
     private float force;
     public Slider powerbar;
+    public Image powerbarImage;
     private bool isPressed = false;       // calculates how much force is added to ball when launching
     Vector3 SphereStartPos;
     public List<GameObject> balls = new List<GameObject>();
@@ -22,16 +22,17 @@ public class PlayerControl : MonoBehaviour
     private static bool isActive;             // if true, ball is ready to launch, otherwise launch is disabled
     private static bool outOfBounds;    // checks if ball is in the game area
     private int i = 0;              // to keep track of the active ball in the list
-    private readonly float forceLimit = 7f; // if force is higher than limit, it is set to the limit set here
+    private readonly float forceLimit = 5f; // if force is higher than limit, it is set to the limit set here
     private Rigidbody rb;
     public static bool endGame; 
 
     //Assigned at start
     private void Start()
     {
-        rb = balls[i].GetComponent<Rigidbody>();
-        SphereStartPos = rb.transform.position;
+        SphereStartPos = balls[0].transform.position;
+        StartCoroutine(SwitchBall());
 
+        powerbar.maxValue = forceLimit;
         endGame = false;
         isInStartArea = true;
         atZeroPointArea = false;
@@ -47,14 +48,26 @@ public class PlayerControl : MonoBehaviour
             {
                 touchTimeStart = Time.time;
                 isPressed = true;
-                PowerBar();
             } 
             if(Input.GetMouseButtonUp(0))
             {
                 touchTimeFinish = Time.time;
                 isPressed = false;
+                powerbar.value = 0;
                 LaunchBall();
             }
+        }
+        if(isPressed)
+        {
+            if(powerbar.value >= forceLimit)
+            {
+                powerbar.value = forceLimit;
+            }
+            else
+            {
+                powerbar.value += Time.deltaTime;
+            }
+            powerbarImage.color = Color.Lerp(Color.green, Color.red, powerbar.value / forceLimit);
         }
 
         if (atZeroPointArea || (!isInStartArea && rb.velocity == Vector3.zero && rb.angularVelocity == Vector3.zero))
@@ -77,18 +90,6 @@ public class PlayerControl : MonoBehaviour
         }
     }
 
-    private void PowerBar()
-    {
-        while(isPressed)
-        {
-            powerbar.value += forceLimit * 0.01f;
-            if(powerbar.value  == 1)
-            {
-                break;
-            }
-        }
-    }
-
     private void LaunchBall()
     {
         force = touchTimeFinish - touchTimeStart;
@@ -106,21 +107,33 @@ public class PlayerControl : MonoBehaviour
 
     private IEnumerator SwitchBall()
     {   
-        i++;
-        atZeroPointArea = false;
         if (i < balls.Count)
         {
             rb = balls[i].GetComponent<Rigidbody>();
             rb.transform.position = SphereStartPos;
             isActive = true;
+            i++;
         } 
         else 
         {
-
-            yield return new WaitForSeconds(0.5f);
-            endGame = true;
+            CheckEndGame();
         }
+        atZeroPointArea = false;
         yield return null;
+    }
+
+    private void CheckEndGame()
+    {
+            for(int j = 0; j < balls.Count; j++)
+            {
+                Rigidbody rb_ = balls[j].GetComponent<Rigidbody>();
+                if (!(rb_.velocity == Vector3.zero) || !(rb_.angularVelocity == Vector3.zero))
+                {
+                    endGame = false;
+                    StartCoroutine(SwitchBall());
+                }
+            }
+            endGame = true;
     }
 
     private void OnTriggerEnter(Collider other)

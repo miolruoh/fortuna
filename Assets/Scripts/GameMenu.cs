@@ -159,7 +159,7 @@ public class GameMenu : MonoBehaviour
         highScorePanel.SetActive(true);
     }
 
-    private void UpdateUI (List<HighScoreElement> list) 
+    private void UpdateHighScoreUI (List<HighScoreElement> list) 
     {
         for(int i = 0; i < list.Count; i++) 
         {
@@ -185,12 +185,12 @@ public class GameMenu : MonoBehaviour
 
     private void OnEnable() 
     {
-        HighScoreHandler.onHighScoreListChanged += UpdateUI;
+        HighScoreHandler.onHighScoreListChanged += UpdateHighScoreUI;
     }
 
     private void OnDisable()
     {
-        HighScoreHandler.onHighScoreListChanged -= UpdateUI;
+        HighScoreHandler.onHighScoreListChanged -= UpdateHighScoreUI;
     }
 
 }
