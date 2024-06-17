@@ -7,15 +7,14 @@ public class HighScoreHandler : MonoBehaviour
 {
     List<HighScoreElement> highScoreList = new List<HighScoreElement>();
     [SerializeField] readonly int maxCount = 10;
+    public int MaxCount
+    {
+        get {return maxCount;}
+    }
     [SerializeField] readonly string fileName = "highscores1.json";
 
     public delegate void OnHighScoreListChanged(List<HighScoreElement> list);
     public static event OnHighScoreListChanged onHighScoreListChanged;
-
-    private void Start () 
-    {
-        
-    }
 
     public void LoadHighScores() 
     {
@@ -30,6 +29,18 @@ public class HighScoreHandler : MonoBehaviour
         {
             onHighScoreListChanged.Invoke(highScoreList);
         }
+    }
+
+    public int GetLastHighScore()
+    {
+        highScoreList = FileHandler.ReadFromJSON<HighScoreElement>(fileName);
+        return highScoreList[GetHighScoreCount() -1].score;
+    }
+
+    public int GetHighScoreCount()
+    {
+        highScoreList = FileHandler.ReadFromJSON<HighScoreElement>(fileName);
+        return highScoreList.Count;
     }
 
     private void SaveHighScore()

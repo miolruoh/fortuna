@@ -7,8 +7,8 @@ using UnityEngine.SceneManagement;
 
 public class PlayerControl : MonoBehaviour
 {
-    [Range(10f, 1000f)]
-    private float factor = 1000f;        // force can be adjusted with this
+    [Range(10f, 10000f)]
+    private float factor = 1300f;        // force can be adjusted with this
 
     private float touchTimeStart, touchTimeFinish; // count dragging time
     private float force;
@@ -22,7 +22,7 @@ public class PlayerControl : MonoBehaviour
     private static bool isActive;             // if true, ball is ready to launch, otherwise launch is disabled
     private static bool outOfBounds;    // checks if ball is in the game area
     private int i = 0;              // to keep track of the active ball in the list
-    private readonly float forceLimit = 5f; // if force is higher than limit, it is set to the limit set here
+    private readonly float forceLimit = 4f; // if force is higher than limit, it is set to the limit set here
     private Rigidbody rb;
     public static bool endGame; 
 
@@ -70,7 +70,7 @@ public class PlayerControl : MonoBehaviour
             powerbarImage.color = Color.Lerp(Color.green, Color.red, powerbar.value / forceLimit);
         }
 
-        if (atZeroPointArea || (!isInStartArea && rb.velocity == Vector3.zero && rb.angularVelocity == Vector3.zero))
+        if ( (atZeroPointArea || !isInStartArea && rb.velocity == Vector3.zero && rb.angularVelocity == Vector3.zero))
         {
             ScoreManager.SetText();
             isInStartArea = true;
@@ -159,6 +159,11 @@ public class PlayerControl : MonoBehaviour
         if (other.gameObject.tag == "GameArea")
         {
             outOfBounds = true;
+        }
+        if (other.gameObject.tag == "ZeroPointArea")
+        {
+            Debug.Log(balls[i] + " collider poistetaan");
+            balls[i].GetComponent<Collider>().enabled = false;
         }
     }
 }

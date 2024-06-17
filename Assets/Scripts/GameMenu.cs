@@ -115,9 +115,13 @@ public class GameMenu : MonoBehaviour
         resumeButton.SetActive(false);
         pauseMenuUI.SetActive(true);
         highscoreButton.SetActive(true);
-        newHighScorePanel.SetActive(true);
         endScore.text = ScoreManager.Final_Points;
-        newHighScore.text = ScoreManager.Final_Points;
+
+        if(highscoreHandler.GetHighScoreCount() < highscoreHandler.MaxCount || ScoreManager.Points > highscoreHandler.GetLastHighScore())
+        {
+            newHighScorePanel.SetActive(true);
+            newHighScore.text = ScoreManager.Final_Points;
+        }
     }
 
     //Resume Game
@@ -171,7 +175,6 @@ public class GameMenu : MonoBehaviour
                 {
                     // instantiate new entry
                     var inst = Instantiate(highscoreUIElementPrefab, elementWrapper);
-
                     uiHighscoreElements.Add(inst);
                 }
 
