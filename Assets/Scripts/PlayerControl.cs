@@ -7,21 +7,20 @@ using UnityEngine.SceneManagement;
 
 public class PlayerControl : MonoBehaviour
 {
-    [Range(10f, 10000f)]
     private float factor = 1300f;        // force can be adjusted with this
 
     private float touchTimeStart, touchTimeFinish; // count dragging time
     private float force;
     public Slider powerbar;
     public Image powerbarImage;
-    private bool isPressed = false;       // calculates how much force is added to ball when launching
+    private bool isPressed = false;       // if true, start powerbar
     Vector3 SphereStartPos;
     public List<GameObject> balls = new List<GameObject>();
     private static bool isInStartArea;         // if true, ball is still in start area and so if it's launched too slow and it comes back and stops, new ball won't come active
     private static bool atZeroPointArea;       // if true, next ball can move to the launch area even if previous ball is still moving
     private static bool isActive;             // if true, ball is ready to launch, otherwise launch is disabled
     private static bool outOfBounds;    // checks if ball is in the game area
-    private int i = 0;              // to keep track of the active ball in the list
+    private int i;              // to keep track of the active ball in the list
     private readonly float forceLimit = 4f; // if force is higher than limit, it is set to the limit set here
     private Rigidbody rb;
     public static bool endGame; 
@@ -29,7 +28,8 @@ public class PlayerControl : MonoBehaviour
     //Assigned at start
     private void Start()
     {
-        SphereStartPos = balls[0].transform.position;
+        i = 0;
+        SphereStartPos = balls[i].transform.position;
         StartCoroutine(SwitchBall());
 
         powerbar.maxValue = forceLimit;
@@ -74,7 +74,7 @@ public class PlayerControl : MonoBehaviour
         {
             ScoreManager.SetText();
             isInStartArea = true;
-            atZeroPointArea = false;
+            //atZeroPointArea = false;
             StartCoroutine(SwitchBall());
         }
 
@@ -124,7 +124,7 @@ public class PlayerControl : MonoBehaviour
 
     private void CheckEndGame()
     {
-            for(int j = 0; j < balls.Count; j++)
+            /*for(int j = 0; j < balls.Count; j++)
             {
                 Rigidbody rb_ = balls[j].GetComponent<Rigidbody>();
                 if (!(rb_.velocity == Vector3.zero) || !(rb_.angularVelocity == Vector3.zero))
@@ -132,7 +132,7 @@ public class PlayerControl : MonoBehaviour
                     endGame = false;
                     StartCoroutine(SwitchBall());
                 }
-            }
+            }*/
             endGame = true;
     }
 
@@ -145,6 +145,8 @@ public class PlayerControl : MonoBehaviour
         }
         if (other.gameObject.tag == "ZeroPointArea")
         {
+            Debug.Log(i);
+            balls[i].SetActive(false);
             atZeroPointArea = true;
         }
     }
@@ -159,11 +161,6 @@ public class PlayerControl : MonoBehaviour
         if (other.gameObject.tag == "GameArea")
         {
             outOfBounds = true;
-        }
-        if (other.gameObject.tag == "ZeroPointArea")
-        {
-            Debug.Log(balls[i] + " collider poistetaan");
-            balls[i].GetComponent<Collider>().enabled = false;
         }
     }
 }
