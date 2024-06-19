@@ -74,7 +74,7 @@ public class PlayerControl : MonoBehaviour
         {
             ScoreManager.SetText();
             isInStartArea = true;
-            //atZeroPointArea = false;
+            atZeroPointArea = false;
             StartCoroutine(SwitchBall());
         }
 
@@ -107,6 +107,7 @@ public class PlayerControl : MonoBehaviour
 
     private IEnumerator SwitchBall()
     {   
+        atZeroPointArea = false;
         if (i < balls.Count)
         {
             rb = balls[i].GetComponent<Rigidbody>();
@@ -118,22 +119,39 @@ public class PlayerControl : MonoBehaviour
         {
             CheckEndGame();
         }
-        atZeroPointArea = false;
         yield return null;
     }
 
     private void CheckEndGame()
     {
-            /*for(int j = 0; j < balls.Count; j++)
+        while(!endGame)
+        {
+            List<bool> boolCount = new List<bool>();
+            bool stopped;
+            for(int j = 0; j < balls.Count; j++)
             {
                 Rigidbody rb_ = balls[j].GetComponent<Rigidbody>();
-                if (!(rb_.velocity == Vector3.zero) || !(rb_.angularVelocity == Vector3.zero))
+                if ((rb_.velocity == Vector3.zero) || (rb_.angularVelocity == Vector3.zero))
+                {
+                    stopped = true;
+                    boolCount.Add(stopped);
+                }
+                else
+                {
+                    stopped = false;
+                    boolCount.Add(stopped);
+                }
+            }
+            foreach (bool b in boolCount)
+            {
+                if(!b)
                 {
                     endGame = false;
-                    StartCoroutine(SwitchBall());
+                    break;
                 }
-            }*/
+            }
             endGame = true;
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -145,9 +163,10 @@ public class PlayerControl : MonoBehaviour
         }
         if (other.gameObject.tag == "ZeroPointArea")
         {
-            Debug.Log(i);
-            balls[i].SetActive(false);
             atZeroPointArea = true;
+            GameObject[] z = GameObject.FindGameObjectsWithTag("ZeroPointArea");
+            Collider c = z[0].GetComponent<Collider>();
+            c.isTrigger = true;
         }
     }
 
@@ -161,6 +180,12 @@ public class PlayerControl : MonoBehaviour
         if (other.gameObject.tag == "GameArea")
         {
             outOfBounds = true;
+        }
+        if(other.gameObject.tag == "ZeroPointArea")
+        {
+            GameObject[] z = GameObject.FindGameObjectsWithTag("ZeroPointArea");
+            Collider c = z[0].GetComponent<Collider>();
+            c.isTrigger = false;
         }
     }
 }
