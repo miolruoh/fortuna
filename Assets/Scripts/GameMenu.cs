@@ -29,6 +29,7 @@ public class GameMenu : MonoBehaviour
     private bool end = PlayerControl.endGame;
     private float gamespeed = 3.0f;
 
+    // Set everything ready for game to start
     void Start()
     {
         highscoreHandler.LoadHighScores();
@@ -41,7 +42,7 @@ public class GameMenu : MonoBehaviour
         StartMenu();
         StartCoroutine(End());
     }
-
+    // Update to check if game is ended or paused/continued
     void Update()
     {
         end = PlayerControl.endGame;
@@ -57,7 +58,7 @@ public class GameMenu : MonoBehaviour
             }
         }
     }
-
+    // Check if game is ready to end
     private IEnumerator End()
     {
         if(end)
@@ -85,7 +86,7 @@ public class GameMenu : MonoBehaviour
         Time.timeScale = 0f;
         isPaused = true;
     }
-
+    // Panel at the start of the game
     public void StartMenu()
     {
         Time.timeScale = 0f;
@@ -97,14 +98,14 @@ public class GameMenu : MonoBehaviour
         startGameButton.SetActive(true);
         pauseMenuUI.SetActive(true);
     }
-
+    // Start game button
     public void StartGame()
     {
         pauseMenuUI.SetActive(false);
         Time.timeScale = gamespeed;
         isPaused = false;
     }
-
+    // Panel at the end of the game
     public void EndMenu()
     {
         Time.timeScale = 0f;
@@ -116,7 +117,7 @@ public class GameMenu : MonoBehaviour
         pauseMenuUI.SetActive(true);
         highscoreButton.SetActive(true);
         endScore.text = ScoreManager.Final_Points;
-
+        // Check if there is enough points for highscore list
         if(highscoreHandler.GetHighScoreCount() < highscoreHandler.MaxCount || ScoreManager.Points > highscoreHandler.GetLastHighScore())
         {
             newHighScorePanel.SetActive(true);
@@ -144,25 +145,25 @@ public class GameMenu : MonoBehaviour
         Time.timeScale = 1f;
         SceneChanger.LoadScene(0);
     }
-
+    // Back button in highscore panel
     public void BackButton()
     {
         SceneChanger.LoadScene(2);
     }
-
+    // Add new highscore and close new highscore window
     public void OkButton()
     {
         finalScore = Int32.Parse(ScoreManager.Final_Points); // try-catch?
         highscoreHandler.AddHighScoreIfPossible(new HighScoreElement(playerName.text, finalScore));
         newHighScorePanel.SetActive(false);
     }
-
+    // open highscore panel
     public void HighscoresButton()
     {
         Time.timeScale = 0f;
         highScorePanel.SetActive(true);
     }
-
+    // Update highscore list
     private void UpdateHighScoreUI (List<HighScoreElement> list) 
     {
         for(int i = 0; i < list.Count; i++) 

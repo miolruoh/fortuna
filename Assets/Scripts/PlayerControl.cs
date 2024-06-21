@@ -9,7 +9,7 @@ public class PlayerControl : MonoBehaviour
 {
     private float factor = 1300f;        // force can be adjusted with this
 
-    private float touchTimeStart, touchTimeFinish; // count dragging time
+    private float touchTimeStart, touchTimeFinish; // count holding time
     private float force;
     public Slider powerbar;
     public Image powerbarImage;
@@ -31,7 +31,7 @@ public class PlayerControl : MonoBehaviour
         i = 0;
         SphereStartPos = balls[i].transform.position;
         StartCoroutine(SwitchBall());
-
+        powerbar.value = 0;
         powerbar.maxValue = forceLimit;
         endGame = false;
         isInStartArea = true;
@@ -39,9 +39,10 @@ public class PlayerControl : MonoBehaviour
         isActive = true;
         outOfBounds = false;
     }
-
+    // Update game every frame to check inputs and outcomes
     void Update()
     {
+        // Check launch force if ball is in start area
         if (isActive)
         {
             if(Input.GetMouseButtonDown(0))
@@ -57,6 +58,12 @@ public class PlayerControl : MonoBehaviour
                 LaunchBall();
             }
         }
+        if(!isInStartArea)
+        {
+            isPressed = false;
+            powerbar.value = 0;
+        }
+        // Set powerbar value
         if(isPressed)
         {
             if(powerbar.value >= forceLimit)
@@ -69,15 +76,15 @@ public class PlayerControl : MonoBehaviour
             }
             powerbarImage.color = Color.Lerp(Color.green, Color.red, powerbar.value / forceLimit);
         }
-
-        if ( (atZeroPointArea || !isInStartArea && rb.velocity == Vector3.zero && rb.angularVelocity == Vector3.zero))
+        // Add points to the counter on screen and set up next ball
+        if ((atZeroPointArea || !isInStartArea && rb.velocity == Vector3.zero && rb.angularVelocity == Vector3.zero))
         {
             ScoreManager.SetText();
             isInStartArea = true;
             atZeroPointArea = false;
             StartCoroutine(SwitchBall());
         }
-
+        // Check if ball is out of bounds and set up next ball
         if (outOfBounds)
         {
             Destroy(rb);
@@ -89,7 +96,7 @@ public class PlayerControl : MonoBehaviour
             StartCoroutine(SwitchBall());
         }
     }
-
+    // Add force to launch the ball
     private void LaunchBall()
     {
         force = touchTimeFinish - touchTimeStart;
@@ -104,7 +111,7 @@ public class PlayerControl : MonoBehaviour
 
         rb.AddForce(0,0,force*factor);
     }
-
+    // Switch ball or start ending the game
     private IEnumerator SwitchBall()
     {   
         atZeroPointArea = false;
@@ -121,7 +128,7 @@ public class PlayerControl : MonoBehaviour
         }
         yield return null;
     }
-
+    // Check if game is ready to end (every ball is stopped so all the points are counted)
     private void CheckEndGame()
     {
         while(!endGame)
@@ -153,7 +160,7 @@ public class PlayerControl : MonoBehaviour
             endGame = true;
         }
     }
-
+    // Check if ball enters to these triggers
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "StartingArea")
@@ -161,6 +168,7 @@ public class PlayerControl : MonoBehaviour
             isInStartArea = true;
             isActive = true;
         }
+        // When ball enters zeropointarea, put trigger on
         if (other.gameObject.tag == "ZeroPointArea")
         {
             atZeroPointArea = true;
@@ -169,7 +177,7 @@ public class PlayerControl : MonoBehaviour
             c.isTrigger = true;
         }
     }
-
+    // Check if ball exits from these triggers
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag == "StartingArea")
@@ -181,6 +189,7 @@ public class PlayerControl : MonoBehaviour
         {
             outOfBounds = true;
         }
+        // // When ball exits zeropointarea, put trigger off so if ball bounces of the area it wont trigger it again
         if(other.gameObject.tag == "ZeroPointArea")
         {
             GameObject[] z = GameObject.FindGameObjectsWithTag("ZeroPointArea");

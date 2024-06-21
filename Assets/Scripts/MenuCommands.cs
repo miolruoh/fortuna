@@ -35,12 +35,12 @@ public class MenuCommands : MonoBehaviour
     {
         SceneChanger.LoadScene(1);
     }
-    // Go back to previous scene
+    // Go back to previous scene from settings
     public void OnBackButtonPress()
     {
         SceneChanger.PreviousScene();
     }
-    // Exit game
+    // Exit game / on android put game to background
     public void ExitGame()
     {
         #if UNITY_STANDALONE_WIN || UNITY_EDITOR
