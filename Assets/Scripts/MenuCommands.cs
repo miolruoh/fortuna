@@ -6,9 +6,15 @@ using UnityEngine.UI;
 
 public class MenuCommands : MonoBehaviour
 {
+    [SerializeField] private static string _fileName;
+    public static string FileName
+    {
+        get {return _fileName;}
+    }
     // Play first board
     public void OnPlayBoard1ButtonPress()
     {
+        _fileName = "highscores1.json";
         // Later to collapse and select board you want to play
 
        /* int i = SceneManager.GetActiveScene().buildIndex + 1;
@@ -21,6 +27,7 @@ public class MenuCommands : MonoBehaviour
     // Play second board
     public void OnPlayBoard2ButtonPress()
     {
+         _fileName = "highscores2.json";
         // Later to collapse and select board you want to play
 
         /* int i = SceneManager.GetActiveScene().buildIndex + 1;

@@ -11,7 +11,7 @@ public class HighScoreHandler : MonoBehaviour
     {
         get {return maxCount;}
     }
-    [SerializeField] readonly string fileName = "highscores1.json";
+    string fileName = MenuCommands.FileName;
 
     public delegate void OnHighScoreListChanged(List<HighScoreElement> list);
     public static event OnHighScoreListChanged onHighScoreListChanged;

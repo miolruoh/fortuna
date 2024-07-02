@@ -88,7 +88,7 @@ public class PlayerControl : MonoBehaviour
         if (outOfBounds)
         {
             Destroy(rb);
-            balls[i].SetActive(false);
+            balls[i-1].SetActive(false);
             outOfBounds = false;
             isInStartArea = true;
             atZeroPointArea = false;
@@ -125,6 +125,7 @@ public class PlayerControl : MonoBehaviour
         else 
         {
             CheckEndGame();
+            i--;
         }
         yield return null;
     }
@@ -168,7 +169,7 @@ public class PlayerControl : MonoBehaviour
             isInStartArea = true;
             isActive = true;
         }
-        // When ball enters zeropointarea, put trigger on
+        // When ball enters (second time) zeropointarea, put trigger on
         if (other.gameObject.tag == "ZeroPointArea")
         {
             atZeroPointArea = true;

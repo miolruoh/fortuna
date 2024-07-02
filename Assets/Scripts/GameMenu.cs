@@ -148,7 +148,7 @@ public class GameMenu : MonoBehaviour
     // Back button in highscore panel
     public void BackButton()
     {
-        SceneChanger.LoadScene(2);
+        SceneChanger.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
     // Add new highscore and close new highscore window
     public void OkButton()
