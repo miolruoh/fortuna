@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class PlayerControl : MonoBehaviour
 {
-    private float factor = 1300f;        // force can be adjusted with this
+    private float factor = 1400f;        // force can be adjusted with this
 
     private float touchTimeStart, touchTimeFinish; // count holding time
     private float force;
@@ -20,8 +20,9 @@ public class PlayerControl : MonoBehaviour
     private static bool atZeroPointArea;       // if true, next ball can move to the launch area even if previous ball is still moving
     private static bool isActive;             // if true, ball is ready to launch, otherwise launch is disabled
     private static bool outOfBounds;    // checks if ball is in the game area
+    private bool isBouncedOutZeroArea; // if ball bounces off zeropointarea, game doesn't put second ball to game when this ball enters zeropointarea again
     private int i;              // to keep track of the active ball in the list
-    private readonly float forceLimit = 4f; // if force is higher than limit, it is set to the limit set here
+    private readonly float forceLimit = 3f; // if force is higher than limit, it is set to the limit set here
     private Rigidbody rb;
     public static bool endGame; 
 
@@ -38,6 +39,7 @@ public class PlayerControl : MonoBehaviour
         atZeroPointArea = false;
         isActive = true;
         outOfBounds = false;
+        isBouncedOutZeroArea = false;
     }
     // Update game every frame to check inputs and outcomes
     void Update()
@@ -129,6 +131,7 @@ public class PlayerControl : MonoBehaviour
         }
         yield return null;
     }
+    // TODO not working, might also give error
     // Check if game is ready to end (every ball is stopped so all the points are counted)
     private void CheckEndGame()
     {
@@ -172,10 +175,11 @@ public class PlayerControl : MonoBehaviour
         // When ball enters (second time) zeropointarea, put trigger on
         if (other.gameObject.tag == "ZeroPointArea")
         {
-            atZeroPointArea = true;
-            GameObject[] z = GameObject.FindGameObjectsWithTag("ZeroPointArea");
-            Collider c = z[0].GetComponent<Collider>();
-            c.isTrigger = true;
+            if(!isBouncedOutZeroArea)
+            {
+                atZeroPointArea = true;
+            }
+            isBouncedOutZeroArea = false;
         }
     }
     // Check if ball exits from these triggers
@@ -190,12 +194,10 @@ public class PlayerControl : MonoBehaviour
         {
             outOfBounds = true;
         }
-        // // When ball exits zeropointarea, put trigger off so if ball bounces of the area it wont trigger it again
+        // // When ball exits zeropointarea, mark it so when ball drops back there second time, it wont trigger extra ball to game
         if(other.gameObject.tag == "ZeroPointArea")
         {
-            GameObject[] z = GameObject.FindGameObjectsWithTag("ZeroPointArea");
-            Collider c = z[0].GetComponent<Collider>();
-            c.isTrigger = false;
+           isBouncedOutZeroArea = true;
         }
     }
 }

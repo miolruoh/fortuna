@@ -5059,7 +5059,7 @@ Light:
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 0}
   m_Intensity: 13.03
-  m_Range: 800
+  m_Range: 886.4
   m_SpotAngle: 98
   m_InnerSpotAngle: 1
   m_CookieSize: 10
@@ -5106,7 +5106,7 @@ Light:
   m_BoundingSphereOverride: {x: 0, y: 0, z: 0, w: 0}
   m_UseBoundingSphereOverride: 0
   m_UseViewFrustumForShadowCasterCull: 1
-  m_ShadowRadius: 1
+  m_ShadowRadius: 5
   m_ShadowAngle: 5
 --- !u!4 &705507995
 Transform:
@@ -6961,7 +6961,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5deb342c43123e94993a0834a54938bd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.626
+      value: -1.33
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5deb342c43123e94993a0834a54938bd, type: 3}
       propertyPath: m_LocalPosition.y
@@ -7010,6 +7010,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 5deb342c43123e94993a0834a54938bd, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1151388028547126963, guid: 5deb342c43123e94993a0834a54938bd, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0.288
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5deb342c43123e94993a0834a54938bd, type: 3}
@@ -8854,7 +8858,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5deb342c43123e94993a0834a54938bd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -1.627
+      value: -1.63
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 5deb342c43123e94993a0834a54938bd, type: 3}
       propertyPath: m_LocalPosition.y
