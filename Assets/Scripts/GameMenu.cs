@@ -18,6 +18,7 @@ public class GameMenu : MonoBehaviour
     public GameObject restartButton;
     public GameObject newHighScorePanel;
     public GameObject highScorePanel;
+    public GameObject tutorial;
     [SerializeField] GameObject highscoreUIElementPrefab;
     [SerializeField] Transform elementWrapper;
     List<GameObject> uiHighscoreElements = new List<GameObject>();
@@ -28,10 +29,12 @@ public class GameMenu : MonoBehaviour
     public Text playerName;
     private bool end = PlayerControl.endGame;
     private float gamespeed = 3.0f;
+    public static bool tutorialSwitch;
 
     // Set everything ready for game to start
     void Start()
     {
+        tutorialSwitch = false;
         highscoreHandler.LoadHighScores();
         highScorePanel.SetActive(false);
         isPaused = true;
@@ -46,7 +49,7 @@ public class GameMenu : MonoBehaviour
     void Update()
     {
         end = PlayerControl.endGame;
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if(Input.GetKeyDown(KeyCode.Escape))
         {
             if(isPaused)
             {
@@ -101,9 +104,26 @@ public class GameMenu : MonoBehaviour
     // Start game button
     public void StartGame()
     {
+        if(PlayerPrefs.GetInt("HasLaunched", 0) == 0) // Game hasn't launched before. 0 is the default value if the player pref doesn't exist yet.
+        {
+            tutorialSwitch = true;
+            TutorialActivation(tutorialSwitch);
+            
+        }
+        else
+        {
+            tutorialSwitch = false;
+            TutorialActivation(tutorialSwitch);
+        }
+        PlayerPrefs.SetInt("HasLaunched", 1); // Set to 1, so we know the user has been here before
         pauseMenuUI.SetActive(false);
         Time.timeScale = gamespeed;
         isPaused = false;
+    }
+    // Handle tutorial animations
+    private void TutorialActivation(bool activated)
+    {
+        tutorial.SetActive(activated);
     }
     // Panel at the end of the game
     public void EndMenu()
@@ -163,6 +183,7 @@ public class GameMenu : MonoBehaviour
         Time.timeScale = 0f;
         highScorePanel.SetActive(true);
     }
+
     // Update highscore list
     private void UpdateHighScoreUI (List<HighScoreElement> list) 
     {
@@ -190,11 +211,13 @@ public class GameMenu : MonoBehaviour
     private void OnEnable() 
     {
         HighScoreHandler.onHighScoreListChanged += UpdateHighScoreUI;
+        PlayerControl.onTutorialSwitchChanged += TutorialActivation;
     }
 
     private void OnDisable()
     {
         HighScoreHandler.onHighScoreListChanged -= UpdateHighScoreUI;
+        PlayerControl.onTutorialSwitchChanged -= TutorialActivation;
     }
 
 }

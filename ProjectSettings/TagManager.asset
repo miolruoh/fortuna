@@ -15,6 +15,7 @@ TagManager:
   - 125Points
   - 150Points
   - GameArea
+  - Tutorial
   layers:
   - Default
   - TransparentFX

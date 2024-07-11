@@ -13,7 +13,6 @@ public class PlayerControl : MonoBehaviour
     private float force;
     public Slider powerbar;
     public Image powerbarImage;
-    private bool isPressed = false;       // if true, start powerbar
     Vector3 SphereStartPos;
     public List<GameObject> balls = new List<GameObject>();
     private static bool isInStartArea;         // if true, ball is still in start area and so if it's launched too slow and it comes back and stops, new ball won't come active
@@ -24,7 +23,10 @@ public class PlayerControl : MonoBehaviour
     private int i;              // to keep track of the active ball in the list
     private readonly float forceLimit = 3f; // if force is higher than limit, it is set to the limit set here
     private Rigidbody rb;
-    public static bool endGame; 
+    public static bool endGame;
+
+    public delegate void OnTutorialSwitchChanged(bool a);
+    public static event OnTutorialSwitchChanged onTutorialSwitchChanged;
 
     //Assigned at start
     private void Start()
@@ -50,31 +52,35 @@ public class PlayerControl : MonoBehaviour
             if(Input.GetMouseButtonDown(0))
             {
                 touchTimeStart = Time.time;
-                isPressed = true;
             } 
             if(Input.GetMouseButtonUp(0))
             {
-                touchTimeFinish = Time.time;
-                isPressed = false;
-                powerbar.value = 0;
-                LaunchBall();
+                if(touchTimeStart != 0)
+                {
+                    touchTimeFinish = Time.time;
+                    powerbar.value = 0;
+                    LaunchBall();
+                }
             }
         }
+        // Set launch values to zero when leaving startarea
         if(!isInStartArea)
         {
-            isPressed = false;
             powerbar.value = 0;
+            touchTimeStart = 0;
+            touchTimeFinish = 0;
+            if(onTutorialSwitchChanged != null) 
+            {
+                onTutorialSwitchChanged(false);
+            }
         }
         // Set powerbar value
-        if(isPressed)
+        if(touchTimeStart != 0)
         {
+            powerbar.value += Time.deltaTime;
             if(powerbar.value >= forceLimit)
             {
                 powerbar.value = forceLimit;
-            }
-            else
-            {
-                powerbar.value += Time.deltaTime;
             }
             powerbarImage.color = Color.Lerp(Color.green, Color.red, powerbar.value / forceLimit);
         }
@@ -112,6 +118,8 @@ public class PlayerControl : MonoBehaviour
         }
 
         rb.AddForce(0,0,force*factor);
+        touchTimeStart = 0;
+        touchTimeFinish = 0;
     }
     // Switch ball or start ending the game
     private IEnumerator SwitchBall()

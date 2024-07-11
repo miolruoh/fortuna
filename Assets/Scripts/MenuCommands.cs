@@ -11,6 +11,7 @@ public class MenuCommands : MonoBehaviour
     {
         get {return _fileName;}
     }
+
     // Play first board
     public void OnPlayBoard1ButtonPress()
     {

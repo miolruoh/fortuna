@@ -31,10 +31,6 @@ public class ScoreManager : MonoBehaviour
         old_points = 0;
         output_Points = GameObject.Find("ScoreCanvas/Score").GetComponent<TextMeshProUGUI>();
     }
-    void Update()
-    {
-        
-    }
 
     // Sets Score to the screen
     public static void SetText()
