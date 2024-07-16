@@ -22,10 +22,12 @@ public class PlayerControl : MonoBehaviour
     private bool isBouncedOutZeroArea; // if ball bounces off zeropointarea, game doesn't put second ball to game when this ball enters zeropointarea again
     private int i;              // to keep track of the active ball in the list
     private readonly float forceLimit = 3f; // if force is higher than limit, it is set to the limit set here
-    private Rigidbody rb;
+    private List<Rigidbody> rb = new List<Rigidbody>();
     public static bool endGame;
+    private List<bool> isStopped = new List<bool>();
 
-    public delegate void OnTutorialSwitchChanged(bool a);
+    // Check if tutorial is needed
+    public delegate void OnTutorialSwitchChanged(bool sw);
     public static event OnTutorialSwitchChanged onTutorialSwitchChanged;
 
     //Assigned at start
@@ -33,7 +35,6 @@ public class PlayerControl : MonoBehaviour
     {
         i = 0;
         SphereStartPos = balls[i].transform.position;
-        StartCoroutine(SwitchBall());
         powerbar.value = 0;
         powerbar.maxValue = forceLimit;
         endGame = false;
@@ -42,6 +43,12 @@ public class PlayerControl : MonoBehaviour
         isActive = true;
         outOfBounds = false;
         isBouncedOutZeroArea = false;
+        for(int j = 0; j < balls.Count; j++)
+        {
+            rb.Add(balls[j].GetComponent<Rigidbody>());
+            isStopped.Add(false);
+        }
+        SwitchBall();
     }
     // Update game every frame to check inputs and outcomes
     void Update()
@@ -85,23 +92,24 @@ public class PlayerControl : MonoBehaviour
             powerbarImage.color = Color.Lerp(Color.green, Color.red, powerbar.value / forceLimit);
         }
         // Add points to the counter on screen and set up next ball
-        if ((atZeroPointArea || !isInStartArea && rb.velocity == Vector3.zero && rb.angularVelocity == Vector3.zero))
+        if (atZeroPointArea || !isInStartArea && rb[i-1].velocity == Vector3.zero && rb[i-1].angularVelocity == Vector3.zero)
         {
             ScoreManager.SetText();
             isInStartArea = true;
             atZeroPointArea = false;
-            StartCoroutine(SwitchBall());
+            CheckEndGame();
+            SwitchBall();
         }
         // Check if ball is out of bounds and set up next ball
         if (outOfBounds)
         {
-            Destroy(rb);
+            Destroy(rb[i-1]);
             balls[i-1].SetActive(false);
             outOfBounds = false;
             isInStartArea = true;
             atZeroPointArea = false;
             Debug.Log("Ball is out of Bounds");
-            StartCoroutine(SwitchBall());
+            SwitchBall();
         }
     }
     // Add force to launch the ball
@@ -117,61 +125,44 @@ public class PlayerControl : MonoBehaviour
             force = forceLimit;
         }
 
-        rb.AddForce(0,0,force*factor);
+        rb[i-1].AddForce(0,0,force*factor);
         touchTimeStart = 0;
         touchTimeFinish = 0;
     }
     // Switch ball or start ending the game
-    private IEnumerator SwitchBall()
+    private void SwitchBall()
     {   
         atZeroPointArea = false;
-        if (i < balls.Count)
+        if (i < rb.Count)
         {
-            rb = balls[i].GetComponent<Rigidbody>();
-            rb.transform.position = SphereStartPos;
+            rb[i].transform.position = SphereStartPos;
             isActive = true;
-            i++;
-        } 
-        else 
-        {
-            CheckEndGame();
-            i--;
         }
-        yield return null;
+        i++;
     }
-    // TODO not working, might also give error
-    // Check if game is ready to end (every ball is stopped so all the points are counted)
+
+    // Check that every ball is stopped so all the points are counted
     private void CheckEndGame()
     {
-        while(!endGame)
+        foreach(Rigidbody _rb in rb)
         {
-            List<bool> boolCount = new List<bool>();
-            bool stopped;
-            for(int j = 0; j < balls.Count; j++)
+            if(_rb.velocity == Vector3.zero && _rb.angularVelocity == Vector3.zero)
             {
-                Rigidbody rb_ = balls[j].GetComponent<Rigidbody>();
-                if ((rb_.velocity == Vector3.zero) || (rb_.angularVelocity == Vector3.zero))
-                {
-                    stopped = true;
-                    boolCount.Add(stopped);
-                }
-                else
-                {
-                    stopped = false;
-                    boolCount.Add(stopped);
-                }
+                isStopped[i-1] = true;
             }
-            foreach (bool b in boolCount)
+            else
             {
-                if(!b)
-                {
-                    endGame = false;
-                    break;
-                }
+                isStopped[i-1] = false;
             }
-            endGame = true;
         }
+        for(int m = 0; m < isStopped.Count; m++)
+        {
+            if(!isStopped[m])
+            return;
+        }
+        endGame = true;
     }
+
     // Check if ball enters to these triggers
     private void OnTriggerEnter(Collider other)
     {
