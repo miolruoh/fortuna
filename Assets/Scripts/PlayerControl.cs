@@ -23,8 +23,8 @@ public class PlayerControl : MonoBehaviour
     private int i;              // to keep track of the active ball in the list
     private readonly float forceLimit = 3f; // if force is higher than limit, it is set to the limit set here
     private List<Rigidbody> rb = new List<Rigidbody>();
-    public static bool endGame;
     private List<bool> isStopped = new List<bool>();
+    public static bool endGame;
 
     // Check if tutorial is needed
     public delegate void OnTutorialSwitchChanged(bool sw);
@@ -97,7 +97,10 @@ public class PlayerControl : MonoBehaviour
             ScoreManager.SetText();
             isInStartArea = true;
             atZeroPointArea = false;
-            CheckEndGame();
+            if(i >= rb.Count)
+            {
+                StartCoroutine(CheckEndGame());
+            }
             SwitchBall();
         }
         // Check if ball is out of bounds and set up next ball
@@ -109,6 +112,10 @@ public class PlayerControl : MonoBehaviour
             isInStartArea = true;
             atZeroPointArea = false;
             Debug.Log("Ball is out of Bounds");
+            if(i >= rb.Count)
+            {
+                StartCoroutine(CheckEndGame());
+            }
             SwitchBall();
         }
     }
@@ -142,25 +149,31 @@ public class PlayerControl : MonoBehaviour
     }
 
     // Check that every ball is stopped so all the points are counted
-    private void CheckEndGame()
+    private IEnumerator CheckEndGame()
     {
+        int j = 0;
         foreach(Rigidbody _rb in rb)
         {
             if(_rb.velocity == Vector3.zero && _rb.angularVelocity == Vector3.zero)
             {
-                isStopped[i-1] = true;
+                isStopped[j] = true;
             }
             else
             {
-                isStopped[i-1] = false;
+                isStopped[j] = false;
             }
+            j++;
         }
-        for(int m = 0; m < isStopped.Count; m++)
+        if(!isStopped.Contains(false))
         {
-            if(!isStopped[m])
-            return;
+            endGame = true;
         }
-        endGame = true;
+        else
+        {
+            yield return new WaitForSecondsRealtime(2);
+            StartCoroutine(CheckEndGame());
+        }
+        yield return null;
     }
 
     // Check if ball enters to these triggers
