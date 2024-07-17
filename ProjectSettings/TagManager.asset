@@ -16,6 +16,7 @@ TagManager:
   - 150Points
   - GameArea
   - Tutorial
+  - Music
   layers:
   - Default
   - TransparentFX

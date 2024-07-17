@@ -7,12 +7,13 @@ using UnityEngine.SceneManagement;
 
 public class PlayerControl : MonoBehaviour
 {
-    private float factor = 1400f;        // force can be adjusted with this
+    private float factor = 2300f;        // force can be adjusted with this
 
     private float touchTimeStart, touchTimeFinish; // count holding time
     private float force;
     public Slider powerbar;
     public Image powerbarImage;
+    public GameObject musicPlayer;
     Vector3 SphereStartPos;
     public List<GameObject> balls = new List<GameObject>();
     private static bool isInStartArea;         // if true, ball is still in start area and so if it's launched too slow and it comes back and stops, new ball won't come active
@@ -24,11 +25,16 @@ public class PlayerControl : MonoBehaviour
     private readonly float forceLimit = 3f; // if force is higher than limit, it is set to the limit set here
     private List<Rigidbody> rb = new List<Rigidbody>();
     private List<bool> isStopped = new List<bool>();
-    public static bool endGame;
+    private bool endGame;
 
     // Check if tutorial is needed
     public delegate void OnTutorialSwitchChanged(bool sw);
     public static event OnTutorialSwitchChanged onTutorialSwitchChanged;
+
+    // Checks when game is ended
+    public delegate void OnGameEnded(bool ifEnded);
+    public static event OnGameEnded onGameEnded;
+
 
     //Assigned at start
     private void Start()
@@ -54,7 +60,7 @@ public class PlayerControl : MonoBehaviour
     void Update()
     {
         // Check launch force if ball is in start area
-        if (isActive)
+        if(isActive)
         {
             if(Input.GetMouseButtonDown(0))
             {
@@ -62,37 +68,32 @@ public class PlayerControl : MonoBehaviour
             } 
             if(Input.GetMouseButtonUp(0))
             {
-                if(touchTimeStart != 0)
+                if(touchTimeStart > 0)
                 {
                     touchTimeFinish = Time.time;
-                    powerbar.value = 0;
                     LaunchBall();
                 }
             }
+            // Set powerbar value
+            if(touchTimeStart > 0)
+            {
+                powerbar.value += Time.deltaTime;
+                if(powerbar.value >= forceLimit)
+                {
+                    powerbar.value = forceLimit;
+                }
+                powerbarImage.color = Color.Lerp(Color.green, Color.red, powerbar.value / forceLimit);
+            }
+            
         }
-        // Set launch values to zero when leaving startarea
-        if(!isInStartArea)
+        else
         {
             powerbar.value = 0;
             touchTimeStart = 0;
             touchTimeFinish = 0;
-            if(onTutorialSwitchChanged != null) 
-            {
-                onTutorialSwitchChanged(false);
-            }
-        }
-        // Set powerbar value
-        if(touchTimeStart != 0)
-        {
-            powerbar.value += Time.deltaTime;
-            if(powerbar.value >= forceLimit)
-            {
-                powerbar.value = forceLimit;
-            }
-            powerbarImage.color = Color.Lerp(Color.green, Color.red, powerbar.value / forceLimit);
         }
         // Add points to the counter on screen and set up next ball
-        if (atZeroPointArea || !isInStartArea && rb[i-1].velocity == Vector3.zero && rb[i-1].angularVelocity == Vector3.zero)
+        if (atZeroPointArea || i <= rb.Count && !isInStartArea && rb[i-1].velocity == Vector3.zero && rb[i-1].angularVelocity == Vector3.zero)
         {
             ScoreManager.SetText();
             isInStartArea = true;
@@ -135,6 +136,7 @@ public class PlayerControl : MonoBehaviour
         rb[i-1].AddForce(0,0,force*factor);
         touchTimeStart = 0;
         touchTimeFinish = 0;
+        powerbar.value = 0;
     }
     // Switch ball or start ending the game
     private void SwitchBall()
@@ -167,15 +169,18 @@ public class PlayerControl : MonoBehaviour
         if(!isStopped.Contains(false))
         {
             endGame = true;
+            if(onGameEnded != null) 
+            {
+                onGameEnded(endGame);
+            }
         }
         else
         {
-            yield return new WaitForSecondsRealtime(2);
+            yield return new WaitForSecondsRealtime(1);
             StartCoroutine(CheckEndGame());
         }
         yield return null;
     }
-
     // Check if ball enters to these triggers
     private void OnTriggerEnter(Collider other)
     {
@@ -201,6 +206,10 @@ public class PlayerControl : MonoBehaviour
         {
             isInStartArea = false;
             isActive = false;
+            if(onTutorialSwitchChanged != null) 
+            {
+                onTutorialSwitchChanged(false);
+            }
         }
         if (other.gameObject.tag == "GameArea")
         {

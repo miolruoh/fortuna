@@ -27,7 +27,7 @@ public class GameMenu : MonoBehaviour
     public Text endScore;
     [SerializeField] int finalScore;
     public Text playerName;
-    private bool end = PlayerControl.endGame;
+    private bool end;
     private float gamespeed = 3.0f;
     public static bool tutorialSwitch;
 
@@ -43,12 +43,11 @@ public class GameMenu : MonoBehaviour
             end = false;
         }
         StartMenu();
-        StartCoroutine(End());
     }
     // Update to check if game is ended or paused/continued
     void Update()
     {
-        end = PlayerControl.endGame;
+        //end = PlayerControl.endGame;
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             if(isPaused)
@@ -62,19 +61,9 @@ public class GameMenu : MonoBehaviour
         }
     }
     // Check if game is ready to end
-    private IEnumerator End()
+    private void End(bool ended)
     {
-        if(end)
-        {
-            StopCoroutine(End());
-            yield return null;
-            EndMenu();
-        }
-        else
-        {
-            yield return null;
-            StartCoroutine(End());
-        }
+        EndMenu();
     }
 
     // Game is paused
@@ -212,12 +201,14 @@ public class GameMenu : MonoBehaviour
     {
         HighScoreHandler.onHighScoreListChanged += UpdateHighScoreUI;
         PlayerControl.onTutorialSwitchChanged += TutorialActivation;
+        PlayerControl.onGameEnded += End;
     }
 
     private void OnDisable()
     {
         HighScoreHandler.onHighScoreListChanged -= UpdateHighScoreUI;
         PlayerControl.onTutorialSwitchChanged -= TutorialActivation;
+        PlayerControl.onGameEnded -= End;
     }
 
 }

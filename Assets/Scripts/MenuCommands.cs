@@ -7,9 +7,15 @@ using UnityEngine.UI;
 public class MenuCommands : MonoBehaviour
 {
     [SerializeField] private static string _fileName;
+    public GameObject musicPlayer;
     public static string FileName
     {
         get {return _fileName;}
+    }
+
+    private void Start()
+    {
+        
     }
 
     // Play first board
