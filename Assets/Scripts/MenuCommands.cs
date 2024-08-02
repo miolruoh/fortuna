@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class MenuCommands : MonoBehaviour
 {
     [SerializeField] private static string _fileName;
-    public GameObject musicPlayer;
     public static string FileName
     {
         get {return _fileName;}
@@ -54,7 +53,7 @@ public class MenuCommands : MonoBehaviour
     {
         SceneChanger.PreviousScene();
     }
-    // Exit game / on android put game to background
+    // Exit game on windows / on android put game to background
     public void ExitGame()
     {
         #if UNITY_STANDALONE_WIN || UNITY_EDITOR

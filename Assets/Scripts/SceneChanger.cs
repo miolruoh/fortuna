@@ -8,9 +8,14 @@ public  class SceneChanger : MonoBehaviour
     private static List<int> sceneHistory = new List<int>();
 
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
+    }
+
+    void Start()
+    {
+        sceneHistory.Add(0);
     }
 
     public static void LoadScene(int newScene)

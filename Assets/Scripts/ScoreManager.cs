@@ -9,7 +9,6 @@ public class ScoreManager : MonoBehaviour
 {
     private static TextMeshProUGUI output_Points;
     private static int points;
-    private static int old_points;
 
     public static string Final_Points
     {
@@ -20,7 +19,6 @@ public class ScoreManager : MonoBehaviour
         get {return points;}
         set 
         {
-            old_points = points;
             points += value;
         }
     }
@@ -28,7 +26,6 @@ public class ScoreManager : MonoBehaviour
     void Start()
     {
         points = 0;
-        old_points = 0;
         output_Points = GameObject.Find("ScoreCanvas/Score").GetComponent<TextMeshProUGUI>();
     }
 

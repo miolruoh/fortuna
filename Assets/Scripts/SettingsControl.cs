@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-//using UnityEngine.UIElements;
 
 public class SettingsControl : MonoBehaviour
 {
@@ -14,11 +13,43 @@ public class SettingsControl : MonoBehaviour
     public Sprite musicOffIcon;
     public Button volumeButton;
     public Button musicButton;
-    public Slider musicSlider;
-    public Slider volumeSlider;
+    private static Slider musicSlider;
+    public static float MusicValue
+    {
+        get {return musicSlider.value;}
+        set 
+        {
+            musicSlider.value = value;
+        }
+    }
+    private static Slider volumeSlider;
+    public static float VolumeValue
+    {
+        get {return volumeSlider.value;}
+        set 
+        {
+            volumeSlider.value = value;
+        }
+    }
     public GameObject musicPlayer;
-    private bool toggleVolume;
-    private bool toggleMusic;
+    private static bool volumeOn;
+    public static bool VolumeOn
+    {
+        get {return volumeOn;}
+        set 
+        {
+            volumeOn = value;
+        }
+    }
+    private static bool musicOn;
+    public static bool MusicOn
+    {
+        get {return musicOn;}
+        set 
+        {
+            musicOn = value;
+        }
+    }
     private float previousVolumeValue;
     private float previousMusicValue;
 
@@ -26,44 +57,119 @@ public class SettingsControl : MonoBehaviour
     void Start()
     {
         currentTxt = GameObject.Find("SettingsCanvas/QualityButton/CurrentQuality").GetComponent<Text>();
+        List<Slider> sliders = new List<Slider>(GameObject.FindObjectsOfType<Slider>());
+        volumeSlider = sliders[1];
+        musicSlider = sliders[0];
         qualityLevel = QualitySettings.GetQualityLevel();
         currentTxt.text = QualitySettings.names[qualityLevel];
-        toggleVolume = true;
-        toggleMusic = true;
+        CheckVolume();
+        CheckMusic();
     }
-
-    public void OnClickVolume()
+    public void VolumeValueChanged()
     {
-        if(toggleVolume)
+        PlayerPrefs.SetFloat("VolumeValueChanged", volumeSlider.value);
+        if(volumeSlider.value == 0)
         {
-            previousVolumeValue = volumeSlider.value;
             volumeButton.GetComponent<Image>().sprite = volumeOffIcon;
-            volumeSlider.value = 0;
-            toggleVolume = false;
+            VolumeOn = false;
         }
         else
         {
             volumeButton.GetComponent<Image>().sprite = volumeOnIcon;
+            VolumeOn = true;
+        }
+    }
+
+    public void MusicValueChanged()
+    {
+        PlayerPrefs.SetFloat("MusicValueChanged", musicSlider.value);
+        if(musicSlider.value == 0)
+        {
+            musicButton.GetComponent<Image>().sprite = musicOffIcon;
+            MusicOn = false;
+        }
+        else
+        {
+            musicButton.GetComponent<Image>().sprite = musicOnIcon;
+            MusicOn = true;
+        }
+    }
+    private void CheckVolume()
+    {   
+        volumeSlider.value = PlayerPrefs.GetFloat("VolumeValueChanged", volumeSlider.value);
+        if(volumeSlider.value != 0)
+        {
+            VolumeOn = true;
+            volumeButton.GetComponent<Image>().sprite = volumeOnIcon;
+        }
+        else
+        {
+            VolumeOn = false;
+            volumeButton.GetComponent<Image>().sprite = volumeOffIcon;
+        }
+    }
+    private void CheckMusic()
+    {
+        musicSlider.value = PlayerPrefs.GetFloat("MusicValueChanged", musicSlider.value);
+        if(musicSlider.value != 0)
+        {
+            MusicOn = true;
+            musicButton.GetComponent<Image>().sprite = musicOnIcon;
+        }
+        else
+        {
+            MusicOn = false;
+            musicButton.GetComponent<Image>().sprite = musicOffIcon;
+        }
+    }
+    public void OnClickVolume()
+    {
+        if(VolumeOn)
+        {
+            previousVolumeValue = volumeSlider.value;
+            volumeButton.GetComponent<Image>().sprite = volumeOffIcon;
+            volumeSlider.value = 0;
+            VolumeOn = false;
+        }
+        else
+        {
             volumeSlider.value = previousVolumeValue;
-            toggleVolume = true;
+            if(volumeSlider.value != 0)
+            {
+                VolumeOn = true;
+                volumeButton.GetComponent<Image>().sprite = volumeOnIcon;
+            }
+            else
+            {
+                VolumeOn = false;
+                volumeButton.GetComponent<Image>().sprite = volumeOffIcon;
+            }
         }
     }
 
     
     public void OnClickMusic()
     {
-        if(toggleMusic)
+        if(MusicOn)
         {
             previousMusicValue = musicSlider.value;
             musicButton.GetComponent<Image>().sprite = musicOffIcon;
             musicSlider.value = 0;
-            toggleMusic = false;
+            MusicOn = false;
         }
         else
         {
-            musicButton.GetComponent<Image>().sprite = musicOnIcon;
             musicSlider.value = previousMusicValue;
-            toggleMusic = true;
+            if(musicSlider.value != 0)
+            {
+                MusicOn = true;
+                musicButton.GetComponent<Image>().sprite = musicOnIcon;
+            }
+            else
+            {
+                MusicOn = false;
+                musicButton.GetComponent<Image>().sprite = musicOffIcon;
+            }
         }
     }
     

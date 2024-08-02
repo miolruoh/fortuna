@@ -16,6 +16,10 @@ public class GameMenu : MonoBehaviour
     public GameObject highscoreButton;
     public GameObject startGameButton;
     public GameObject restartButton;
+    public Sprite volumeOnIcon;
+    public Sprite musicOnIcon;
+    public Sprite volumeOffIcon;
+    public Sprite musicOffIcon;    
     public GameObject newHighScorePanel;
     public GameObject highScorePanel;
     public GameObject tutorial;
@@ -27,6 +31,8 @@ public class GameMenu : MonoBehaviour
     public Text endScore;
     [SerializeField] int finalScore;
     public Text playerName;
+    private Button volumeButton;
+    private Button musicButton;
     private bool end;
     private float gamespeed = 3.0f;
     public static bool tutorialSwitch;
@@ -38,6 +44,24 @@ public class GameMenu : MonoBehaviour
         highscoreHandler.LoadHighScores();
         highScorePanel.SetActive(false);
         isPaused = true;
+        volumeButton = GameObject.Find("PauseCanvas/PauseMenu/VolumeIcon/Volume").GetComponent<Button>();
+        if(SettingsControl.VolumeOn)
+        {
+            //TODO: volumebutton on button, rinnakkainen imagen kanssa!, image pitää hakea volumebuttonin parentista   volumeButton.GetComponent<Image>().sprite = volumeOnIcon;
+        }
+        else
+        {
+            volumeButton.GetComponent<Image>().sprite = volumeOffIcon;
+        }
+        musicButton = GameObject.Find("PauseCanvas/PauseMenu/MusicIcon/Music").GetComponent<Button>();
+        if(SettingsControl.VolumeOn)
+        {
+            musicButton.GetComponent<Image>().sprite = musicOnIcon;
+        }
+        else
+        {
+            musicButton.GetComponent<Image>().sprite = musicOffIcon;
+        }
         if(end)
         {
             end = false;
@@ -194,6 +218,36 @@ public class GameMenu : MonoBehaviour
                 texts[0].text = el.playerName;
                 texts[1].text = el.score.ToString();
             }
+        }
+    }
+
+    public void OnClickVolume()
+    {
+        if(volumeButton.GetComponent<Image>().sprite == volumeOnIcon)
+        {
+            volumeButton.GetComponent<Image>().sprite = volumeOffIcon;
+            SettingsControl.VolumeValue = 0;
+            SettingsControl.VolumeOn = false;
+        }
+        else
+        {
+            volumeButton.GetComponent<Image>().sprite = volumeOnIcon;
+            SettingsControl.VolumeOn = true;
+        }
+    }
+
+    public void OnClickMusic()
+    {
+        if(musicButton.GetComponent<Image>().sprite == musicOnIcon)
+        {
+            musicButton.GetComponent<Image>().sprite = musicOffIcon;
+            SettingsControl.MusicValue = 0;
+            SettingsControl.MusicOn = false;
+        }
+        else
+        {
+            musicButton.GetComponent<Image>().sprite = musicOnIcon;
+            SettingsControl.MusicOn = true;
         }
     }
 

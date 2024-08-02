@@ -11,7 +11,7 @@ public class PointAreas : MonoBehaviour
     {
         pointValue = GameObject.Find("CalculatePoints").GetComponent<ScoreManager>();
     }
-
+    // Add points when ball enters area
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")
