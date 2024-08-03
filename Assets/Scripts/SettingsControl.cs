@@ -7,173 +7,59 @@ public class SettingsControl : MonoBehaviour
 {
     private Text currentTxt;
     private int qualityLevel;
-    public Sprite volumeOnIcon;
-    public Sprite volumeOffIcon;
+    public Sprite gameSoundOnIcon;
+    public Sprite gameSoundOffIcon;
     public Sprite musicOnIcon;
     public Sprite musicOffIcon;
-    public Button volumeButton;
+    public Button gameSoundButton;
     public Button musicButton;
-    private static Slider musicSlider;
-    public static float MusicValue
-    {
-        get {return musicSlider.value;}
-        set 
-        {
-            musicSlider.value = value;
-        }
-    }
-    private static Slider volumeSlider;
-    public static float VolumeValue
-    {
-        get {return volumeSlider.value;}
-        set 
-        {
-            volumeSlider.value = value;
-        }
-    }
-    public GameObject musicPlayer;
-    private static bool volumeOn;
-    public static bool VolumeOn
-    {
-        get {return volumeOn;}
-        set 
-        {
-            volumeOn = value;
-        }
-    }
-    private static bool musicOn;
-    public static bool MusicOn
-    {
-        get {return musicOn;}
-        set 
-        {
-            musicOn = value;
-        }
-    }
-    private float previousVolumeValue;
-    private float previousMusicValue;
 
     // Start is called before the first frame update
     void Start()
     {
         currentTxt = GameObject.Find("SettingsCanvas/QualityButton/CurrentQuality").GetComponent<Text>();
-        List<Slider> sliders = new List<Slider>(GameObject.FindObjectsOfType<Slider>());
-        volumeSlider = sliders[1];
-        musicSlider = sliders[0];
         qualityLevel = QualitySettings.GetQualityLevel();
         currentTxt.text = QualitySettings.names[qualityLevel];
-        CheckVolume();
-        CheckMusic();
-    }
-    public void VolumeValueChanged()
-    {
-        PlayerPrefs.SetFloat("VolumeValueChanged", volumeSlider.value);
-        if(volumeSlider.value == 0)
-        {
-            volumeButton.GetComponent<Image>().sprite = volumeOffIcon;
-            VolumeOn = false;
-        }
-        else
-        {
-            volumeButton.GetComponent<Image>().sprite = volumeOnIcon;
-            VolumeOn = true;
-        }
-    }
 
-    public void MusicValueChanged()
-    {
-        PlayerPrefs.SetFloat("MusicValueChanged", musicSlider.value);
-        if(musicSlider.value == 0)
+        /*if(PlayerPrefs.GetInt("IsMusicMuted", 0) == 0)
         {
-            musicButton.GetComponent<Image>().sprite = musicOffIcon;
-            MusicOn = false;
-        }
-        else
-        {
-            musicButton.GetComponent<Image>().sprite = musicOnIcon;
-            MusicOn = true;
-        }
-    }
-    private void CheckVolume()
-    {   
-        volumeSlider.value = PlayerPrefs.GetFloat("VolumeValueChanged", volumeSlider.value);
-        if(volumeSlider.value != 0)
-        {
-            VolumeOn = true;
-            volumeButton.GetComponent<Image>().sprite = volumeOnIcon;
-        }
-        else
-        {
-            VolumeOn = false;
-            volumeButton.GetComponent<Image>().sprite = volumeOffIcon;
-        }
-    }
-    private void CheckMusic()
-    {
-        musicSlider.value = PlayerPrefs.GetFloat("MusicValueChanged", musicSlider.value);
-        if(musicSlider.value != 0)
-        {
-            MusicOn = true;
             musicButton.GetComponent<Image>().sprite = musicOnIcon;
         }
         else
         {
-            MusicOn = false;
             musicButton.GetComponent<Image>().sprite = musicOffIcon;
-        }
+        }*/
     }
-    public void OnClickVolume()
+
+    public void OnClickGameSound()
     {
-        if(VolumeOn)
+        if(Music.GameSoundOn)
         {
-            previousVolumeValue = volumeSlider.value;
-            volumeButton.GetComponent<Image>().sprite = volumeOffIcon;
-            volumeSlider.value = 0;
-            VolumeOn = false;
+            gameSoundButton.GetComponent<Image>().sprite = gameSoundOffIcon;
+            Music.GameSoundOn = false;
         }
         else
         {
-            volumeSlider.value = previousVolumeValue;
-            if(volumeSlider.value != 0)
-            {
-                VolumeOn = true;
-                volumeButton.GetComponent<Image>().sprite = volumeOnIcon;
-            }
-            else
-            {
-                VolumeOn = false;
-                volumeButton.GetComponent<Image>().sprite = volumeOffIcon;
-            }
+            gameSoundButton.GetComponent<Image>().sprite = gameSoundOnIcon;
+            Music.GameSoundOn = true;
         }
     }
-
-    
     public void OnClickMusic()
     {
-        if(MusicOn)
+        if(Music.MusicOn)
         {
-            previousMusicValue = musicSlider.value;
             musicButton.GetComponent<Image>().sprite = musicOffIcon;
-            musicSlider.value = 0;
-            MusicOn = false;
+            Music.MuteMusic();
+            Music.MusicOn = false;
         }
         else
         {
-            musicSlider.value = previousMusicValue;
-            if(musicSlider.value != 0)
-            {
-                MusicOn = true;
-                musicButton.GetComponent<Image>().sprite = musicOnIcon;
-            }
-            else
-            {
-                MusicOn = false;
-                musicButton.GetComponent<Image>().sprite = musicOffIcon;
-            }
+            musicButton.GetComponent<Image>().sprite = musicOnIcon;
+            Music.MuteMusic();
+            Music.MusicOn = true;
         }
     }
     
-
 
     // Change game quality
     public void ChangeQuality()

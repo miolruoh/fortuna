@@ -12,9 +12,9 @@ public class MenuCommands : MonoBehaviour
         get {return _fileName;}
     }
 
-    private void Start()
+    void Start()
     {
-        
+
     }
 
     // Play first board

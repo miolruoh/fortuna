@@ -17,6 +17,7 @@ TagManager:
   - GameArea
   - Tutorial
   - Music
+  - MusicAudioSource
   layers:
   - Default
   - TransparentFX

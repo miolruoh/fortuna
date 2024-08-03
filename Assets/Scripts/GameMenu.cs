@@ -16,9 +16,9 @@ public class GameMenu : MonoBehaviour
     public GameObject highscoreButton;
     public GameObject startGameButton;
     public GameObject restartButton;
-    public Sprite volumeOnIcon;
+    public Sprite gameSoundOnIcon;
     public Sprite musicOnIcon;
-    public Sprite volumeOffIcon;
+    public Sprite gameSoundOffIcon;
     public Sprite musicOffIcon;    
     public GameObject newHighScorePanel;
     public GameObject highScorePanel;
@@ -31,8 +31,8 @@ public class GameMenu : MonoBehaviour
     public Text endScore;
     [SerializeField] int finalScore;
     public Text playerName;
-    private Button volumeButton;
-    private Button musicButton;
+    public Button gameSoundButton;
+    public Button musicButton;
     private bool end;
     private float gamespeed = 3.0f;
     public static bool tutorialSwitch;
@@ -40,28 +40,18 @@ public class GameMenu : MonoBehaviour
     // Set everything ready for game to start
     void Start()
     {
-        tutorialSwitch = false;
-        highscoreHandler.LoadHighScores();
-        highScorePanel.SetActive(false);
-        isPaused = true;
-        volumeButton = GameObject.Find("PauseCanvas/PauseMenu/VolumeIcon/Volume").GetComponent<Button>();
-        if(SettingsControl.VolumeOn)
-        {
-            //TODO: volumebutton on button, rinnakkainen imagen kanssa!, image pitää hakea volumebuttonin parentista   volumeButton.GetComponent<Image>().sprite = volumeOnIcon;
-        }
-        else
-        {
-            volumeButton.GetComponent<Image>().sprite = volumeOffIcon;
-        }
-        musicButton = GameObject.Find("PauseCanvas/PauseMenu/MusicIcon/Music").GetComponent<Button>();
-        if(SettingsControl.VolumeOn)
+        /*if(PlayerPrefs.GetInt("IsMusicMuted", 0) == 0)
         {
             musicButton.GetComponent<Image>().sprite = musicOnIcon;
         }
         else
         {
             musicButton.GetComponent<Image>().sprite = musicOffIcon;
-        }
+        }*/
+        tutorialSwitch = false;
+        highscoreHandler.LoadHighScores();
+        highScorePanel.SetActive(false);
+        isPaused = true;
         if(end)
         {
             end = false;
@@ -71,7 +61,6 @@ public class GameMenu : MonoBehaviour
     // Update to check if game is ended or paused/continued
     void Update()
     {
-        //end = PlayerControl.endGame;
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             if(isPaused)
@@ -221,33 +210,32 @@ public class GameMenu : MonoBehaviour
         }
     }
 
-    public void OnClickVolume()
+    public void OnClickGameSound()
     {
-        if(volumeButton.GetComponent<Image>().sprite == volumeOnIcon)
+        if(Music.GameSoundOn)
         {
-            volumeButton.GetComponent<Image>().sprite = volumeOffIcon;
-            SettingsControl.VolumeValue = 0;
-            SettingsControl.VolumeOn = false;
+            gameSoundButton.GetComponent<Image>().sprite = gameSoundOffIcon;
+            Music.GameSoundOn = false;
         }
         else
         {
-            volumeButton.GetComponent<Image>().sprite = volumeOnIcon;
-            SettingsControl.VolumeOn = true;
+            gameSoundButton.GetComponent<Image>().sprite = gameSoundOnIcon;
+            Music.GameSoundOn = true;
         }
     }
-
     public void OnClickMusic()
     {
-        if(musicButton.GetComponent<Image>().sprite == musicOnIcon)
+        if(Music.MusicOn)
         {
             musicButton.GetComponent<Image>().sprite = musicOffIcon;
-            SettingsControl.MusicValue = 0;
-            SettingsControl.MusicOn = false;
+            Music.MuteMusic();
+            Music.MusicOn = false;
         }
         else
         {
             musicButton.GetComponent<Image>().sprite = musicOnIcon;
-            SettingsControl.MusicOn = true;
+            Music.MuteMusic();
+            Music.MusicOn = true;
         }
     }
 
@@ -264,5 +252,4 @@ public class GameMenu : MonoBehaviour
         PlayerControl.onTutorialSwitchChanged -= TutorialActivation;
         PlayerControl.onGameEnded -= End;
     }
-
 }
