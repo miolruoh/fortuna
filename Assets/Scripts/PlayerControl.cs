@@ -25,14 +25,14 @@ public class PlayerControl : MonoBehaviour
     private readonly float forceLimit = 3f; // if force is higher than limit, it is set to the limit set here
     private List<Rigidbody> rb = new List<Rigidbody>();
     private List<bool> isStopped = new List<bool>();
-    private bool endGame;
+    //private bool endGame;
 
     // Check if tutorial is needed
     public delegate void OnTutorialSwitchChanged(bool sw);
     public static event OnTutorialSwitchChanged onTutorialSwitchChanged;
 
     // Checks when game is ended
-    public delegate void OnGameEnded(bool ifEnded);
+    public delegate void OnGameEnded();
     public static event OnGameEnded onGameEnded;
 
 
@@ -43,7 +43,7 @@ public class PlayerControl : MonoBehaviour
         SphereStartPos = balls[i].transform.position;
         powerbar.value = 0;
         powerbar.maxValue = forceLimit;
-        endGame = false;
+        //endGame = false;
         isInStartArea = true;
         atZeroPointArea = false;
         isActive = true;
@@ -168,10 +168,10 @@ public class PlayerControl : MonoBehaviour
         }
         if(!isStopped.Contains(false))
         {
-            endGame = true;
+            //endGame = true;
             if(onGameEnded != null) 
             {
-                onGameEnded(endGame);
+                onGameEnded();
             }
         }
         else

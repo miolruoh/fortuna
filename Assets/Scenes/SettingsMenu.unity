@@ -1054,7 +1054,7 @@ GameObject:
   - component: {fileID: 1348956607}
   m_Layer: 5
   m_Name: GameSoundToggle
-  m_TagString: Untagged
+  m_TagString: SFXToggle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1159,19 +1159,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1348956605}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1443415014}
-        m_TargetAssemblyTypeName: SettingsControl, Assembly-CSharp
-        m_MethodName: OnClickGameSound
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &1359973551
 GameObject:
   m_ObjectHideFlags: 0
@@ -1186,7 +1174,7 @@ GameObject:
   - component: {fileID: 1359973553}
   m_Layer: 5
   m_Name: MusicToggle
-  m_TagString: Untagged
+  m_TagString: MusicToggle
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1253,19 +1241,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1359973554}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1443415014}
-        m_TargetAssemblyTypeName: SettingsControl, Assembly-CSharp
-        m_MethodName: OnClickMusic
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!114 &1359973554
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1422,10 +1398,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 061a72f0c71649d4ea925e82bdfa7375, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameSoundOnIcon: {fileID: 21300000, guid: 2cae12e1e61e10149bed85fc69dbecdf, type: 3}
-  gameSoundOffIcon: {fileID: 21300000, guid: a5224b390da6c0f4499128d117ec66a4, type: 3}
-  musicOnIcon: {fileID: 21300000, guid: 95958905bac86b248b82d7e1f3ac4465, type: 3}
-  musicOffIcon: {fileID: 21300000, guid: 2c456710d69bc4840ac8ba4a8885e663, type: 3}
   gameSoundButton: {fileID: 1348956607}
   musicButton: {fileID: 1359973553}
 --- !u!1 &1572105554

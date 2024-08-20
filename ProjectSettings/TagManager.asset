@@ -18,6 +18,8 @@ TagManager:
   - Tutorial
   - Music
   - MusicAudioSource
+  - MusicToggle
+  - SFXToggle
   layers:
   - Default
   - TransparentFX

@@ -15,11 +15,7 @@ public class GameMenu : MonoBehaviour
     public GameObject resumeButton;
     public GameObject highscoreButton;
     public GameObject startGameButton;
-    public GameObject restartButton;
-    public Sprite gameSoundOnIcon;
-    public Sprite musicOnIcon;
-    public Sprite gameSoundOffIcon;
-    public Sprite musicOffIcon;    
+    public GameObject restartButton;    
     public GameObject newHighScorePanel;
     public GameObject highScorePanel;
     public GameObject tutorial;
@@ -37,17 +33,20 @@ public class GameMenu : MonoBehaviour
     private float gamespeed = 3.0f;
     public static bool tutorialSwitch;
 
+
+    public delegate void CheckIfMusicButtonExists(Button button);
+    public static event CheckIfMusicButtonExists checkIfMusicButtonExists;
+    public delegate void CheckIfSFXButtonExists(Button button);
+    public static event CheckIfSFXButtonExists checkIfSFXButtonExists;
+
     // Set everything ready for game to start
     void Start()
     {
-        /*if(PlayerPrefs.GetInt("IsMusicMuted", 0) == 0)
+        if(checkIfMusicButtonExists != null && checkIfSFXButtonExists != null)
         {
-            musicButton.GetComponent<Image>().sprite = musicOnIcon;
+            checkIfMusicButtonExists(musicButton);
+            checkIfSFXButtonExists(gameSoundButton);
         }
-        else
-        {
-            musicButton.GetComponent<Image>().sprite = musicOffIcon;
-        }*/
         tutorialSwitch = false;
         highscoreHandler.LoadHighScores();
         highScorePanel.SetActive(false);
@@ -74,7 +73,7 @@ public class GameMenu : MonoBehaviour
         }
     }
     // Check if game is ready to end
-    private void End(bool ended)
+    private void End()
     {
         EndMenu();
     }
@@ -209,36 +208,6 @@ public class GameMenu : MonoBehaviour
             }
         }
     }
-
-    public void OnClickGameSound()
-    {
-        if(Music.GameSoundOn)
-        {
-            gameSoundButton.GetComponent<Image>().sprite = gameSoundOffIcon;
-            Music.GameSoundOn = false;
-        }
-        else
-        {
-            gameSoundButton.GetComponent<Image>().sprite = gameSoundOnIcon;
-            Music.GameSoundOn = true;
-        }
-    }
-    public void OnClickMusic()
-    {
-        if(Music.MusicOn)
-        {
-            musicButton.GetComponent<Image>().sprite = musicOffIcon;
-            Music.MuteMusic();
-            Music.MusicOn = false;
-        }
-        else
-        {
-            musicButton.GetComponent<Image>().sprite = musicOnIcon;
-            Music.MuteMusic();
-            Music.MusicOn = true;
-        }
-    }
-
     private void OnEnable() 
     {
         HighScoreHandler.onHighScoreListChanged += UpdateHighScoreUI;

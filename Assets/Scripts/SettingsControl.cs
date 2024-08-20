@@ -7,59 +7,28 @@ public class SettingsControl : MonoBehaviour
 {
     private Text currentTxt;
     private int qualityLevel;
-    public Sprite gameSoundOnIcon;
-    public Sprite gameSoundOffIcon;
-    public Sprite musicOnIcon;
-    public Sprite musicOffIcon;
     public Button gameSoundButton;
     public Button musicButton;
+
+    public delegate void CheckIfMusicButtonExists(Button button);
+    public static event CheckIfMusicButtonExists checkIfMusicButtonExists;
+    public delegate void CheckIfSFXButtonExists(Button button);
+    public static event CheckIfSFXButtonExists checkIfSFXButtonExists;
+
 
     // Start is called before the first frame update
     void Start()
     {
+        if(checkIfMusicButtonExists != null && checkIfSFXButtonExists != null)
+        {
+            checkIfMusicButtonExists(musicButton);
+            checkIfSFXButtonExists(gameSoundButton);
+        }
         currentTxt = GameObject.Find("SettingsCanvas/QualityButton/CurrentQuality").GetComponent<Text>();
         qualityLevel = QualitySettings.GetQualityLevel();
         currentTxt.text = QualitySettings.names[qualityLevel];
 
-        /*if(PlayerPrefs.GetInt("IsMusicMuted", 0) == 0)
-        {
-            musicButton.GetComponent<Image>().sprite = musicOnIcon;
-        }
-        else
-        {
-            musicButton.GetComponent<Image>().sprite = musicOffIcon;
-        }*/
     }
-
-    public void OnClickGameSound()
-    {
-        if(Music.GameSoundOn)
-        {
-            gameSoundButton.GetComponent<Image>().sprite = gameSoundOffIcon;
-            Music.GameSoundOn = false;
-        }
-        else
-        {
-            gameSoundButton.GetComponent<Image>().sprite = gameSoundOnIcon;
-            Music.GameSoundOn = true;
-        }
-    }
-    public void OnClickMusic()
-    {
-        if(Music.MusicOn)
-        {
-            musicButton.GetComponent<Image>().sprite = musicOffIcon;
-            Music.MuteMusic();
-            Music.MusicOn = false;
-        }
-        else
-        {
-            musicButton.GetComponent<Image>().sprite = musicOnIcon;
-            Music.MuteMusic();
-            Music.MusicOn = true;
-        }
-    }
-    
 
     // Change game quality
     public void ChangeQuality()

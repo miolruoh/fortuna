@@ -570,7 +570,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   musicPrefab: {fileID: 7283412111096700406, guid: 54e6050cf37a6cc45b8311edce31241a, type: 3}
-  audioManager: {fileID: 566712323}
+  gameSoundOnIcon: {fileID: 21300000, guid: 2cae12e1e61e10149bed85fc69dbecdf, type: 3}
+  gameSoundOffIcon: {fileID: 21300000, guid: a5224b390da6c0f4499128d117ec66a4, type: 3}
+  musicOnIcon: {fileID: 21300000, guid: 95958905bac86b248b82d7e1f3ac4465, type: 3}
+  musicOffIcon: {fileID: 21300000, guid: 2c456710d69bc4840ac8ba4a8885e663, type: 3}
 --- !u!4 &566712325
 Transform:
   m_ObjectHideFlags: 0
@@ -579,7 +582,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 566712323}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 2.526497, y: -10.925205, z: 168.0294}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
