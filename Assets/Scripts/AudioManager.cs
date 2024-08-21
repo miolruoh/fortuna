@@ -7,26 +7,10 @@ using UnityEngine.UI;
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance;
-    public static AudioSource _audioSource;
-    private static bool gameSoundOn;
-    public static bool GameSoundOn
-    {
-        get {return gameSoundOn;}
-        set 
-        {
-            gameSoundOn = value;
-        }
-    }
-    private static bool musicOn;
-    public static bool MusicOn
-    {
-        get {return musicOn;}
-        set 
-        {
-            musicOn = value;
-        }
-    }
-    [SerializeField] GameObject musicPrefab;
+    [SerializeField] private AudioSource _musicAudioSource;
+    [SerializeField] private AudioSource _sFXAudioSource;
+    private bool gameSoundOn;
+    private bool musicOn;
     public Sprite gameSoundOnIcon;
     public Sprite gameSoundOffIcon;
     public Sprite musicOnIcon;
@@ -44,45 +28,67 @@ public class AudioManager : MonoBehaviour
 
     private void Start()
     {
-        if(GameObject.FindGameObjectsWithTag("Music").Count<GameObject>() <= 0)
+        if(GameObject.FindGameObjectsWithTag("MusicAudioSource").Count<GameObject>() <= 0)
         {
-            Instantiate(musicPrefab, instance.transform);
+            Instantiate(_musicAudioSource, instance.transform);
             DontDestroyOnLoad(instance);
-            _audioSource = GameObject.FindGameObjectWithTag("MusicAudioSource").GetComponent<AudioSource>();
             gameSoundOn = true;
-            musicOn = true;            
+            musicOn = true; 
         }
         else
         {
             Destroy(gameObject);
         }
-        
     }
+
+    public void PlaySFXClip(AudioClip audioClip, Transform spawnTransform, float volume, bool loop)
+    {
+        // spawn in gameobject
+        AudioSource audioSource = Instantiate(_sFXAudioSource, spawnTransform.position, Quaternion.identity);
+
+        // assign the audioclip
+        audioSource.clip = audioClip;
+
+        //assign volume
+        audioSource.volume = volume;
+
+        // assign loop
+        audioSource.loop = loop;
+
+        //play sound
+        audioSource.Play();
+
+        // get length of sfx clip
+        float clipLength = audioSource.clip.length;
+
+        // destroy clip after it is done playing
+        Destroy(audioSource.gameObject, clipLength);
+    }
+
+
 
     private void MuteToggleMusic()
     {
-        if(MusicOn)
+        if(musicOn)
         {
-            _audioSource.mute = true;
+            GameObject.FindObjectOfType<AudioSource>().mute = true;
         }
         else
         {
-            _audioSource.mute = false;
+            GameObject.FindObjectOfType<AudioSource>().mute = false;
         }
     }
-
     private void MuteToggleSFX()
     {
-        if(GameSoundOn)
+        if(gameSoundOn)
         {
-            _audioSource.mute = true;
+            _musicAudioSource.mute = true;
         }
         else
         {
-            _audioSource.mute = false;
+            _musicAudioSource.mute = false;
         }
     }
-
     public void CheckMusicToggleExistence(Button button)
     {
         if(button != null)
@@ -99,40 +105,37 @@ public class AudioManager : MonoBehaviour
             gameSoundButton.onClick.AddListener(OnClickGameSound);
         }
     }
-
-
     public void OnClickGameSound()
     {
-        if(GameSoundOn)
+        if(gameSoundOn)
         {
             gameSoundButton.GetComponent<Image>().sprite = gameSoundOffIcon;
             MuteToggleSFX();
-            GameSoundOn = false;
+            gameSoundOn = false;
         }
         else
         {
             gameSoundButton.GetComponent<Image>().sprite = gameSoundOnIcon;
             MuteToggleSFX();
-            GameSoundOn = true;
+            gameSoundOn = true;
         }
     }
     public void OnClickMusic()
     {
         
-        if(MusicOn)
+        if(musicOn)
         {
             musicButton.GetComponent<Image>().sprite = musicOffIcon;
             MuteToggleMusic();
-            MusicOn = false;
+            musicOn = false;
         }
         else
         {
             musicButton.GetComponent<Image>().sprite = musicOnIcon;
             MuteToggleMusic();
-            MusicOn = true;
+            musicOn = true;
         }
     }
-
     private void OnEnable() 
     {
         GameMenu.checkIfMusicButtonExists += CheckMusicToggleExistence;

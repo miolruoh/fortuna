@@ -7,6 +7,7 @@ using UnityEngine.UI;
 public class MenuCommands : MonoBehaviour
 {
     [SerializeField] private static string _fileName;
+    [SerializeField] private AudioClip clickSFX;
     public static string FileName
     {
         get {return _fileName;}
@@ -16,46 +17,43 @@ public class MenuCommands : MonoBehaviour
     {
 
     }
+    // Open Credits for the project
+    public void OnClickCredits()
+    {
+        // Add credits
+        AudioManager.instance.PlaySFXClip(clickSFX, transform, 0.5f, false);
+    }
 
     // Play first board
     public void OnPlayBoard1ButtonPress()
     {
         _fileName = "highscores1.json";
-        // Later to collapse and select board you want to play
-
-       /* int i = SceneManager.GetActiveScene().buildIndex + 1;
-        if (i >= SceneManager.sceneCountInBuildSettings)
-        {
-            i = 1;
-        }*/
+        AudioManager.instance.PlaySFXClip(clickSFX, transform, 0.5f, false);
         SceneChanger.LoadScene(2);
     }
     // Play second board
     public void OnPlayBoard2ButtonPress()
     {
-         _fileName = "highscores2.json";
-        // Later to collapse and select board you want to play
-
-        /* int i = SceneManager.GetActiveScene().buildIndex + 1;
-         if (i >= SceneManager.sceneCountInBuildSettings)
-         {
-             i = 1;
-         }*/
+        _fileName = "highscores2.json";
+        AudioManager.instance.PlaySFXClip(clickSFX, transform, 0.5f, false);
         SceneChanger.LoadScene(3);
     }
     // Go to settings
     public void OnSettingsButtonPress()
     {
+        AudioManager.instance.PlaySFXClip(clickSFX, transform, 0.5f, false);
         SceneChanger.LoadScene(1);
     }
     // Go back to previous scene from settings
     public void OnBackButtonPress()
     {
+        AudioManager.instance.PlaySFXClip(clickSFX, transform, 0.5f, false);
         SceneChanger.PreviousScene();
     }
     // Exit game on windows / on android put game to background
     public void ExitGame()
     {
+        AudioManager.instance.PlaySFXClip(clickSFX, transform, 0.5f, false);
         #if UNITY_STANDALONE_WIN || UNITY_EDITOR
             Application.Quit();
         #elif UNITY_ANDROID

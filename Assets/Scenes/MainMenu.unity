@@ -569,7 +569,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bf04bc613ce553a458ba6f2dc0d8ffe5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  musicPrefab: {fileID: 7283412111096700406, guid: 54e6050cf37a6cc45b8311edce31241a, type: 3}
+  _musicAudioSource: {fileID: 4050344273504930842, guid: b1aef641210aecd449056a44462353b2, type: 3}
+  _sFXAudioSource: {fileID: 7233592609928731592, guid: d9b1d1c5b6ab9a84eaa046cf6cf00ed5, type: 3}
   gameSoundOnIcon: {fileID: 21300000, guid: 2cae12e1e61e10149bed85fc69dbecdf, type: 3}
   gameSoundOffIcon: {fileID: 21300000, guid: a5224b390da6c0f4499128d117ec66a4, type: 3}
   musicOnIcon: {fileID: 21300000, guid: 95958905bac86b248b82d7e1f3ac4465, type: 3}
@@ -719,6 +720,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 810d484ad0bf0c2438199871a1671ddd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clickSFX: {fileID: 8300000, guid: 6e8772b49f34d402a90016ed445d8a2f, type: 3}
 --- !u!114 &1115264471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1193,6 +1195,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 810d484ad0bf0c2438199871a1671ddd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clickSFX: {fileID: 8300000, guid: 6e8772b49f34d402a90016ed445d8a2f, type: 3}
 --- !u!1 &1692814059
 GameObject:
   m_ObjectHideFlags: 0
@@ -1244,6 +1247,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 810d484ad0bf0c2438199871a1671ddd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clickSFX: {fileID: 8300000, guid: 6e8772b49f34d402a90016ed445d8a2f, type: 3}
 --- !u!114 &1692814062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1390,6 +1394,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 810d484ad0bf0c2438199871a1671ddd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clickSFX: {fileID: 8300000, guid: 6e8772b49f34d402a90016ed445d8a2f, type: 3}
 --- !u!114 &1850654103
 MonoBehaviour:
   m_ObjectHideFlags: 0

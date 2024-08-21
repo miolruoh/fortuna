@@ -329,6 +329,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 810d484ad0bf0c2438199871a1671ddd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  clickSFX: {fileID: 8300000, guid: 6e8772b49f34d402a90016ed445d8a2f, type: 3}
 --- !u!114 &323602292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -865,6 +866,7 @@ GameObject:
   - component: {fileID: 957323974}
   - component: {fileID: 957323973}
   - component: {fileID: 957323972}
+  - component: {fileID: 957323975}
   m_Layer: 5
   m_Name: Credits
   m_TagString: Untagged
@@ -935,7 +937,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 957323973}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 957323975}
+        m_TargetAssemblyTypeName: MenuCommands, Assembly-CSharp
+        m_MethodName: OnClickCredits
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &957323973
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -974,6 +988,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 957323970}
   m_CullTransparentMesh: 1
+--- !u!114 &957323975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 957323970}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 810d484ad0bf0c2438199871a1671ddd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickSFX: {fileID: 8300000, guid: 6e8772b49f34d402a90016ed445d8a2f, type: 3}
 --- !u!1 &1253824177
 GameObject:
   m_ObjectHideFlags: 0
