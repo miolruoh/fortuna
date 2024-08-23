@@ -1427,6 +1427,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gameSoundButton: {fileID: 1348956607}
   musicButton: {fileID: 1359973553}
+  clickSFX: {fileID: 8300000, guid: 6e8772b49f34d402a90016ed445d8a2f, type: 3}
 --- !u!1 &1572105554
 GameObject:
   m_ObjectHideFlags: 0

@@ -570,11 +570,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _musicAudioSource: {fileID: 4050344273504930842, guid: b1aef641210aecd449056a44462353b2, type: 3}
-  _sFXAudioSource: {fileID: 7233592609928731592, guid: d9b1d1c5b6ab9a84eaa046cf6cf00ed5, type: 3}
+  _sFXAudioSource: {fileID: 5933132383014513526, guid: edda4bf78b1fdc94abd42115464b3f6d, type: 3}
+  audioMixer: {fileID: 24100000, guid: 1f833e78efdcfdc46850c2d1d9b0331a, type: 2}
   gameSoundOnIcon: {fileID: 21300000, guid: 2cae12e1e61e10149bed85fc69dbecdf, type: 3}
   gameSoundOffIcon: {fileID: 21300000, guid: a5224b390da6c0f4499128d117ec66a4, type: 3}
   musicOnIcon: {fileID: 21300000, guid: 95958905bac86b248b82d7e1f3ac4465, type: 3}
   musicOffIcon: {fileID: 21300000, guid: 2c456710d69bc4840ac8ba4a8885e663, type: 3}
+  clickSFX: {fileID: 8300000, guid: 6e8772b49f34d402a90016ed445d8a2f, type: 3}
 --- !u!4 &566712325
 Transform:
   m_ObjectHideFlags: 0
@@ -600,6 +602,7 @@ GameObject:
   - component: {fileID: 647314298}
   - component: {fileID: 647314300}
   - component: {fileID: 647314299}
+  - component: {fileID: 647314301}
   m_Layer: 5
   m_Name: Panel
   m_TagString: Untagged
@@ -668,6 +671,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 647314297}
   m_CullTransparentMesh: 1
+--- !u!114 &647314301
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 647314297}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 810d484ad0bf0c2438199871a1671ddd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickSFX: {fileID: 8300000, guid: 6e8772b49f34d402a90016ed445d8a2f, type: 3}
 --- !u!1 &1115264468
 GameObject:
   m_ObjectHideFlags: 0
@@ -680,7 +696,6 @@ GameObject:
   - component: {fileID: 1115264473}
   - component: {fileID: 1115264472}
   - component: {fileID: 1115264471}
-  - component: {fileID: 1115264470}
   m_Layer: 5
   m_Name: ExitGame
   m_TagString: Untagged
@@ -708,19 +723,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 100}
   m_SizeDelta: {x: 300, y: 80}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1115264470
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1115264468}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 810d484ad0bf0c2438199871a1671ddd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clickSFX: {fileID: 8300000, guid: 6e8772b49f34d402a90016ed445d8a2f, type: 3}
 --- !u!114 &1115264471
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -765,7 +767,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1115264470}
+      - m_Target: {fileID: 647314301}
         m_TargetAssemblyTypeName: MenuCommands, Assembly-CSharp
         m_MethodName: ExitGame
         m_Mode: 1
@@ -1061,7 +1063,6 @@ GameObject:
   - component: {fileID: 1495234345}
   - component: {fileID: 1495234344}
   - component: {fileID: 1495234343}
-  - component: {fileID: 1495234346}
   m_Layer: 5
   m_Name: RedBoardButton
   m_TagString: Untagged
@@ -1133,7 +1134,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1850654102}
+      - m_Target: {fileID: 647314301}
         m_TargetAssemblyTypeName: MenuCommands, Assembly-CSharp
         m_MethodName: OnPlayBoard1ButtonPress
         m_Mode: 1
@@ -1183,19 +1184,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1495234341}
   m_CullTransparentMesh: 1
---- !u!114 &1495234346
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1495234341}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 810d484ad0bf0c2438199871a1671ddd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clickSFX: {fileID: 8300000, guid: 6e8772b49f34d402a90016ed445d8a2f, type: 3}
 --- !u!1 &1692814059
 GameObject:
   m_ObjectHideFlags: 0
@@ -1208,7 +1196,6 @@ GameObject:
   - component: {fileID: 1692814064}
   - component: {fileID: 1692814063}
   - component: {fileID: 1692814062}
-  - component: {fileID: 1692814061}
   m_Layer: 5
   m_Name: SettingsButton
   m_TagString: Untagged
@@ -1235,19 +1222,6 @@ RectTransform:
   m_AnchoredPosition: {x: -150, y: -150}
   m_SizeDelta: {x: 150, y: 150}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1692814061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1692814059}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 810d484ad0bf0c2438199871a1671ddd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clickSFX: {fileID: 8300000, guid: 6e8772b49f34d402a90016ed445d8a2f, type: 3}
 --- !u!114 &1692814062
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1292,7 +1266,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1692814061}
+      - m_Target: {fileID: 647314301}
         m_TargetAssemblyTypeName: MenuCommands, Assembly-CSharp
         m_MethodName: OnSettingsButtonPress
         m_Mode: 1
@@ -1354,7 +1328,6 @@ GameObject:
   - component: {fileID: 1850654105}
   - component: {fileID: 1850654104}
   - component: {fileID: 1850654103}
-  - component: {fileID: 1850654102}
   m_Layer: 5
   m_Name: GreenBoardButton
   m_TagString: Untagged
@@ -1382,19 +1355,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 800, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &1850654102
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1850654100}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 810d484ad0bf0c2438199871a1671ddd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  clickSFX: {fileID: 8300000, guid: 6e8772b49f34d402a90016ed445d8a2f, type: 3}
 --- !u!114 &1850654103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1439,7 +1399,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1850654102}
+      - m_Target: {fileID: 647314301}
         m_TargetAssemblyTypeName: MenuCommands, Assembly-CSharp
         m_MethodName: OnPlayBoard2ButtonPress
         m_Mode: 1

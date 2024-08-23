@@ -9,7 +9,15 @@ using TMPro;
 
 public class GameMenu : MonoBehaviour
 {
-    private bool isPaused;
+    [SerializeField] private AudioClip clickSFX;
+    [SerializeField] private AudioClip newHighscoreSFX;
+    private readonly float clickVolume = AudioManager.ClickVolume;
+    private readonly float newHighscoreVolume = AudioManager.NewHighScoreSFXVolume;
+    private static bool isPaused;
+    public static bool IsPaused
+    {
+        get {return isPaused;}
+    }
     public GameObject pauseMenuUI;
     public GameObject scorePanel;
     public GameObject resumeButton;
@@ -32,6 +40,7 @@ public class GameMenu : MonoBehaviour
     private bool end;
     private float gamespeed = 3.0f;
     public static bool tutorialSwitch;
+    
 
 
     public delegate void CheckIfMusicButtonExists(Button button);
@@ -40,7 +49,7 @@ public class GameMenu : MonoBehaviour
     public static event CheckIfSFXButtonExists checkIfSFXButtonExists;
 
     // Set everything ready for game to start
-    void Start()
+    void Awake()
     {
         if(checkIfMusicButtonExists != null && checkIfSFXButtonExists != null)
         {
@@ -105,6 +114,7 @@ public class GameMenu : MonoBehaviour
     // Start game button
     public void StartGame()
     {
+        AudioManager.instance.PlaySFXClip(clickSFX, transform, clickVolume);
         if(PlayerPrefs.GetInt("HasLaunched", 0) == 0) // Game hasn't launched before. 0 is the default value if the player pref doesn't exist yet.
         {
             tutorialSwitch = true;
@@ -141,6 +151,7 @@ public class GameMenu : MonoBehaviour
         // Check if there is enough points for highscore list
         if(highscoreHandler.GetHighScoreCount() < highscoreHandler.MaxCount || ScoreManager.Points > highscoreHandler.GetLastHighScore())
         {
+            AudioManager.instance.PlaySFXClip(newHighscoreSFX, transform, newHighscoreVolume);
             newHighScorePanel.SetActive(true);
             newHighScore.text = ScoreManager.Final_Points;
         }
@@ -149,6 +160,7 @@ public class GameMenu : MonoBehaviour
     //Resume Game
     public void Resume()
     {
+        AudioManager.instance.PlaySFXClip(clickSFX, transform, clickVolume);
         pauseMenuUI.SetActive(false);
         Time.timeScale = gamespeed;
         isPaused = false;
@@ -157,23 +169,27 @@ public class GameMenu : MonoBehaviour
     // Restart scene
     public void Restart()
     {
+        AudioManager.instance.PlaySFXClip(clickSFX, transform, clickVolume);
         SceneChanger.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     //Back To menu
     public void BackToMenu()
     {
+        AudioManager.instance.PlaySFXClip(clickSFX, transform, clickVolume);
         Time.timeScale = 1f;
         SceneChanger.LoadScene(0);
     }
     // Back button in highscore panel
     public void BackButton()
     {
-        SceneChanger.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        AudioManager.instance.PlaySFXClip(clickSFX, transform, clickVolume);
+        highScorePanel.SetActive(false);
     }
     // Add new highscore and close new highscore window
     public void OkButton()
     {
+        AudioManager.instance.PlaySFXClip(clickSFX, transform, clickVolume);
         finalScore = Int32.Parse(ScoreManager.Final_Points); // try-catch?
         highscoreHandler.AddHighScoreIfPossible(new HighScoreElement(playerName.text, finalScore));
         newHighScorePanel.SetActive(false);
@@ -181,6 +197,7 @@ public class GameMenu : MonoBehaviour
     // open highscore panel
     public void HighscoresButton()
     {
+        AudioManager.instance.PlaySFXClip(clickSFX, transform, clickVolume);
         Time.timeScale = 0f;
         highScorePanel.SetActive(true);
     }

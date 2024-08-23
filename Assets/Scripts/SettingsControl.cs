@@ -9,6 +9,9 @@ public class SettingsControl : MonoBehaviour
     private int qualityLevel;
     public Button gameSoundButton;
     public Button musicButton;
+    [SerializeField] private AudioClip clickSFX;
+    private readonly float clickVolume = AudioManager.ClickVolume;
+
 
     public delegate void CheckIfMusicButtonExists(Button button);
     public static event CheckIfMusicButtonExists checkIfMusicButtonExists;
@@ -33,6 +36,7 @@ public class SettingsControl : MonoBehaviour
     // Change game quality
     public void ChangeQuality()
     {
+        AudioManager.instance.PlaySFXClip(clickSFX, transform, clickVolume);
         string[] qualities = QualitySettings.names;
         int qualityLevel = QualitySettings.GetQualityLevel();
         if(qualityLevel + 1 < qualities.Length)

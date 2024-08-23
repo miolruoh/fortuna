@@ -3,20 +3,50 @@ using UnityEngine;
 using UnityEngine.PlayerLoop;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UnityEngine.Audio;
 
 public class AudioManager : MonoBehaviour
 {
     public static AudioManager instance;
     [SerializeField] private AudioSource _musicAudioSource;
     [SerializeField] private AudioSource _sFXAudioSource;
+    [SerializeField] private AudioMixer audioMixer;
     private bool gameSoundOn;
     private bool musicOn;
-    public Sprite gameSoundOnIcon;
-    public Sprite gameSoundOffIcon;
-    public Sprite musicOnIcon;
-    public Sprite musicOffIcon;
+    [SerializeField] private Sprite gameSoundOnIcon;
+    [SerializeField] private Sprite gameSoundOffIcon;
+    [SerializeField] private Sprite musicOnIcon;
+    [SerializeField] private Sprite musicOffIcon;
     private Button musicButton;
     private Button gameSoundButton;
+    [SerializeField] private AudioClip clickSFX;
+    private readonly float mute = -80f;
+    private readonly float unmute = 0f;
+    private static readonly float clickVolume = 0.2f;
+    public static float ClickVolume
+    {
+        get {return clickVolume;}
+    }
+    private static readonly float bonkVolume = 0.5f;
+    public static float BonkVolume
+    {
+        get {return bonkVolume;}
+    }
+    private static readonly float bonkNailVolume = 0.2f;
+    public static float BonkNailVolume
+    {
+        get {return bonkNailVolume;}
+    }
+    private static readonly float newHighScoreSFXVolume = 0.2f;
+    public static float NewHighScoreSFXVolume
+    {
+        get {return newHighScoreSFXVolume;}
+    }
+    private static readonly float rollingBallVolume = 0.5f;
+    public static float RollingBallVolume
+    {
+        get {return rollingBallVolume;}
+    }
 
     private void Awake()
     {
@@ -41,7 +71,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    public void PlaySFXClip(AudioClip audioClip, Transform spawnTransform, float volume, bool loop)
+    public void PlaySFXClip(AudioClip audioClip, Transform spawnTransform, float volume)
     {
         // spawn in gameobject
         AudioSource audioSource = Instantiate(_sFXAudioSource, spawnTransform.position, Quaternion.identity);
@@ -52,9 +82,6 @@ public class AudioManager : MonoBehaviour
         //assign volume
         audioSource.volume = volume;
 
-        // assign loop
-        audioSource.loop = loop;
-
         //play sound
         audioSource.Play();
 
@@ -64,31 +91,15 @@ public class AudioManager : MonoBehaviour
         // destroy clip after it is done playing
         Destroy(audioSource.gameObject, clipLength);
     }
-
-
-
-    private void MuteToggleMusic()
+    public void SetSFXVolume(float level)
     {
-        if(musicOn)
-        {
-            GameObject.FindObjectOfType<AudioSource>().mute = true;
-        }
-        else
-        {
-            GameObject.FindObjectOfType<AudioSource>().mute = false;
-        }
+        audioMixer.SetFloat("SoundFXVolume", level);
     }
-    private void MuteToggleSFX()
+    public void SetMusicVolume(float level)
     {
-        if(gameSoundOn)
-        {
-            _musicAudioSource.mute = true;
-        }
-        else
-        {
-            _musicAudioSource.mute = false;
-        }
+        audioMixer.SetFloat("MusicVolume", level);
     }
+    // Checks if the scene have music volume button
     public void CheckMusicToggleExistence(Button button)
     {
         if(button != null)
@@ -97,6 +108,7 @@ public class AudioManager : MonoBehaviour
                 musicButton.onClick.AddListener(OnClickMusic);
             }
     }
+    // Checks if the scene have game sound volume button
     public void CheckGameSoundToggleExistence(Button button)
     {
         if(button != null)
@@ -110,13 +122,14 @@ public class AudioManager : MonoBehaviour
         if(gameSoundOn)
         {
             gameSoundButton.GetComponent<Image>().sprite = gameSoundOffIcon;
-            MuteToggleSFX();
+            SetSFXVolume(mute);
             gameSoundOn = false;
         }
         else
         {
             gameSoundButton.GetComponent<Image>().sprite = gameSoundOnIcon;
-            MuteToggleSFX();
+            SetSFXVolume(unmute);
+            instance.PlaySFXClip(clickSFX, transform, clickVolume);
             gameSoundOn = true;
         }
     }
@@ -126,13 +139,14 @@ public class AudioManager : MonoBehaviour
         if(musicOn)
         {
             musicButton.GetComponent<Image>().sprite = musicOffIcon;
-            MuteToggleMusic();
+            SetMusicVolume(mute);
             musicOn = false;
         }
         else
         {
             musicButton.GetComponent<Image>().sprite = musicOnIcon;
-            MuteToggleMusic();
+            SetMusicVolume(unmute);
+            instance.PlaySFXClip(clickSFX, transform, clickVolume);
             musicOn = true;
         }
     }

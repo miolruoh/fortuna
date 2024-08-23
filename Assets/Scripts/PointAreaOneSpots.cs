@@ -16,7 +16,7 @@ public class PointAreaOneSpots : MonoBehaviour
     // Ball goes to the spot // Add points
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Player")
+        if (other.gameObject.tag == "Balls")
         {
             ScoreManager.Points = pointValue.PointValue(gameObject.tag);
         }
@@ -24,7 +24,7 @@ public class PointAreaOneSpots : MonoBehaviour
     // Ball exits from the spot // Subtract points
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Player" )
+        if (other.gameObject.tag == "Balls" )
         {
             ScoreManager.Points = -(pointValue.PointValue(gameObject.tag));
         }

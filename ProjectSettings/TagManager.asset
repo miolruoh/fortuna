@@ -22,6 +22,7 @@ TagManager:
   - SFXToggle
   - GameSound
   - GameSoundAudioSource
+  - Balls
   layers:
   - Default
   - TransparentFX
