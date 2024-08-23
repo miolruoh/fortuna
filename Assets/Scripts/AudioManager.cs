@@ -27,12 +27,12 @@ public class AudioManager : MonoBehaviour
     {
         get {return clickVolume;}
     }
-    private static readonly float bonkVolume = 0.5f;
+    private static readonly float bonkVolume = 1.5f;
     public static float BonkVolume
     {
         get {return bonkVolume;}
     }
-    private static readonly float bonkNailVolume = 0.2f;
+    private static readonly float bonkNailVolume = 0.05f;
     public static float BonkNailVolume
     {
         get {return bonkNailVolume;}

@@ -8,7 +8,7 @@ using System.Linq;
 
 public class PlayerControl : MonoBehaviour
 {
-    private float factor = 2500f;        // force can be adjusted with this
+    private float factor = 2100f;        // force can be adjusted with this
     private float touchTimeStart, touchTimeFinish; // count holding time
     private float force;
     public Slider powerbar;
@@ -23,17 +23,16 @@ public class PlayerControl : MonoBehaviour
     private static bool outOfBounds;    // checks if ball is in the game area
     private bool isBouncedOutZeroArea; // if ball bounces off zeropointarea, game doesn't put second ball to game when this ball enters zeropointarea again
     private int i;              // to keep track of the active ball in the list
-    private readonly float forceLimit = 3.5f; // if force is higher than limit, it is set to the limit set here
+    private readonly float forceLimit = 3f; // if force is higher than limit, it is set to the limit set here
     //private List<Rigidbody> rb = new List<Rigidbody>();
     private List<bool> isStopped = new List<bool>();
     [SerializeField] private AudioClip bonkSFX;
     [SerializeField] private AudioClip bonkNailSFX;
-    [SerializeField] private AudioClip rollingBallSFX;
     private readonly float bonkVolume = AudioManager.BonkVolume;
     private readonly float bonkNailVolume = AudioManager.BonkNailVolume;
     [SerializeField] private AudioSource audiosource;
     private float rollingBallVolume;
-    private float maxSpeed = 80f;
+    private float maxSpeed = 60f;
     public AnimationCurve volumeCurve;
     public AnimationCurve pitchCurve;
 
@@ -53,7 +52,7 @@ public class PlayerControl : MonoBehaviour
         ballsArray = GameObject.FindGameObjectsWithTag("Balls");
         balls = ballsArray.OfType<GameObject>().ToList();
         i = 0;
-        SphereStartPos = balls[i].transform.position;
+        SphereStartPos = GameObject.FindGameObjectWithTag("StartPos").transform.position;
         powerbar.value = 0;
         powerbar.maxValue = forceLimit;
         isInStartArea = true;
@@ -113,7 +112,7 @@ public class PlayerControl : MonoBehaviour
             player.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
             isInStartArea = true;
             atZeroPointArea = false;
-            Destroy(audiosource);
+            Destroy(audiosource.gameObject, audiosource.clip.length);
             if(i >= balls.Count)
             {
                 StartCoroutine(CheckEndGame());
@@ -140,10 +139,11 @@ public class PlayerControl : MonoBehaviour
         }
 
         //Audio for ball rolling
-        var speed = player.GetComponent<Rigidbody>().velocity.magnitude;
-        if(!audiosource.isPlaying && speed >= 0.1f && GameMenu.IsPaused == false)
-        {
-            var scaledVelocity = Remap(Mathf.Clamp(speed, 0, maxSpeed), 0, maxSpeed, 0, 1);
+        float speed = player.GetComponent<Rigidbody>().velocity.magnitude;
+        Debug.Log("speed: " + speed + "   Is Playing: " + audiosource.isPlaying);
+        if(!audiosource.isPlaying && speed >= 1 && GameMenu.IsPaused == false)
+        {   
+            float scaledVelocity = Remap(Mathf.Clamp(speed, 0, maxSpeed), 0, maxSpeed, 0, 1.6f);
             // set volume based on volume curve
             rollingBallVolume = volumeCurve.Evaluate(scaledVelocity);
             // set pitch based on pitch curve
@@ -151,6 +151,13 @@ public class PlayerControl : MonoBehaviour
             audiosource.volume = rollingBallVolume;
             audiosource.pitch = pitch;
             audiosource.Play();
+        }
+        else if(speed <= 1 && audiosource.isPlaying)
+        {
+            if(audiosource != null)
+            {
+                audiosource.Stop();
+            }
         }
     }
 
@@ -256,6 +263,17 @@ public class PlayerControl : MonoBehaviour
         if(other.transform.tag == "ZeroPointArea")
         {
            isBouncedOutZeroArea = true;
+        }
+    }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.tag == "Nail")
+        {
+            AudioManager.instance.PlaySFXClip(bonkNailSFX, transform, bonkNailVolume);
+        }
+        if(collision.gameObject.tag == "Balls")
+        {
+            AudioManager.instance.PlaySFXClip(bonkSFX, transform, bonkVolume);
         }
     }
 }

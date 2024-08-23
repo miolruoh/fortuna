@@ -23,6 +23,8 @@ TagManager:
   - GameSound
   - GameSoundAudioSource
   - Balls
+  - Nail
+  - StartPos
   layers:
   - Default
   - TransparentFX
