@@ -7,10 +7,10 @@ using System.Linq;
 
 public class ScoreManager : MonoBehaviour
 {
-    private static TextMeshProUGUI output_Points;
-    private static int points;
+    private static TextMeshProUGUI output_Points; // points in textmeshprougui ( points that is seen in the top corner)
+    private static int points;   // points in int
 
-    public static string Final_Points
+    public static string Final_Points      // points that is seen in the endmenu
     {
         get {return points.ToString();}
     }

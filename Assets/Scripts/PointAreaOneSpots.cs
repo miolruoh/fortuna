@@ -13,7 +13,8 @@ public class PointAreaOneSpots : MonoBehaviour
         pointValue = GameObject.Find("CalculatePoints").GetComponent<ScoreManager>();
     }
 
-    // Ball goes to the spot // Add points
+    // Ball goes to the spot 
+    // Add points
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Balls")
@@ -21,12 +22,13 @@ public class PointAreaOneSpots : MonoBehaviour
             ScoreManager.Points = pointValue.PointValue(gameObject.tag);
         }
     }
-    // Ball exits from the spot // Subtract points
+    // Ball exits from the spot 
+    // Subtract points
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Balls" )
+        if (other.gameObject.tag == "Balls")
         {
-            ScoreManager.Points = -(pointValue.PointValue(gameObject.tag));
+            ScoreManager.Points = -pointValue.PointValue(gameObject.tag);
         }
     }
 }

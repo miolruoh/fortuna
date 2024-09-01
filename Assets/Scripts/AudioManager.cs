@@ -22,6 +22,7 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioClip clickSFX;
     private readonly float mute = -80f;
     private readonly float unmute = 0f;
+    // Set all the sfx volume values
     private static readonly float clickVolume = 0.2f;
     public static float ClickVolume
     {
@@ -32,7 +33,7 @@ public class AudioManager : MonoBehaviour
     {
         get {return bonkVolume;}
     }
-    private static readonly float bonkNailVolume = 0.05f;
+    private static readonly float bonkNailVolume = 0.035f;
     public static float BonkNailVolume
     {
         get {return bonkNailVolume;}
@@ -47,7 +48,7 @@ public class AudioManager : MonoBehaviour
     {
         get {return rollingBallVolume;}
     }
-
+    // Set instance to this class
     private void Awake()
     {
         if (instance ==null)
@@ -55,7 +56,7 @@ public class AudioManager : MonoBehaviour
             instance = this;
         }
     }
-
+    // Set what needed for audio
     private void Start()
     {
         if(GameObject.FindGameObjectsWithTag("MusicAudioSource").Count<GameObject>() <= 0)
@@ -70,7 +71,7 @@ public class AudioManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-
+    // Create sound effects when needed
     public void PlaySFXClip(AudioClip audioClip, Transform spawnTransform, float volume)
     {
         // spawn in gameobject
@@ -91,32 +92,51 @@ public class AudioManager : MonoBehaviour
         // destroy clip after it is done playing
         Destroy(audioSource.gameObject, clipLength);
     }
-    public void SetSFXVolume(float level)
+    // Set volume of sound effects
+    private void SetSFXVolume(float level)
     {
         audioMixer.SetFloat("SoundFXVolume", level);
     }
-    public void SetMusicVolume(float level)
+    // Set volume of music
+    private void SetMusicVolume(float level)
     {
         audioMixer.SetFloat("MusicVolume", level);
     }
     // Checks if the scene have music volume button
-    public void CheckMusicToggleExistence(Button button)
+    private void CheckMusicToggleExistence(Button button)
     {
         if(button != null)
             {
                 musicButton = button;
+                if(musicOn)
+                {
+                    musicButton.GetComponent<Image>().sprite = musicOnIcon;
+                }
+                else
+                {
+                    musicButton.GetComponent<Image>().sprite = musicOffIcon;
+                }
                 musicButton.onClick.AddListener(OnClickMusic);
             }
     }
     // Checks if the scene have game sound volume button
-    public void CheckGameSoundToggleExistence(Button button)
+    private void CheckGameSoundToggleExistence(Button button)
     {
         if(button != null)
         {
             gameSoundButton = button;
+            if(gameSoundOn)
+            {
+                gameSoundButton.GetComponent<Image>().sprite = gameSoundOnIcon;
+            }
+            else
+            {
+                gameSoundButton.GetComponent<Image>().sprite = gameSoundOffIcon;
+            }
             gameSoundButton.onClick.AddListener(OnClickGameSound);
         }
     }
+    //Change sound effect icon when clicking it to mute/unmute
     public void OnClickGameSound()
     {
         if(gameSoundOn)
@@ -133,6 +153,7 @@ public class AudioManager : MonoBehaviour
             gameSoundOn = true;
         }
     }
+    //Change music icon when clicking it to mute/unmute
     public void OnClickMusic()
     {
         
@@ -150,6 +171,7 @@ public class AudioManager : MonoBehaviour
             musicOn = true;
         }
     }
+    // start event
     private void OnEnable() 
     {
         GameMenu.checkIfMusicButtonExists += CheckMusicToggleExistence;
@@ -157,7 +179,7 @@ public class AudioManager : MonoBehaviour
         SettingsControl.checkIfMusicButtonExists += CheckMusicToggleExistence;
         SettingsControl.checkIfSFXButtonExists += CheckGameSoundToggleExistence;
     }
-
+    // end event
     private void OnDisable()
     {
         GameMenu.checkIfMusicButtonExists -= CheckMusicToggleExistence;

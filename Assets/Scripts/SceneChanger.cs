@@ -7,23 +7,23 @@ public  class SceneChanger : MonoBehaviour
 {
     private static List<int> sceneHistory = new List<int>();
 
-    // Start is called before the first frame update
+    // Create DontDestroyOnLoad to keep scenechanger alive
     void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
     }
-
+    // Game opens in menu so add it straight to the history
     void Start()
     {
         sceneHistory.Add(0);
     }
-
+    // Add previous scene to history and change scene
     public static void LoadScene(int newScene)
     {
         sceneHistory.Add(newScene);
         SceneManager.LoadScene(newScene);
     }
- 
+    // Go back to previous scene, keep the scenehistory count at 2 and if this fails, go back to menu
     public static void PreviousScene()
     {
         if(sceneHistory.Count >= 2)

@@ -1,5 +1,6 @@
 using System;
 
+// Class for new highscore
 [Serializable]
 public class HighScoreElement{
     public string playerName;

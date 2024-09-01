@@ -19,4 +19,12 @@ public class PointAreas : MonoBehaviour
             ScoreManager.Points = pointValue.PointValue(gameObject.tag);
         }
     }
+    // Subtract points when ball exits from the area 
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.gameObject.tag == "Balls")
+        {
+            ScoreManager.Points = -pointValue.PointValue(gameObject.tag);
+        }
+    }
 }

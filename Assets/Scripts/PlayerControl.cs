@@ -8,7 +8,7 @@ using System.Linq;
 
 public class PlayerControl : MonoBehaviour
 {
-    private float factor = 2100f;        // force can be adjusted with this
+    private float factor = 2200f;        // force can be adjusted with this
     private float touchTimeStart, touchTimeFinish; // count holding time
     private float force;
     public Slider powerbar;
@@ -24,17 +24,20 @@ public class PlayerControl : MonoBehaviour
     private bool isBouncedOutZeroArea; // if ball bounces off zeropointarea, game doesn't put second ball to game when this ball enters zeropointarea again
     private int i;              // to keep track of the active ball in the list
     private readonly float forceLimit = 3f; // if force is higher than limit, it is set to the limit set here
-    //private List<Rigidbody> rb = new List<Rigidbody>();
     private List<bool> isStopped = new List<bool>();
+    // For audio
     [SerializeField] private AudioClip bonkSFX;
     [SerializeField] private AudioClip bonkNailSFX;
     private readonly float bonkVolume = AudioManager.BonkVolume;
     private readonly float bonkNailVolume = AudioManager.BonkNailVolume;
     [SerializeField] private AudioSource audiosource;
-    private float rollingBallVolume;
-    private float maxSpeed = 60f;
-    public AnimationCurve volumeCurve;
-    public AnimationCurve pitchCurve;
+    private float maxSpeed = 50f;
+    private float minPitch = 0.9f;
+    private float maxPitch = 2.5f;
+    private float maxVolume = 1f;
+    private float minVolume = 0.1f;
+    private float speed;
+    //
 
     // Check if tutorial is needed
     public delegate void OnTutorialSwitchChanged(bool sw);
@@ -53,6 +56,7 @@ public class PlayerControl : MonoBehaviour
         balls = ballsArray.OfType<GameObject>().ToList();
         i = 0;
         SphereStartPos = GameObject.FindGameObjectWithTag("StartPos").transform.position;
+        speed = player.GetComponent<Rigidbody>().velocity.magnitude;
         powerbar.value = 0;
         powerbar.maxValue = forceLimit;
         isInStartArea = true;
@@ -60,10 +64,15 @@ public class PlayerControl : MonoBehaviour
         isActive = true;
         outOfBounds = false;
         isBouncedOutZeroArea = false;
-        SwitchBall();
+        audiosource = Instantiate(audiosource, AudioManager.instance.transform);
+        audiosource.enabled = true;
+        audiosource.loop = true;
+        audiosource.volume = 0;
+        audiosource.Play();
+        StartCoroutine(SwitchBall());
     }
     // Update game every frame to check inputs and outcomes
-    void FixedUpdate()
+    void Update()
     {
         // Check launch force if ball is in start area
         if(isActive)
@@ -92,7 +101,7 @@ public class PlayerControl : MonoBehaviour
             }
         }
         else
-        {
+        {   // Reset powerbar
             powerbar.value = 0;
             touchTimeStart = 0;
             touchTimeFinish = 0;
@@ -108,25 +117,33 @@ public class PlayerControl : MonoBehaviour
             balls[i-1].GetComponent<Rigidbody>().velocity = player.GetComponent<Rigidbody>().velocity;
             balls[i-1].GetComponent<Rigidbody>().angularVelocity = player.GetComponent<Rigidbody>().angularVelocity;
             balls[i-1].transform.parent = player.transform.parent;
+            balls[i-1].tag = "Untagged";
+            //
             player.GetComponent<Rigidbody>().velocity = Vector3.zero;
             player.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
             isInStartArea = true;
             atZeroPointArea = false;
-            Destroy(audiosource.gameObject, audiosource.clip.length);
+            isStopped.Add(false);
+            // Check if there is balls left or check if game is ready to end
             if(i >= balls.Count)
             {
                 StartCoroutine(CheckEndGame());
             }
             else
             {
-                SwitchBall();
+                StartCoroutine(SwitchBall());
             }
         }
         // Check if ball is out of bounds and set up next ball
         if (outOfBounds)
         {
             balls[i-1].transform.parent = player.transform.parent;
+            player.GetComponent<Rigidbody>().velocity = Vector3.zero;
+            player.GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+            balls[i-1].tag = "Untagged";
             Destroy(balls[i-1]);
+            balls.RemoveAt(i-1);
+            i--;
             outOfBounds = false;
             isInStartArea = true;
             atZeroPointArea = false;
@@ -135,36 +152,27 @@ public class PlayerControl : MonoBehaviour
             {
                 StartCoroutine(CheckEndGame());
             }
-            SwitchBall();
+            else
+            {
+                StartCoroutine(SwitchBall());
+            }
         }
-
         //Audio for ball rolling
-        float speed = player.GetComponent<Rigidbody>().velocity.magnitude;
-        Debug.Log("speed: " + speed + "   Is Playing: " + audiosource.isPlaying);
-        if(!audiosource.isPlaying && speed >= 1 && GameMenu.IsPaused == false)
+        speed = player.GetComponent<Rigidbody>().velocity.magnitude;
+        if(speed >= 0.1f)
         {   
-            float scaledVelocity = Remap(Mathf.Clamp(speed, 0, maxSpeed), 0, maxSpeed, 0, 1.6f);
-            // set volume based on volume curve
-            rollingBallVolume = volumeCurve.Evaluate(scaledVelocity);
-            // set pitch based on pitch curve
-            float pitch = pitchCurve.Evaluate(scaledVelocity);
-            audiosource.volume = rollingBallVolume;
-            audiosource.pitch = pitch;
-            audiosource.Play();
+            float volumeModifier = maxVolume - minVolume;
+            float pitchModifier = maxPitch - minPitch;
+            audiosource.pitch = minPitch + (speed/maxSpeed)*pitchModifier;
+            audiosource.volume = minVolume + (speed/maxSpeed)*volumeModifier;
         }
-        else if(speed <= 1 && audiosource.isPlaying)
+        if(speed <= 0.1f || GameMenu.IsPaused == true)
         {
             if(audiosource != null)
             {
-                audiosource.Stop();
+                audiosource.volume = 0;
             }
         }
-    }
-
-     // https://discussions.unity.com/t/465623
-    public float Remap(float value, float from1, float to1, float from2, float to2)
-    {
-        return (value - from1) / (to1 - from1) * (to2 - from2) + from2;
     }
     // Add force to launch the ball
     private void LaunchBall()
@@ -184,24 +192,24 @@ public class PlayerControl : MonoBehaviour
         powerbar.value = 0;
     }
     // Switch ball or start ending the game
-    private void SwitchBall()
+    private IEnumerator SwitchBall()
     {   
         atZeroPointArea = false;
-        isStopped.Add(false);
         balls[i].transform.parent = player.transform;
         player.transform.GetChild(0).transform.position = SphereStartPos;
-        audiosource = Instantiate(audiosource, balls[i].transform);
         isActive = true;
         i++;
+        yield return new WaitForEndOfFrame();
     }
 
-    // Check that every ball is stopped so all the points are counted
+    // Check that every ball is stopped before ending the game so all the points are counted
     private IEnumerator CheckEndGame()
     {
+        audiosource.Stop();
         int j = 0;
-        foreach(GameObject _go in balls)
+        foreach(GameObject ball in balls)
         {
-            if(player.GetComponent<Rigidbody>().velocity == Vector3.zero && player.GetComponent<Rigidbody>().angularVelocity == Vector3.zero)
+            if(ball.GetComponent<Rigidbody>().velocity == Vector3.zero && ball.GetComponent<Rigidbody>().angularVelocity == Vector3.zero)
             {
                 isStopped[j] = true;
             }
@@ -265,6 +273,7 @@ public class PlayerControl : MonoBehaviour
            isBouncedOutZeroArea = true;
         }
     }
+    // Make sound effect when collision happens
     private void OnCollisionEnter(Collision collision)
     {
         if(collision.gameObject.tag == "Nail")

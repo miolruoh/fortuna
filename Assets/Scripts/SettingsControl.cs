@@ -21,7 +21,7 @@ public class SettingsControl : MonoBehaviour
 
     // Start is called before the first frame update
     void Start()
-    {
+    {   // check if the scene has music/sfx toggle buttons and their state(on/off)
         if(checkIfMusicButtonExists != null && checkIfSFXButtonExists != null)
         {
             checkIfMusicButtonExists(musicButton);

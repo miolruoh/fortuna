@@ -21,14 +21,14 @@ public class MenuCommands : MonoBehaviour
         AudioManager.instance.PlaySFXClip(clickSFX, transform, clickVolume);
     }
 
-    // Play first board
+    // Play red board
     public void OnPlayBoard1ButtonPress()
     {
         _fileName = "highscores1.json";
         AudioManager.instance.PlaySFXClip(clickSFX, transform, clickVolume);
         SceneChanger.LoadScene(2);
     }
-    // Play second board
+    // Play green board
     public void OnPlayBoard2ButtonPress()
     {
         _fileName = "highscores2.json";
@@ -47,7 +47,7 @@ public class MenuCommands : MonoBehaviour
         AudioManager.instance.PlaySFXClip(clickSFX, transform, clickVolume);
         SceneChanger.PreviousScene();
     }
-    // Exit game on windows / on android put game to background
+    // Exit game on windows(in editor) / on android put game to background
     public void ExitGame()
     {
         AudioManager.instance.PlaySFXClip(clickSFX, transform, clickVolume);

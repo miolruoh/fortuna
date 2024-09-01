@@ -37,7 +37,6 @@ public class GameMenu : MonoBehaviour
     public Text playerName;
     public Button gameSoundButton;
     public Button musicButton;
-    private bool end;
     private float gamespeed = 3.0f;
     public static bool tutorialSwitch;
     
@@ -50,7 +49,7 @@ public class GameMenu : MonoBehaviour
 
     // Set everything ready for game to start
     void Awake()
-    {
+    {   // check if the scene has music/sfx toggle buttons and their state(on/off)
         if(checkIfMusicButtonExists != null && checkIfSFXButtonExists != null)
         {
             checkIfMusicButtonExists(musicButton);
@@ -60,13 +59,9 @@ public class GameMenu : MonoBehaviour
         highscoreHandler.LoadHighScores();
         highScorePanel.SetActive(false);
         isPaused = true;
-        if(end)
-        {
-            end = false;
-        }
         StartMenu();
     }
-    // Update to check if game is ended or paused/continued
+    // Update to check if game is paused/continued
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Escape))
@@ -87,7 +82,7 @@ public class GameMenu : MonoBehaviour
         EndMenu();
     }
 
-    // Game is paused
+    // Set elements for when game is paused
     public void Pause()
     {
         scorePanel.SetActive(false);
@@ -99,7 +94,7 @@ public class GameMenu : MonoBehaviour
         Time.timeScale = 0f;
         isPaused = true;
     }
-    // Panel at the start of the game
+    // Set elements for the startgame menu
     public void StartMenu()
     {
         Time.timeScale = 0f;
@@ -111,7 +106,7 @@ public class GameMenu : MonoBehaviour
         startGameButton.SetActive(true);
         pauseMenuUI.SetActive(true);
     }
-    // Start game button
+    // Start game button, check if tutorial is needed and closes menu
     public void StartGame()
     {
         AudioManager.instance.PlaySFXClip(clickSFX, transform, clickVolume);
@@ -136,7 +131,7 @@ public class GameMenu : MonoBehaviour
     {
         tutorial.SetActive(activated);
     }
-    // Panel at the end of the game
+    // Panel at the end of the game and possible new highscorepanel
     public void EndMenu()
     {
         Time.timeScale = 0f;
@@ -157,7 +152,7 @@ public class GameMenu : MonoBehaviour
         }
     }
 
-    //Resume Game
+    //Resume Game after paused
     public void Resume()
     {
         AudioManager.instance.PlaySFXClip(clickSFX, transform, clickVolume);
@@ -166,14 +161,14 @@ public class GameMenu : MonoBehaviour
         isPaused = false;
     }
 
-    // Restart scene
+    // Restart game
     public void Restart()
     {
         AudioManager.instance.PlaySFXClip(clickSFX, transform, clickVolume);
         SceneChanger.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    //Back To menu
+    //Back To menu button
     public void BackToMenu()
     {
         AudioManager.instance.PlaySFXClip(clickSFX, transform, clickVolume);
@@ -225,13 +220,14 @@ public class GameMenu : MonoBehaviour
             }
         }
     }
+    // start event
     private void OnEnable() 
     {
         HighScoreHandler.onHighScoreListChanged += UpdateHighScoreUI;
         PlayerControl.onTutorialSwitchChanged += TutorialActivation;
         PlayerControl.onGameEnded += End;
     }
-
+    // end event
     private void OnDisable()
     {
         HighScoreHandler.onHighScoreListChanged -= UpdateHighScoreUI;
