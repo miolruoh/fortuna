@@ -25,6 +25,7 @@ TagManager:
   - Balls
   - Nail
   - StartPos
+  - Reset
   layers:
   - Default
   - TransparentFX

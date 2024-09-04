@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 using System.Linq;
+using UnityEngine.EventSystems;
 
 public class PlayerControl : MonoBehaviour
 {
@@ -32,8 +33,8 @@ public class PlayerControl : MonoBehaviour
     private readonly float bonkNailVolume = AudioManager.BonkNailVolume;
     [SerializeField] private AudioSource audiosource;
     private float maxSpeed = 50f;
-    private float minPitch = 0.9f;
-    private float maxPitch = 2.5f;
+    private float minPitch = 1f;
+    private float maxPitch = 3f;
     private float maxVolume = 1f;
     private float minVolume = 0.1f;
     private float speed;
@@ -52,7 +53,7 @@ public class PlayerControl : MonoBehaviour
     public static event OnGameEnded onGameEnded;
 
 
-    //Assigned at start
+    //Set everything ready in start
     private void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -81,7 +82,7 @@ public class PlayerControl : MonoBehaviour
         // Check launch force if ball is in start area
         if(isActive)
         {
-            if(Input.GetMouseButtonDown(0))
+            if(Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
             {
                 touchTimeStart = Time.time;
             } 
@@ -204,7 +205,19 @@ public class PlayerControl : MonoBehaviour
         i++;
         yield return new WaitForEndOfFrame();
     }
-
+    //Reset launch and set highlighted color
+    public void PointerEnterReset()
+    {
+        GameMenu.resetButton.image.color = new Color32(0, 188, 17, 255);
+        powerbar.value = 0;
+        touchTimeStart = 0;
+        touchTimeFinish = 0;
+    }
+    //Set reset button color back to normal
+    public void PointerExitReset()
+    {
+        GameMenu.resetButton.image.color = new Color32(114, 255, 124, 255);
+    }
     // Check that every ball is stopped before ending the game so all the points are counted
     private IEnumerator CheckEndGame()
     {

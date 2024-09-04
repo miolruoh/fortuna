@@ -42,6 +42,10 @@ public class GameMenu : MonoBehaviour
     public GameObject hintText;
     private bool hintClicked;
     public GameObject outOfBoundsText;
+    public GameObject overlayCanvas;
+    public Animator outOfBoundsAnim;
+    public Button hintButton;
+    public static Button resetButton;
 
     // delegates
     public delegate void CheckIfMusicButtonExists(Button button);
@@ -58,16 +62,18 @@ public class GameMenu : MonoBehaviour
             checkIfSFXButtonExists(gameSoundButton);
         }
         //
+        resetButton = GameObject.FindGameObjectWithTag("Reset").GetComponent<Button>();
         tutorialSwitch = false;
         hintClicked = false;
-        highscoreHandler.LoadHighScores();
+        UpdateHighScoreUI(highscoreHandler.LoadHighScores());
         highScorePanel.SetActive(false);
         isPaused = true;
         StartMenu();
     }
-    // Update to check if game is paused/continued
+    
     void Update()
     {
+        // Update to check if game is paused/continued
         if(Input.GetKeyDown(KeyCode.Escape))
         {
             if(isPaused)
@@ -77,6 +83,14 @@ public class GameMenu : MonoBehaviour
             else
             {
                 Pause();
+            }
+        }
+        // set gameobject inactive after animation has played
+        if(outOfBoundsAnim != null && outOfBoundsText.activeSelf == true)
+        {
+            if(outOfBoundsAnim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
+            {
+                outOfBoundsText.SetActive(false);
             }
         }
     }
@@ -103,6 +117,8 @@ public class GameMenu : MonoBehaviour
     {
         Time.timeScale = 0f;
         isPaused = true;
+        hintButton.gameObject.SetActive(false);
+        resetButton.gameObject.SetActive(false);
         scorePanel.SetActive(false);
         resumeButton.SetActive(false);
         restartButton.SetActive(false);
@@ -126,6 +142,8 @@ public class GameMenu : MonoBehaviour
         }
         PlayerPrefs.SetInt("HasLaunched", 1); // Set to 1, so we know the user has been here before
         pauseMenuUI.SetActive(false);
+        hintButton.gameObject.SetActive(true);
+        resetButton.gameObject.SetActive(true);
         Time.timeScale = gamespeed;
         isPaused = false;
     }
@@ -138,23 +156,30 @@ public class GameMenu : MonoBehaviour
     // Click hint to activate/disable hint text
     public void OnClickHint()
     {
-        if(hintClicked == false)
+        if(!isPaused)
         {
-            Time.timeScale = 0f;
-            hintClicked = true;
+            if(hintClicked == false)
+            {
+                Time.timeScale = 0f;
+                hintClicked = true;
+            }
+            else
+            {
+                hintClicked = false;
+                Time.timeScale = gamespeed;
+            }
+            AudioManager.instance.PlaySFXClip(clickSFX, transform, clickVolume);
+            hintText.SetActive(hintClicked);
         }
-        else
-        {
-            hintClicked = false;
-            Time.timeScale = gamespeed;
-        }
-        AudioManager.instance.PlaySFXClip(clickSFX, transform, clickVolume);
-        hintText.SetActive(hintClicked);
     }
     //Show out of bounds text
      private void OutofBounds()
      {
         outOfBoundsText.SetActive(true);
+        if(outOfBoundsAnim != null)
+        {
+            outOfBoundsAnim.Play("Base Layer.OutofBoundsText");
+        }
      }
     // Panel at the end of the game and possible new highscorepanel
     public void EndMenu()
@@ -219,19 +244,20 @@ public class GameMenu : MonoBehaviour
     {
         AudioManager.instance.PlaySFXClip(clickSFX, transform, clickVolume);
         Time.timeScale = 0f;
+        UpdateHighScoreUI(highscoreHandler.LoadHighScores());
         highScorePanel.SetActive(true);
     }
 
     // Update highscore list
-    private void UpdateHighScoreUI (List<HighScoreElement> list) 
+    private void UpdateHighScoreUI(List<HighScoreElement> list)
     {
-        for(int i = 0; i < list.Count; i++) 
+        for(int i = 0; i < list.Count; i++)
         {
             HighScoreElement el = list[i];
 
             if(el != null && el.score > 0) 
             {
-                if(i >= uiHighscoreElements.Count) 
+                if(i >= uiHighscoreElements.Count)
                 {
                     // instantiate new entry
                     var inst = Instantiate(highscoreUIElementPrefab, elementWrapper);

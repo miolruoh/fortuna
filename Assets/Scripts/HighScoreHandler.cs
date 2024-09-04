@@ -17,19 +17,20 @@ public class HighScoreHandler : MonoBehaviour
     public static event OnHighScoreListChanged onHighScoreListChanged;
     
     // Load highscore list from file if it has changed and remove lowest scores from list if have to
-    public void LoadHighScores() 
+    public List<HighScoreElement> LoadHighScores()
     {
         highScoreList = FileHandler.ReadFromJSON<HighScoreElement>(fileName);
 
-        while(highScoreList.Count > maxCount) 
+        while(highScoreList.Count > maxCount)
         {
             highScoreList.RemoveAt(maxCount);
         }
 
-        if(onHighScoreListChanged != null) 
+        if(onHighScoreListChanged != null)
         {
             onHighScoreListChanged.Invoke(highScoreList);
         }
+        return highScoreList;
     }
     // Get lowest score(last place) in the list
     public int GetLastHighScore()
