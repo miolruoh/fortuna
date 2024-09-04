@@ -55,20 +55,37 @@ public class AudioManager : MonoBehaviour
         {
             instance = this;
         }
-    }
-    // Set what needed for audio
-    private void Start()
-    {
         if(GameObject.FindGameObjectsWithTag("MusicAudioSource").Count<GameObject>() <= 0)
         {
             Instantiate(_musicAudioSource, instance.transform);
-            DontDestroyOnLoad(instance);
-            gameSoundOn = true;
-            musicOn = true; 
+            DontDestroyOnLoad(instance); 
         }
         else
         {
             Destroy(gameObject);
+        }
+    }
+    private void Start()
+    {
+        if(PlayerPrefs.GetInt("SFXToggle", 0) == 0) // check if sound effects on. 0 is the default value if the player pref doesn't exist yet.
+        {
+            gameSoundOn = true;
+            SetSFXVolume(unmute);
+        }
+        else
+        {
+            gameSoundOn = false;
+            SetSFXVolume(mute);
+        }
+        if(PlayerPrefs.GetInt("MusicToggle", 0) == 0) // check if music on. 0 is the default value if the player pref doesn't exist yet.
+        {
+            musicOn = true;
+            SetMusicVolume(unmute);
+        }
+        else
+        {
+            musicOn = false;
+            SetMusicVolume(mute);
         }
     }
     // Create sound effects when needed
@@ -142,12 +159,14 @@ public class AudioManager : MonoBehaviour
         if(gameSoundOn)
         {
             gameSoundButton.GetComponent<Image>().sprite = gameSoundOffIcon;
+            PlayerPrefs.SetInt("SFXToggle", 1);  // Set sound effects off so it will be remembered when open game next time
             SetSFXVolume(mute);
             gameSoundOn = false;
         }
         else
         {
             gameSoundButton.GetComponent<Image>().sprite = gameSoundOnIcon;
+            PlayerPrefs.SetInt("SFXToggle", 0); // Set sound effects on so it will be remembered when open game next time
             SetSFXVolume(unmute);
             instance.PlaySFXClip(clickSFX, transform, clickVolume);
             gameSoundOn = true;
@@ -156,16 +175,17 @@ public class AudioManager : MonoBehaviour
     //Change music icon when clicking it to mute/unmute
     public void OnClickMusic()
     {
-        
         if(musicOn)
         {
             musicButton.GetComponent<Image>().sprite = musicOffIcon;
+            PlayerPrefs.SetInt("MusicToggle", 1); // Set music off so it will be remembered when open game next time
             SetMusicVolume(mute);
             musicOn = false;
         }
         else
         {
             musicButton.GetComponent<Image>().sprite = musicOnIcon;
+            PlayerPrefs.SetInt("MusicToggle", 0); // Set music on so it will be remembered when open game next time
             SetMusicVolume(unmute);
             instance.PlaySFXClip(clickSFX, transform, clickVolume);
             musicOn = true;

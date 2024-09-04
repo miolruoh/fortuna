@@ -43,6 +43,10 @@ public class PlayerControl : MonoBehaviour
     public delegate void OnTutorialSwitchChanged(bool sw);
     public static event OnTutorialSwitchChanged onTutorialSwitchChanged;
 
+    // Checks when ball is out of bounds and gives text to player
+    public delegate void BallOutOfBounds();
+    public static event BallOutOfBounds ballOutOfBounds;
+
     // Checks when game is ended
     public delegate void OnGameEnded();
     public static event OnGameEnded onGameEnded;
@@ -147,7 +151,6 @@ public class PlayerControl : MonoBehaviour
             outOfBounds = false;
             isInStartArea = true;
             atZeroPointArea = false;
-            Debug.Log("Ball is out of Bounds");
             if(i >= balls.Count)
             {
                 StartCoroutine(CheckEndGame());
@@ -265,6 +268,10 @@ public class PlayerControl : MonoBehaviour
         }
         if (other.transform.tag == "GameArea")
         {
+            if(ballOutOfBounds != null)
+            {
+                ballOutOfBounds();
+            }
             outOfBounds = true;
         }
         // // When ball exits zeropointarea, mark it so when ball drops back there second time, it wont trigger extra ball to game

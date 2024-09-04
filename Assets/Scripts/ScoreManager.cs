@@ -26,7 +26,7 @@ public class ScoreManager : MonoBehaviour
     void Start()
     {
         points = 0;
-        output_Points = GameObject.Find("ScoreCanvas/Score").GetComponent<TextMeshProUGUI>();
+        output_Points = GameObject.Find("OverlayCanvas/Score").GetComponent<TextMeshProUGUI>();
     }
 
     // Sets Score to the screen

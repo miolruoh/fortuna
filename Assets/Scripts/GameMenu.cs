@@ -33,15 +33,17 @@ public class GameMenu : MonoBehaviour
     [SerializeField] HighScoreHandler highscoreHandler;
     public Text newHighScore;
     public Text endScore;
-    [SerializeField] int finalScore;
+    private int finalScore;
     public Text playerName;
     public Button gameSoundButton;
     public Button musicButton;
     private float gamespeed = 3.0f;
-    public static bool tutorialSwitch;
-    
+    private bool tutorialSwitch;
+    public GameObject hintText;
+    private bool hintClicked;
+    public GameObject outOfBoundsText;
 
-
+    // delegates
     public delegate void CheckIfMusicButtonExists(Button button);
     public static event CheckIfMusicButtonExists checkIfMusicButtonExists;
     public delegate void CheckIfSFXButtonExists(Button button);
@@ -55,7 +57,9 @@ public class GameMenu : MonoBehaviour
             checkIfMusicButtonExists(musicButton);
             checkIfSFXButtonExists(gameSoundButton);
         }
+        //
         tutorialSwitch = false;
+        hintClicked = false;
         highscoreHandler.LoadHighScores();
         highScorePanel.SetActive(false);
         isPaused = true;
@@ -114,7 +118,6 @@ public class GameMenu : MonoBehaviour
         {
             tutorialSwitch = true;
             TutorialActivation(tutorialSwitch);
-            
         }
         else
         {
@@ -130,7 +133,29 @@ public class GameMenu : MonoBehaviour
     private void TutorialActivation(bool activated)
     {
         tutorial.SetActive(activated);
+        tutorialSwitch = activated;
     }
+    // Click hint to activate/disable hint text
+    public void OnClickHint()
+    {
+        if(hintClicked == false)
+        {
+            Time.timeScale = 0f;
+            hintClicked = true;
+        }
+        else
+        {
+            hintClicked = false;
+            Time.timeScale = gamespeed;
+        }
+        AudioManager.instance.PlaySFXClip(clickSFX, transform, clickVolume);
+        hintText.SetActive(hintClicked);
+    }
+    //Show out of bounds text
+     private void OutofBounds()
+     {
+        outOfBoundsText.SetActive(true);
+     }
     // Panel at the end of the game and possible new highscorepanel
     public void EndMenu()
     {
@@ -185,7 +210,7 @@ public class GameMenu : MonoBehaviour
     public void OkButton()
     {
         AudioManager.instance.PlaySFXClip(clickSFX, transform, clickVolume);
-        finalScore = Int32.Parse(ScoreManager.Final_Points); // try-catch?
+        finalScore = Int32.Parse(ScoreManager.Final_Points);
         highscoreHandler.AddHighScoreIfPossible(new HighScoreElement(playerName.text, finalScore));
         newHighScorePanel.SetActive(false);
     }
@@ -225,6 +250,7 @@ public class GameMenu : MonoBehaviour
     {
         HighScoreHandler.onHighScoreListChanged += UpdateHighScoreUI;
         PlayerControl.onTutorialSwitchChanged += TutorialActivation;
+        PlayerControl.ballOutOfBounds += OutofBounds;
         PlayerControl.onGameEnded += End;
     }
     // end event
@@ -232,6 +258,7 @@ public class GameMenu : MonoBehaviour
     {
         HighScoreHandler.onHighScoreListChanged -= UpdateHighScoreUI;
         PlayerControl.onTutorialSwitchChanged -= TutorialActivation;
+        PlayerControl.ballOutOfBounds -= OutofBounds;
         PlayerControl.onGameEnded -= End;
     }
 }

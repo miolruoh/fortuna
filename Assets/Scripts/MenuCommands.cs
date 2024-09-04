@@ -14,13 +14,6 @@ public class MenuCommands : MonoBehaviour
         get {return _fileName;}
     }
 
-    // Open Credits for the project
-    public void OnClickCredits()
-    {
-        // Add credits
-        AudioManager.instance.PlaySFXClip(clickSFX, transform, clickVolume);
-    }
-
     // Play red board
     public void OnPlayBoard1ButtonPress()
     {
