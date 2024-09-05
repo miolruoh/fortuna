@@ -86,7 +86,7 @@ public class GameMenu : MonoBehaviour
             }
         }
         // set gameobject inactive after animation has played
-        if(outOfBoundsAnim != null && outOfBoundsText.activeSelf == true)
+        if(outOfBoundsAnim.isInitialized && outOfBoundsText != null)
         {
             if(outOfBoundsAnim.GetCurrentAnimatorStateInfo(0).normalizedTime > 1)
             {
@@ -172,12 +172,13 @@ public class GameMenu : MonoBehaviour
             hintText.SetActive(hintClicked);
         }
     }
-    //Show out of bounds text
+    //Show out of bounds text animation
      private void OutofBounds()
      {
-        outOfBoundsText.SetActive(true);
-        if(outOfBoundsAnim != null)
+        
+        if(outOfBoundsAnim != null && outOfBoundsText != null)
         {
+            outOfBoundsText.SetActive(true);
             outOfBoundsAnim.Play("Base Layer.OutofBoundsText");
         }
      }
