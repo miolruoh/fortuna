@@ -8,4 +8,4 @@ Fortuna is 'an old school pinball' game built to play on android. This project i
 4. Clone code to empty folder.
 5. Open the fortuna folder in unity editor.
 6. Build app in Unity Editor: Go to File --> Build Settings. Here change platform to android. --> Build. This creates .apk file that can be copied to android device(android 4.4 or newer). Install .apk file with the android device. OR
-7. Game is also playable in Unity Editor by changing the scene to MainMenu and clicking play button. Aspect ratio can also be changed.
+7. Game is also playable in Unity Editor by changing the scene to MainMenu and clicking play button. Aspect ratio can also be changed. Game is meant to be played in vertical position(e.g. 1080x1920), but it should work also in horizontal position.
